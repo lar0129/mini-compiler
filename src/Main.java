@@ -16,5 +16,6 @@ public class Main {
         SysYLexerLexer sysYLexer = new SysYLexerLexer(input);
 
         List<? extends Token> tokens = sysYLexer.getAllTokens();
+        System.out.println(tokens);
     }
 }
