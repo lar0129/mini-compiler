@@ -31,7 +31,7 @@ public class Main {
                         text = String.valueOf((Integer.parseInt(text,8)));
                 }
 
-                System.out.println(type + " " + text + " at Line " + token.getLine() + ".");
+                System.err.println(type + " " + text + " at Line " + token.getLine() + ".");
                 //[token类型] [token文本] at Line [此token首个字符所在行的行号].
             }
         }
