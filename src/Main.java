@@ -30,7 +30,7 @@ public class Main {
 //                        text = String.valueOf((Integer.parseInt(text,8)));
 //                }
                 if(type == "INTEGER_CONST"){
-                    if (text.length()>1 && (text.charAt(1)=='x'||text.charAt(1)=='X')){
+                    if (text.length()>2 && (text.charAt(1)=='x'||text.charAt(1)=='X')){
                         text = String.valueOf((Integer.parseInt(text.substring(2),16)));
                     }
                     else if (text.charAt(0) == '0' && text.length()>1){
