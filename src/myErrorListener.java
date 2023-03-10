@@ -6,7 +6,7 @@ import org.antlr.v4.runtime.Recognizer;
 public class myErrorListener extends BaseErrorListener {
 
     public static final myErrorListener INSTANCE = new myErrorListener();
-    public static boolean status;
+    public static boolean status = false;
 
     public myErrorListener() {
         //System.out.println("Error type A at Line 3: Mysterious character \"~\".");
