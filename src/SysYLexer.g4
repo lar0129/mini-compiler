@@ -78,7 +78,7 @@ INTEGER_CONST :
         ;
 
 WS
-   : [ \r\n\t]+ ->skip
+   : [ \r\n\t]+
    ;
 
 LINE_COMMENT
