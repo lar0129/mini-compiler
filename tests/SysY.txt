@@ -5,4 +5,5 @@ int main()
      block comment
    */
   0x00000123124
+  00000123124
 }
