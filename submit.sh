@@ -51,7 +51,7 @@ fi
 # construct json for cul
 TMPRAW='{"username":"XXXUSERXXX","password":"YYYPWDYYY"}'
 DATARAW=$(echo $TMPRAW | sed "s/XXXUSERXXX/$USERNAME/g" | sed "s/YYYPWDYYY/$PASSWORD/g")
-URL=http://47.122.3.40:28300
+URL=http://back.compilers.cpl.icu
 
 # extract token
 RAW=$(curl "$URL/auth/login" \
