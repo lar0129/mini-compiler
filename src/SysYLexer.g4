@@ -1,19 +1,4 @@
-grammar SysYLexer;
-
-prog : stat* EOF ;
-
-stat : expr ';'
-     | IDENT '=' expr ';'
-     | IF expr ';'
-     ;
-
-expr : expr ( '*' | '/') expr  // 优先级
-     | expr ( PLUS | MINUS) expr
-     | '(' expr ')'
-     | IDENT
-     | INTEGER_CONST
-     ;
-
+lexer grammar SysYLexer;
 
 CONST : 'const';
 
