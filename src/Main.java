@@ -15,13 +15,16 @@ public class Main {
         SysYLexer sysYLexer = new SysYLexer(input);
 
         sysYLexer.removeErrorListeners();
-        sysYLexer.addErrorListener(new myErrorListener() );
+        myErrorListener myListener = new myErrorListener();
+        sysYLexer.addErrorListener(myListener);
 
-        List<? extends Token> tokens = sysYLexer.getAllTokens();
-        for (int i=0;i<tokens.size();i++) {
-            Token token = tokens.get(i);
-            System.out.println(SysYLexer.ruleNames[token.getType()-1] + " " +token.getText() + " at Line " + token.getLine() + ".");
-            //[token类型] [token文本] at Line [此token首个字符所在行的行号].
+        if (!myListener.status) {
+            List<? extends Token> tokens = sysYLexer.getAllTokens();
+            for (int i = 0; i < tokens.size(); i++) {
+                Token token = tokens.get(i);
+                System.out.println(SysYLexer.ruleNames[token.getType() - 1] + " " + token.getText() + " at Line " + token.getLine() + ".");
+                //[token类型] [token文本] at Line [此token首个字符所在行的行号].
+            }
         }
     }
 }
