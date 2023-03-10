@@ -72,7 +72,7 @@ INTEGER_CONST :
 //      数字常量，包含十进制数，0开头的八进制数，0x或0X开头的十六进制数
         TEN_INTEGER | EIGHT_INTEGER | HEX_INTEGER;
 fragment TEN_INTEGER: '0'|[1-9][0-9]*;
-fragment EIGHT_INTEGER: [0][0-7]*;
+fragment EIGHT_INTEGER: [0]+[1-7]*;
 fragment HEX_INTEGER: ('0x'| '0X')[0-9A-Fa-f]+;
 
 WS
