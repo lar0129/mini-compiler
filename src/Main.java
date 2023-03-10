@@ -1,8 +1,9 @@
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
-import gen.SysYLexerLexer
+import org.antlr.v4.runtime.Token;
 
 import java.io.*;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -11,6 +12,9 @@ public class Main {
         }
         String source = args[0];
         CharStream input = CharStreams.fromFileName(source);
-        SysYLexer sysYLexer = new SysYLexer(input);
+        SysYLexerLexer sysYLexer = new SysYLexerLexer(input);
+
+        List<? extends Token> tokens = sysYLexer.getAllTokens();
+        System.out.println(tokens);
     }
 }
