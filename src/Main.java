@@ -35,5 +35,6 @@ public class Main {
                 //[token类型] [token文本] at Line [此token首个字符所在行的行号].
             }
         }
+        myListener.setErrorStatus(false);
     }
 }

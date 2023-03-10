@@ -22,4 +22,8 @@ public class myErrorListener extends BaseErrorListener {
     public boolean getErrorStatus(){
         return status;
     }
+
+    public void setErrorStatus(boolean set){
+        status = set;
+    }
 }
