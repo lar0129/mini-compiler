@@ -6,10 +6,11 @@ import org.antlr.v4.runtime.Recognizer;
 public class myErrorListener extends BaseErrorListener {
 
     public static final myErrorListener INSTANCE = new myErrorListener();
-    boolean status = false;
+    public static boolean status;
 
     public myErrorListener() {
         //System.out.println("Error type A at Line 3: Mysterious character \"~\".");
+        status = false;
     }
 
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
