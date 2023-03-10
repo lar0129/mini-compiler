@@ -22,7 +22,13 @@ public class Main {
         if (!myListener.status) {
             for (int i = 0; i < tokens.size(); i++) {
                 Token token = tokens.get(i);
-                System.out.println(SysYLexer.ruleNames[token.getType() - 1] + " " + token.getText() + " at Line " + token.getLine() + ".");
+                String text = token.getText();
+                String type = SysYLexer.ruleNames[token.getType() - 1]
+                if (type == "INTEGER_CONST"){
+                    type = String.valueOf(type).toString();
+                }
+
+                System.out.println(type + " " + text + " at Line " + token.getLine() + ".");
                 //[token类型] [token文本] at Line [此token首个字符所在行的行号].
             }
         }

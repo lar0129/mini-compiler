@@ -5,4 +5,8 @@ int main()
      block comment
    */
    int i = 0x1;
+   int j = 0X22;
+   int k = 0333;
+   int l = 4444;
+   asd;
 }
