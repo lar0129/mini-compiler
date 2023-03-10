@@ -25,7 +25,10 @@ public class Main {
                 String text = token.getText();
                 String type = SysYLexer.ruleNames[token.getType() - 1];
                 if (type == "INTEGER_CONST"){
-                    text = String.valueOf((Integer.valueOf(text)+0));
+                    if (text.charAt(1)=='x' || text.charAt(1)=='X')
+                        text = String.valueOf((Integer.parseInt(text,16)));
+                    else if (text.charAt(0) == '0' && text.length()>1)
+                        text = String.valueOf((Integer.parseInt(text,16)));
                 }
 
                 System.out.println(type + " " + text + " at Line " + token.getLine() + ".");
