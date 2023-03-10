@@ -23,7 +23,7 @@ public class Main {
             for (int i = 0; i < tokens.size(); i++) {
                 Token token = tokens.get(i);
                 String text = token.getText();
-                String type = SysYLexer.ruleNames[token.getType() - 1]
+                String type = SysYLexer.ruleNames[token.getType() - 1];
                 if (type == "INTEGER_CONST"){
                     type = String.valueOf(type).toString();
                 }
