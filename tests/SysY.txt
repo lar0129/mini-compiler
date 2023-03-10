@@ -4,13 +4,5 @@ int main()
    /*
      block comment
    */
-   08;
-   00
-   07
-   0x
-   0X
-   0x0
-   0x0
-   0i
-   i0
+  01234567890
 }
