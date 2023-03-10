@@ -14,8 +14,6 @@ public class Main {
         CharStream input = CharStreams.fromFileName(source);
         SysYLexer sysYLexer = new SysYLexer(input);
 
-        sysYLexer.removeErrorListeners();
-        sysYLexer.addErrorListener(new myErrorListener() );
 
         List<? extends Token> tokens = sysYLexer.getAllTokens();
         for (int i=0;i<tokens.size();i++) {
