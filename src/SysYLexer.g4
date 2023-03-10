@@ -78,13 +78,13 @@ INTEGER_CONST :
         ;
 
 WS
-   : [ \r\n\t]+
+   : [ \r\n\t]+ ->skip
    ;
 
 LINE_COMMENT
-   : '//' .*? '\n'
+   : '//' .*? '\n' ->skip
    ;
 
 MULTILINE_COMMENT
-   : '/*' .*? '*/'
+   : '/*' .*? '*/' ->skip
    ;
