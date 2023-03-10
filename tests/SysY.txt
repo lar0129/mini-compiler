@@ -8,5 +8,5 @@ int main()
    int j = 0X22;
    int k = 0333;
    int l = 4444;
-   asd;
+   ##
 }
