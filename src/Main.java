@@ -1,18 +1,16 @@
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import gen.SysYLexerLexer
+
 import java.io.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        // System.out.println("hello!");
-        // String path = "../tests/" + args[0];
-        // System.out.println(path);
-        String path = args[0];
-        FileInputStream fin = new FileInputStream(path);
-        InputStreamReader isr = new InputStreamReader(fin);
-        BufferedReader bf = new BufferedReader(isr);
-        String temp = "";
-        while ((temp = bf.readLine()) != null) {
-            System.out.println(temp);
+        if (args.length < 1) {
+            System.err.println("input path is required");
         }
-        bf.close();
+        String source = args[0];
+        CharStream input = CharStreams.fromFileName(source);
+        SysYLexer sysYLexer = new SysYLexer(input);
     }
 }
