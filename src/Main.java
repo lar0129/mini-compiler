@@ -17,7 +17,7 @@ public class Main {
         List<? extends Token> tokens = sysYLexer.getAllTokens();
         for (int i=0;i<tokens.size();i++) {
             Token token = tokens.get(i);
-            System.out.println(SysYLexer.ruleNames[token.getType()] + " " +token.getText() + " at Line " + token.getLine());
+            System.out.println(SysYLexer.ruleNames[token.getType()-1] + " " +token.getText() + " at Line " + token.getLine());
             //[token类型] [token文本] at Line [此token首个字符所在行的行号].
         }
     }
