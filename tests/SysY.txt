@@ -1,4 +1,11 @@
 int main()
 {
-   int 2i = 08
+   // line comment
+   /*
+     block comment
+   */
+   int i = 0x1;
+   int j = 0X22;
+   int k = 0333;
+   int l = 4444;
 }
