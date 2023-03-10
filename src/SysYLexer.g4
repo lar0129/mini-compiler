@@ -77,8 +77,14 @@ INTEGER_CONST :
         | '0'[1-7]+
         ;
 
-WS : [ \r\n\t]+ -> skip; // + 表示一个或多个 ， -> skip表示扔掉
+WS
+   : [ \r\n\t]+
+   ;
 
-LINE_COMMENT : '//' .*? '\n' -> skip; // 非贪婪（最短）匹配 \n
+LINE_COMMENT
+   : '//' .*? '\n'
+   ;
 
-MULTILINE_COMMENT : '/*' .*? '*/' -> skip;
+MULTILINE_COMMENT
+   : '/*' .*? '*/'
+   ;
