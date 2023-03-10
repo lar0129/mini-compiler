@@ -25,7 +25,7 @@ public class Main {
                 String text = token.getText();
                 String type = SysYLexer.ruleNames[token.getType() - 1];
                 if (type == "INTEGER_CONST"){
-                    type = (String.valueOf(type)+0).toString();
+                    text = (String.valueOf(text)+0).toString();
                 }
 
                 System.out.println(type + " " + text + " at Line " + token.getLine() + ".");
