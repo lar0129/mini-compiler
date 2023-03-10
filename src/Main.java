@@ -13,8 +13,8 @@ public class Main {
         }
         String source = args[0];
         CharStream input = CharStreams.fromFileName(source);
-        SysYLexerLexer sysYLexer = new SysYLexerLexer(input);
+        //SysYLexerLexer sysYLexer = new SysYLexerLexer(input);
 
-        sysYLexer.getAllTokens();
+        //sysYLexer.getAllTokens();
     }
 }
