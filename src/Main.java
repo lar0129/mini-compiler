@@ -14,10 +14,13 @@ public class Main {
         CharStream input = CharStreams.fromFileName(source);
         SysYLexer sysYLexer = new SysYLexer(input);
 
+        // sysYLexer.removeErrorListeners();
+        // sysYLexer.addErrorListener(new myErrorListener() );
+
         List<? extends Token> tokens = sysYLexer.getAllTokens();
         for (int i=0;i<tokens.size();i++) {
             Token token = tokens.get(i);
-            System.out.println(SysYLexer.ruleNames[token.getType()-1] + " " +token.getText() + " at Line " + token.getLine());
+            System.out.println(SysYLexer.ruleNames[token.getType()-1] + " " +token.getText() + " at Line " + token.getLine() + ".");
             //[token类型] [token文本] at Line [此token首个字符所在行的行号].
         }
     }
