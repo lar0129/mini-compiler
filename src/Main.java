@@ -23,12 +23,6 @@ public class Main {
             for (Token token : tokens) {
                 String text = token.getText();
                 String type = SysYLexer.ruleNames[token.getType() - 1];
-                // if (type == "INTEGER_CONST" && text.length()>1){
-                // if (text.charAt(1)=='x' || text.charAt(1)=='X')
-                // text = String.valueOf((Integer.parseInt(text.substring(2),16)));
-                // else if (text.charAt(0) == '0')
-                // text = String.valueOf((Integer.parseInt(text,8)));
-                // }
                 if (type == "INTEGER_CONST") {
                     if (text.length() > 2 && (text.charAt(1) == 'x' || text.charAt(1) == 'X')) {
                         text = String.valueOf((Integer.parseInt(text.substring(2), 16)));
