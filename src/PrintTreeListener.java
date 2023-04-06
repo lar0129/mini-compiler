@@ -36,7 +36,7 @@ public class PrintTreeListener  extends SysYParserBaseListener {
 
                 temp += ruleNames[ruleIdx].substring(0, 1).toUpperCase() + ruleNames[ruleIdx].substring(1);
                 ;
-                System.out.println(temp);
+                System.err.println(temp);
         }
 
         @Override public void visitTerminal(TerminalNode node) {
@@ -60,7 +60,7 @@ public class PrintTreeListener  extends SysYParserBaseListener {
                                 temp+="  ";
                         }
 
-                        System.out.println(temp + terText + " " + terType + "[" + terTypeColor + "]");
+                        System.err.println(temp + terText + " " + terType + "[" + terTypeColor + "]");
                 }
         }
 
