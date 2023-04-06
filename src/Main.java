@@ -1,6 +1,9 @@
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.io.*;
 import java.util.List;
@@ -17,28 +20,41 @@ public class Main {
         sysYLexer.removeErrorListeners();
         myErrorListener myListener = new myErrorListener();
         sysYLexer.addErrorListener(myListener);
+
+//        原来的非官方写法
+//        List<? extends Token> tokens = sysYLexer.getAllTokens();
+        CommonTokenStream tokens = new CommonTokenStream(sysYLexer);
+        SysYParser sysYParser = new SysYParser(tokens);
+//        github上的walker写法
+//        SysYParser.CompilationUnitContext tree = sysYParser.compilationUnit(); // parse a compilationUnit as enter
+//        SysYParserBaseListener extractor = new SysYParserBaseListener();
+//        ParseTreeWalker.DEFAULT.walk(extractor, tree); // initiate walk of tree with listener in use of default walker
+        ParseTree tree = sysYParser.program();
+        ParseTreeWalker walker = new ParseTreeWalker();
+        PrintTreeListener pt = new PrintTreeListener();
+        walker.walk(pt, tree);
+
+//        Lab1:
+//        if (!myErrorListener.status) {
+//            for (Token token : tokens) {
+//                String text = token.getText();
+//                String type = SysYLexer.ruleNames[token.getType() - 1];
+//                if (type.equals("INTEGER_CONST")) {
+//                    if (text.length() > 2 && (text.charAt(1) == 'x' || text.charAt(1) == 'X')) {
+//                        text = String.valueOf((Integer.parseInt(text.substring(2), 16)));
+//                    } else if (text.charAt(0) == '0' && text.length() > 1) {
+//                        text = String.valueOf((Integer.parseInt(text.substring(1), 8)));
+//                    }
+//                }
 //
-        List<? extends Token> tokens = sysYLexer.getAllTokens();
-//        CommonTokenStream tokens = new CommonTokenStream(sysYLexer);
-//        SysYParser sysYParser = new SysYParser(tokens);
+//                System.err.println(type + " " + text + " at Line " + token.getLine() + ".");
+//                // [token类型] [token文本] at Line [此token首个字符所在行的行号].
+//            }
+//        }
+//        myListener.setErrorStatus(false);
 
-        if (!myErrorListener.status) {
-            for (Token token : tokens) {
-                String text = token.getText();
-                String type = SysYLexer.ruleNames[token.getType() - 1];
-                if (type.equals("INTEGER_CONST")) {
-                    if (text.length() > 2 && (text.charAt(1) == 'x' || text.charAt(1) == 'X')) {
-                        text = String.valueOf((Integer.parseInt(text.substring(2), 16)));
-                    } else if (text.charAt(0) == '0' && text.length() > 1) {
-                        text = String.valueOf((Integer.parseInt(text.substring(1), 8)));
-                    }
-                }
+//        Lab2:
 
-                System.err.println(type + " " + text + " at Line " + token.getLine() + ".");
-                // [token类型] [token文本] at Line [此token首个字符所在行的行号].
-            }
-        }
-        myListener.setErrorStatus(false);
     }
 
 }
