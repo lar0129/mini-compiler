@@ -42,8 +42,8 @@ public class PrintTreeListener  extends SysYParserBaseListener {
                 int terTypeIdx = node.getSymbol().getType();
                 String terType = SysYParser.VOCABULARY.getSymbolicName(terTypeIdx);
                 String terTypeColor = lexerColor[terTypeIdx];
-                if (!terTypeColor.equals("")) {
-                        System.out.print(terText + terType + "[" + terTypeColor + "]");
+                if (!terTypeColor.equals("") && terTypeIdx!=-1) {
+                        System.out.println(terText + " " + terType + "[" + terTypeColor + "]");
                 }
         }
 
