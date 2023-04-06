@@ -25,3 +25,12 @@ INTEGER_CONST 1192228 at Line 7.
 INTEGER_CONST 42580 at Line 8.
 INTEGER_CONST 0 at Line 9.
 R_BRACE } at Line 10.
+INT int at Line 1.
+IDENT main at Line 1.
+L_PAREN ( at Line 1.
+R_PAREN ) at Line 1.
+L_BRACE { at Line 2.
+INTEGER_CONST 1192228 at Line 7.
+INTEGER_CONST 42580 at Line 8.
+INTEGER_CONST 0 at Line 9.
+R_BRACE } at Line 10.

@@ -17,13 +17,16 @@ public class Main {
         sysYLexer.removeErrorListeners();
         myErrorListener myListener = new myErrorListener();
         sysYLexer.addErrorListener(myListener);
-
+//
         List<? extends Token> tokens = sysYLexer.getAllTokens();
-        if (!myListener.status) {
+//        CommonTokenStream tokens = new CommonTokenStream(sysYLexer);
+//        SysYParser sysYParser = new SysYParser(tokens);
+
+        if (!myErrorListener.status) {
             for (Token token : tokens) {
                 String text = token.getText();
                 String type = SysYLexer.ruleNames[token.getType() - 1];
-                if (type == "INTEGER_CONST") {
+                if (type.equals("INTEGER_CONST")) {
                     if (text.length() > 2 && (text.charAt(1) == 'x' || text.charAt(1) == 'X')) {
                         text = String.valueOf((Integer.parseInt(text.substring(2), 16)));
                     } else if (text.charAt(0) == '0' && text.length() > 1) {
