@@ -38,7 +38,7 @@ public class PrintTreeListener  extends SysYParserBaseListener {
         }
 
         @Override public void visitTerminal(TerminalNode node) {
-                String terText = node.getSymbol().getText();]
+                String terText = node.getSymbol().getText();
                 int terTypeIdx = node.getSymbol().getType();
                 String terType = SysYParser.VOCABULARY.getSymbolicName(terTypeIdx);
                 String terTypeColor = lexerColor[terTypeIdx];
