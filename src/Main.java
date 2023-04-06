@@ -1,13 +1,10 @@
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.io.*;
-import java.security.PublicKey;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -19,7 +16,7 @@ public class Main {
         SysYLexer sysYLexer = new SysYLexer(input);
 
         sysYLexer.removeErrorListeners();
-        myErrorListener myLexerListener = new myErrorListener();
+        myLexerErrorListener myLexerListener = new myLexerErrorListener();
         sysYLexer.addErrorListener(myLexerListener);
 
 //        原来的非官方写法
@@ -48,8 +45,8 @@ public class Main {
 
 //        Lab2:
         sysYParser.removeErrorListeners();
-        myErrorListener myParserListener = new myErrorListener();
-        sysYLexer.addErrorListener(myParserListener);
+        myParserErrorListener myParserListener = new myParserErrorListener();
+        sysYParser.addErrorListener(myParserListener);
 
         ParseTree tree = sysYParser.program();
         ParseTreeWalker walker = new ParseTreeWalker();
