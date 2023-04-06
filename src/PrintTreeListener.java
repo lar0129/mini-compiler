@@ -33,7 +33,9 @@ public class PrintTreeListener  extends SysYParserBaseListener {
                 for (int i=1;i<deepIdx;i++){
                         temp+="  ";
                 }
-                temp+=ruleNames[ruleIdx];
+
+                temp += ruleNames[ruleIdx].substring(0, 1).toUpperCase() + ruleNames[ruleIdx].substring(1);
+                ;
                 System.out.println(temp);
         }
 

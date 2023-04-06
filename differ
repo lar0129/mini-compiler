@@ -1,0 +1,25 @@
+program									  |	Program										
+  compUnit								  |	  CompUnit										
+    funcDef								  |	    FuncDef										
+      funcType								  |	      FuncType										
+        int INT[orange]							  |	        int INT[orange]										
+      main IDENT[red]							  |	      main IDENT[red]										
+      block								  |	      Block										
+        blockItem							  |	        BlockItem										
+          decl								  |	          Decl										
+            varDecl							  |	            VarDecl										
+              bType							  |	              BType										
+                int INT[orange]						  |	                int INT[orange]										
+              varDef							  |	              VarDef										
+                a IDENT[red]						  |	                a IDENT[red]										
+                = ASSIGN[blue]						  |	                = ASSIGN[blue]										
+                initVal							  |	                InitVal										
+                  exp							  |	                  Exp										
+                    number						  |	                    Number										
+                      0 INTEGER_CONST[green]				  |	                      0 INTEGER_CONST[green]										
+        blockItem							  |	        BlockItem										
+          stmt								  |	          Stmt										
+            return RETURN[orange]					  |	            return RETURN[orange]										
+            exp								  |	            Exp										
+              lVal							  |	              LVal										
+                a IDENT[red]						  |	                a IDENT[red]										
