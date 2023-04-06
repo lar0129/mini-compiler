@@ -9,6 +9,22 @@ public class PrintTreeListener  extends SysYParserBaseListener {
 
         String[] ruleNames = SysYParser.ruleNames;
 
+//      String[] vocabulary{
+//                null, "CONST", "INT", "VOID", "IF", "ELSE", "WHILE", "BREAK", "CONTINUE",
+//                        "RETURN", "PLUS", "MINUS", "MUL", "DIV", "MOD", "ASSIGN", "EQ", "NEQ",
+//                        "LT", "GT", "LE", "GE", "NOT", "AND", "OR", "L_PAREN", "R_PAREN", "L_BRACE",
+//                        "R_BRACE", "L_BRACKT", "R_BRACKT", "COMMA", "SEMICOLON", "IDENT", "INTEGER_CONST",
+//                        "WS", "LINE_COMMENT", "MULTILINE_COMMENT"
+//        };
+
+        String[] lexerColor = {
+                null, "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange",
+                        "orange", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue",
+                        "blue", "blue", "blue", "blue", "blue", "blue", "blue", "", "", "",
+                        "", "", "", "", "", "red", "green",
+                        "", "", ""
+        };
+
         @Override
         public void enterEveryRule(ParserRuleContext ctx) {
                 int deepIdx = ctx.depth();
@@ -22,10 +38,13 @@ public class PrintTreeListener  extends SysYParserBaseListener {
         }
 
         @Override public void visitTerminal(TerminalNode node) {
-                String terText = node.getSymbol().getText();
-                String terType = SysYParser.VOCABULARY.getSymbolicName(node.getSymbol().getType());
-                System.out.println(terText);
-                System.out.println(terType);
+                String terText = node.getSymbol().getText();]
+                int terTypeIdx = node.getSymbol().getType();
+                String terType = SysYParser.VOCABULARY.getSymbolicName(terTypeIdx);
+                String terTypeColor = lexerColor[terTypeIdx];
+                if (!terTypeColor.equals("")) {
+                        System.out.print(terText + terType + "[" + terTypeColor + "]");
+                }
         }
 
         @Override public void visitErrorNode(ErrorNode node) {
