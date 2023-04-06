@@ -47,8 +47,8 @@ public class Main {
         sysYParser.removeErrorListeners();
         myParserErrorListener myParserListener = new myParserErrorListener();
         sysYParser.addErrorListener(myParserListener);
+        ParseTree tree = sysYParser.program();
         if (!myParserListener.status) {
-            ParseTree tree = sysYParser.program();
             ParseTreeWalker walker = new ParseTreeWalker();
             PrintTreeListener pt = new PrintTreeListener();
             walker.walk(pt, tree);
