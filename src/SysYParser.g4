@@ -50,7 +50,7 @@ initVal
     ;
 
 funcDef
-    : funcType IDENT L_PAREN (funcRParams)? R_PAREN block
+    : funcType IDENT L_PAREN (funcFParams)? R_PAREN block
     ;
 
 funcType
