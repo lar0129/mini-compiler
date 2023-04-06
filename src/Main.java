@@ -47,11 +47,12 @@ public class Main {
         sysYParser.removeErrorListeners();
         myParserErrorListener myParserListener = new myParserErrorListener();
         sysYParser.addErrorListener(myParserListener);
-
-        ParseTree tree = sysYParser.program();
-        ParseTreeWalker walker = new ParseTreeWalker();
-        PrintTreeListener pt = new PrintTreeListener();
-        walker.walk(pt, tree);
+        if (!myParserListener.status) {
+            ParseTree tree = sysYParser.program();
+            ParseTreeWalker walker = new ParseTreeWalker();
+            PrintTreeListener pt = new PrintTreeListener();
+            walker.walk(pt, tree);
+        }
     }
 
     public static String HEXtoTEN(String text){
