@@ -18,9 +18,9 @@ public class Main {
         CharStream input = CharStreams.fromFileName(source);
         SysYLexer sysYLexer = new SysYLexer(input);
 
-//        sysYLexer.removeErrorListeners();
-//        myErrorListener myListener = new myErrorListener();
-//        sysYLexer.addErrorListener(myListener);
+        sysYLexer.removeErrorListeners();
+        myErrorListener myListener = new myErrorListener();
+        sysYLexer.addErrorListener(myListener);
 
 //        原来的非官方写法
 //        List<? extends Token> tokens = sysYLexer.getAllTokens();
