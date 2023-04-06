@@ -45,8 +45,8 @@ public class PrintTreeListener  extends SysYParserBaseListener {
                 int terTypeIdx = node.getSymbol().getType();
                 String terType = SysYParser.VOCABULARY.getSymbolicName(terTypeIdx);
                 // 转换进制
-                if(terType.equals("INTEGER_CONST") && terType.charAt(0) != '"'){
-                        terText = Main.HEXtoTEN(terText);
+                if(terType.equals("INTEGER_CONST")){
+//                        terText = Main.HEXtoTEN(terText);
                 }
 
                 // 排除特殊
