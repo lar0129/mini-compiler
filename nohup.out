@@ -1,0 +1,17 @@
+program
+  compUnit
+    funcDef
+      funcType
+      block
+        blockItem
+          decl
+            varDecl
+              bType
+              varDef
+                initVal
+                  exp
+                    number
+        blockItem
+          stmt
+            exp
+              lVal

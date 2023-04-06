@@ -12,9 +12,7 @@ public class PrintTreeListener  extends SysYParserBaseListener {
         @Override
         public void enterEveryRule(ParserRuleContext ctx) {
                 int deepIdx = ctx.depth();
-//                System.out.println(deepIdx);
                 int ruleIdx = ctx.getRuleIndex();
-//                System.out.println(ruleIdx);
                 String temp = "";
                 for (int i=1;i<deepIdx;i++){
                         temp+="  ";
@@ -24,7 +22,10 @@ public class PrintTreeListener  extends SysYParserBaseListener {
         }
 
         @Override public void visitTerminal(TerminalNode node) {
-
+                String terText = node.getSymbol().getText();
+                String terType = SysYParser.VOCABULARY.getSymbolicName(node.getSymbol().getType());
+                System.out.println(terText);
+                System.out.println(terType);
         }
 
         @Override public void visitErrorNode(ErrorNode node) {
