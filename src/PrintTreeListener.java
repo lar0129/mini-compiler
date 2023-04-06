@@ -14,7 +14,7 @@ public class PrintTreeListener  extends SysYParserBaseListener {
         public void enterEveryRule(ParserRuleContext ctx) {
 //                deepIdx = ctx.depth();
 //                System.out.println(deepIdx);
-                temp = ctx.getAltNumber();
+                temp = ctx.getRuleIndex();
                 System.out.println(temp);
         }
 
