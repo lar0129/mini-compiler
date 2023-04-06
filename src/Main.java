@@ -19,8 +19,8 @@ public class Main {
         SysYLexer sysYLexer = new SysYLexer(input);
 
         sysYLexer.removeErrorListeners();
-        myErrorListener myListener = new myErrorListener();
-        sysYLexer.addErrorListener(myListener);
+        myErrorListener myLexerListener = new myErrorListener();
+        sysYLexer.addErrorListener(myLexerListener);
 
 //        原来的非官方写法
 //        List<? extends Token> tokens = sysYLexer.getAllTokens();
@@ -47,6 +47,10 @@ public class Main {
 //        myListener.setErrorStatus(false);
 
 //        Lab2:
+        sysYParser.removeErrorListeners();
+        myErrorListener myParserListener = new myErrorListener();
+        sysYLexer.addErrorListener(myParserListener);
+
         ParseTree tree = sysYParser.program();
         ParseTreeWalker walker = new ParseTreeWalker();
         PrintTreeListener pt = new PrintTreeListener();
