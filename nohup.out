@@ -1,0 +1,25 @@
+program
+  compUnit
+    funcDef
+      funcType
+int INT[orange]
+main IDENT[red]
+      block
+        blockItem
+          decl
+            varDecl
+              bType
+int INT[orange]
+              varDef
+a IDENT[red]
+= ASSIGN[blue]
+                initVal
+                  exp
+                    number
+0 INTEGER_CONST[green]
+        blockItem
+          stmt
+return RETURN[orange]
+            exp
+              lVal
+a IDENT[red]

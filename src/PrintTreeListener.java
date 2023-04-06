@@ -1,12 +1,12 @@
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class PrintTreeListener  extends SysYParserBaseListener {
         String currentFunctionName = null;
-
         String[] ruleNames = SysYParser.ruleNames;
 
 //      String[] vocabulary{
@@ -38,6 +38,7 @@ public class PrintTreeListener  extends SysYParserBaseListener {
         }
 
         @Override public void visitTerminal(TerminalNode node) {
+                int deepIdx = ((RuleContext)node.getParent()).depth() + 1;
                 String terText = node.getSymbol().getText();
                 int terTypeIdx = node.getSymbol().getType();
                 String terType = SysYParser.VOCABULARY.getSymbolicName(terTypeIdx);
@@ -46,7 +47,12 @@ public class PrintTreeListener  extends SysYParserBaseListener {
                         terTypeColor = lexerColor[terTypeIdx];
                 }
                 if (!terTypeColor.equals("") && terTypeIdx!=-1) {
-                System.out.println(terText + " " + terType + "[" + terTypeColor + "]");
+                        String temp = "";
+                        for (int i=1;i<deepIdx;i++){
+                                temp+="  ";
+                        }
+
+                        System.out.println(temp + terText + " " + terType + "[" + terTypeColor + "]");
                 }
         }
 
