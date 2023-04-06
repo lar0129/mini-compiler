@@ -44,6 +44,12 @@ public class PrintTreeListener  extends SysYParserBaseListener {
                 String terText = node.getSymbol().getText();
                 int terTypeIdx = node.getSymbol().getType();
                 String terType = SysYParser.VOCABULARY.getSymbolicName(terTypeIdx);
+                // 转换进制
+                if(terType.equals("INTEGER_CONST")){
+                        terText = Main.HEXtoTEN(terText);
+                }
+
+                // 排除特殊
                 String terTypeColor = "";
                 if(terTypeIdx!=-1) {
                         terTypeColor = lexerColor[terTypeIdx];
