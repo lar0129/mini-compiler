@@ -18,22 +18,14 @@ public class Main {
         CharStream input = CharStreams.fromFileName(source);
         SysYLexer sysYLexer = new SysYLexer(input);
 
-        sysYLexer.removeErrorListeners();
-        myErrorListener myListener = new myErrorListener();
-        sysYLexer.addErrorListener(myListener);
+//        sysYLexer.removeErrorListeners();
+//        myErrorListener myListener = new myErrorListener();
+//        sysYLexer.addErrorListener(myListener);
 
 //        原来的非官方写法
 //        List<? extends Token> tokens = sysYLexer.getAllTokens();
         CommonTokenStream tokens = new CommonTokenStream(sysYLexer);
         SysYParser sysYParser = new SysYParser(tokens);
-//        github上的walker写法
-//        SysYParser.CompilationUnitContext tree = sysYParser.compilationUnit(); // parse a compilationUnit as enter
-//        SysYParserBaseListener extractor = new SysYParserBaseListener();
-//        ParseTreeWalker.DEFAULT.walk(extractor, tree); // initiate walk of tree with listener in use of default walker
-        ParseTree tree = sysYParser.program();
-        ParseTreeWalker walker = new ParseTreeWalker();
-        PrintTreeListener pt = new PrintTreeListener();
-        walker.walk(pt, tree);
 
 //        Lab1:
 //        if (!myErrorListener.status) {
@@ -55,7 +47,10 @@ public class Main {
 //        myListener.setErrorStatus(false);
 
 //        Lab2:
-
+        ParseTree tree = sysYParser.program();
+        ParseTreeWalker walker = new ParseTreeWalker();
+        PrintTreeListener pt = new PrintTreeListener();
+        walker.walk(pt, tree);
     }
 
     public static String HEXtoTEN(String text){
