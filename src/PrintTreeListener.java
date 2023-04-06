@@ -11,7 +11,7 @@ public class PrintTreeListener  extends SysYParserBaseListener {
 
         @Override
         public void enterEveryRule(ParserRuleContext ctx) {
-                tempIdx = ctx.invokingState;
+                tempIdx = ctx.depth();
                 System.out.println(tempIdx);
         }
 
