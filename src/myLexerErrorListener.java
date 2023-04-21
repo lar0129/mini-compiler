@@ -8,7 +8,6 @@ public class myLexerErrorListener extends BaseErrorListener {
     public static boolean status = false;
 
     public myLexerErrorListener() {
-        //System.out.println("Error type A at Line 3: Mysterious character \"~\".");
         status = false;
     }
 
