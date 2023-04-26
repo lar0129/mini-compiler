@@ -30,7 +30,7 @@ antlr: $(LFILE) $(PFILE)
 test: compile
 	$(call git_commit, "test")
 	: > nohup.out
-	nohup java -classpath ./classes:$(ANTLRPATH) Main ./tests/test1.sysy &
+	nohup java -classpath ./classes:$(ANTLRPATH) Main ./tests/test1.sysy & > ./tests/nohup
 
 
 clean:
