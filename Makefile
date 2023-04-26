@@ -31,7 +31,7 @@ test: compile
 	$(call git_commit, "test")
 	: > nohup.out
 	nohup java -classpath ./classes:$(ANTLRPATH) Main ./tests/test1.sysy &
-	cp nohup.out ./tests/nohup
+	cp nohup.out ./tests/
 
 
 clean:
