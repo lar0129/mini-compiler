@@ -30,11 +30,11 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     public Void visitFuncDef(SysYParser.FuncDefContext ctx) {
         String typeName = ctx.funcType().getText();
         String funName = ctx.IDENT().getText();
-        FunctionSymbol funcSymbolInTable = (FunctionSymbol)globalScope.resolve(funName);
+        FunctionSymbol funcSymbolInTable = (FunctionSymbol)currentScope.resolve(funName);
 
+        System.out.println(currentScope.getName());
         // 报告 Error type 4 函数重复定义
         if(funcSymbolInTable != null){
-            System.out.println(currentScope.getName());
             errorTable.addErrorTable(getLineNo(ctx),4);
             funName = funName + getLineNo(ctx);
         }
@@ -49,6 +49,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         Void ret = super.visitFuncDef(ctx);
         // 回到上一层 Scope
         currentScope = currentScope.getEnclosingScope();
+        System.out.println(currentScope.getName());
         return ret;
     }
 
