@@ -69,7 +69,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             // 定义新的 Symbol
             String typeName = ctx.bType().getText();
             Type type = (Type) globalScope.resolve(typeName);
-            String varName = varDefContext.getText();
+            String varName = varDefContext.IDENT().getText();
             VariableSymbol varSymbol = new VariableSymbol(varName, type);
             currentScope.define(varSymbol);
         }
