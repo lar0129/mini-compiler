@@ -33,7 +33,7 @@ constInitVal
     : constExp
     | L_BRACE (constInitVal(COMMA constInitVal)*)? R_BRACE
     ;
-    // 包含数组初值
+    // 包含定义数组初值{0,1,2}
 
 varDecl
     : bType varDef (COMMA varDef)* SEMICOLON

@@ -70,12 +70,12 @@ public class Main {
         visitor.visit(tree);
         // 从树根开始 深度优先遍历
 
-        // 若无语法错误(listener) + 语义错误(visitor)
-        if (!myParserListener.status && !visitor.getErrorFound()) {
-            ParseTreeWalker walker = new ParseTreeWalker();
-            PrintTreeListener pt = new PrintTreeListener();
-            walker.walk(pt, tree);
-        }
+//         若无语法错误(listener) + 无语义错误(visitor)
+//        if (!myParserListener.status && !visitor.getErrorFound()) {
+//            ParseTreeWalker walker = new ParseTreeWalker();
+//            PrintTreeListener pt = new PrintTreeListener();
+//            walker.walk(pt, tree);
+//        }
     }
 
     public static String HEXtoTEN(String text){
