@@ -6,6 +6,10 @@ int a(){
     return 0;
 }
 
+void a(){
+
+}
+
 int main(){
     b = c();
     int test1;
