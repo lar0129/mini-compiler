@@ -92,7 +92,9 @@ exp
    : L_PAREN exp R_PAREN
    | lVal
    | number
+//  函数调用
    | IDENT L_PAREN funcRParams? R_PAREN
+//   取负
    | unaryOp exp
    | exp (MUL | DIV | MOD) exp
    | exp (PLUS | MINUS) exp

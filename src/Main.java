@@ -46,11 +46,32 @@ public class Main {
 //        myListener.setErrorStatus(false);
 
 //        Lab2:
+//        sysYParser.removeErrorListeners();
+//        myParserErrorListener myParserListener = new myParserErrorListener();
+//        sysYParser.addErrorListener(myParserListener);
+//        ParseTree tree = sysYParser.program();
+//         建树时检测错误
+//        SymbolDetectVisitor visitor = new SymbolDetectVisitor();
+//        visitor.visit(tree);
+//        if (!myParserListener.status) {
+//            ParseTreeWalker walker = new ParseTreeWalker();
+//            PrintTreeListener pt = new PrintTreeListener();
+//            walker.walk(pt, tree);
+//        }
+
+//         lab3:
         sysYParser.removeErrorListeners();
         myParserErrorListener myParserListener = new myParserErrorListener();
         sysYParser.addErrorListener(myParserListener);
+        // 建树时检测错误
+
         ParseTree tree = sysYParser.program();
-        if (!myParserListener.status) {
+        SymbolDetectVisitor visitor = new SymbolDetectVisitor();
+        visitor.visit(tree);
+        // 从树根开始 深度优先遍历
+
+        // 若无语法错误(listener) + 语义错误(visitor)
+        if (!myParserListener.status && !visitor.getErrorFound()) {
             ParseTreeWalker walker = new ParseTreeWalker();
             PrintTreeListener pt = new PrintTreeListener();
             walker.walk(pt, tree);
