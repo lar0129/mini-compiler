@@ -20,6 +20,10 @@ public class SymbolErrorTable {
         symbolErrors.put(errorLine,errorType);
     }
 
+    public boolean isErrorTableEmpty(){
+        return symbolErrors.isEmpty();
+    }
+
     public void printErrorTable(){
         for (Map.Entry<Integer, Integer> entry : symbolErrors.entrySet()){
             System.err.printf("Error type %d at Line%d: %s\n",

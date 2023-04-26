@@ -180,6 +180,9 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     }
 
     public boolean getErrorStatus() {
+        if(!errorTable.isErrorTableEmpty()){
+            errorStatus = true;
+        }
         return errorStatus;
     }
 
