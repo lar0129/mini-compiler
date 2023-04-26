@@ -1,6 +1,3 @@
-int globalVar;
-int globalArray[2];
-
 void voidFunc1() {
     return;
 }
