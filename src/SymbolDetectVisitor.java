@@ -149,8 +149,8 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         // 报告 Error type 1 变量未声明
         String varName = ctx.IDENT().getText();
         Symbol varNameInTable = currentScope.resolve(varName);
-        if(varNameInTable != null){
-            System.out.println(varNameInTable.getName());
+        if(varNameInTable == null){
+//            System.out.println(varNameInTable.getName());
             errorTable.addErrorTable(getLineNo(ctx),1);
         }
 
