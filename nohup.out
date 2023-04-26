@@ -12,8 +12,8 @@ LocalScope3
 intFunc1
 intFunc1
 LocalScope4
-intFunc1 fix:20
-intFunc1 fix:20
+intFunc1 fix:17
+intFunc1 fix:17
 LocalScope5
 intFunc2
 intFunc2
@@ -21,13 +21,13 @@ LocalScope6
 intFunc3
 intFunc3
 LocalScope7
-voidFunc1 fix:32
-voidFunc1 fix:32
+voidFunc1 fix:29
+voidFunc1 fix:29
 LocalScope8
 test
 test
 LocalScope10
 LocalScope9
-Error type 4 at Line 20: Func_Repeat
-Error type 4 at Line 32: Func_Repeat
-Error type 3 at Line 43: Var_Repeat
+Error type 4 at Line 17: Func_Repeat
+Error type 4 at Line 29: Func_Repeat
+Error type 3 at Line 40: Var_Repeat

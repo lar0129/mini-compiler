@@ -66,6 +66,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         // 遍历子树
         Void ret = super.visitBlock(ctx);
         // 回到上一层 Scope
+        currentScope = currentScope.getEnclosingScope();
         return ret;
     }
 
