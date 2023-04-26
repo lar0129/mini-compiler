@@ -41,6 +41,7 @@ int main(){
     a = 3; // type 1
     int b = func(); // type 2
     int b; // type 3
+    const int b = 30; // type 3
 
     int c[3][3][3];
     int d[2][2];
