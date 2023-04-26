@@ -18,6 +18,9 @@ public class SymbolErrorTable {
 
     public void addErrorTable(int errorLine,int errorType){
         symbolErrors.put(errorLine,errorType);
+        System.err.printf("Error type %d at Line %d: %s\n",
+                errorType,errorLine,errorString[errorType]);
+
     }
 
     public boolean isErrorTableEmpty(){

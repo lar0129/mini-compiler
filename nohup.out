@@ -1,3 +1,22 @@
+param1
+param1
+param2
+i
+c
+d
+c
+d
+c
+d
+b
+b
+globalArray
+b
+c
+voidFunc1
+globalArray
+d
+k
 Error type 1 at Line 13: Var_Decl
 Error type 4 at Line 20: Func_Repeat
 Error type 1 at Line 25: Var_Decl

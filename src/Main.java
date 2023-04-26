@@ -70,7 +70,7 @@ public class Main {
         visitor.visit(tree);
         // 从树根开始 深度优先遍历
         if (visitor.getErrorStatus()) {
-            visitor.printErrors();
+//            visitor.printErrors();
         }
 
         // 若无语法错误(listener) + 无语义错误(visitor)
