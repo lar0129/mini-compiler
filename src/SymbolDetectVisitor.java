@@ -30,7 +30,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     public Void visitFuncDef(SysYParser.FuncDefContext ctx) {
         String typeName = ctx.funcType().getText();
         String funName = ctx.IDENT().getText();
-        FunctionSymbol funcSymbolInTable = (FunctionSymbol)currentScope.resolve(funName);
+        FunctionSymbol funcSymbolInTable = (FunctionSymbol)globalScope.resolve(funName);
 
         // 报告 Error type 4 函数重复定义
         if(funcSymbolInTable != null){
