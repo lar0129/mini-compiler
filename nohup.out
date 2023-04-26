@@ -1,17 +1,2 @@
-define+ int
-define+ double
-define+ void
-Cannot find a
-define+ a
-resolve* a
-resolve* a
-Cannot find main
-define+ main
-resolve* int
-define+ test1
-resolve* int
-define+ test1
-resolve* int
-define+ array
 Error type 4 at Line 5: Func_Repeat
 Error type 4 at Line 9: Func_Repeat

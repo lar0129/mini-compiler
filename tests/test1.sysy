@@ -1,25 +1,34 @@
-int a(){
+int globalVar;
+int globalArray[2];
+
+void voidFunc1() {
+    return;
+}
+
+void voidFunc2(int param1) {
+    return 1; // type 7
+}
+
+void voidFunc3(int param1, int param2[]) {
+    return param1; // type 7
+}
+
+int intFunc1() {
     return 1;
 }
 
-int a(){
-    return 0;
+int intFunc1(int param) { // type 4
+	return intFunc1(); // valid
 }
 
-void a(){
-
+int intFunc2(int param1) {
+    return intFunc2(param1); // valid
 }
 
-int main(){
-    b = c();
-    int test1;
-    int test1;
-    int array[2] = {0,0};
-    test1 = array;
-    test1 = a + array;
-    test1 = a(1);
-    test1 = test1[0];
-    test1();
-    a = 1;
-    return a;
+int intFunc3(int param1, int param2[]) {
+    return param2; // type 7
+}
+
+int voidFunc1() { // type 4
+
 }
