@@ -150,6 +150,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         String varName = ctx.IDENT().getText();
         Symbol varNameInTable = currentScope.resolve(varName);
         if(varNameInTable != null){
+            System.out.println(varNameInTable.getName());
             errorTable.addErrorTable(getLineNo(ctx),1);
         }
 
