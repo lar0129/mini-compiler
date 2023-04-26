@@ -39,7 +39,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         }
 
         // 修复错误，进入新的 Scope，定义新的 Symbol
-        FunctionSymbol fun = new FunctionSymbol(funName, globalScope);
+        FunctionSymbol fun = new FunctionSymbol(funName, currentScope);
         // 是scope也是symbol,需要放到符号表里
         currentScope.define(fun);
         currentScope = fun;
