@@ -44,12 +44,10 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         currentScope.define(fun);
         currentScope = fun;
 
-        System.out.println(currentScope.getName());
         // 遍历子树
         Void ret = super.visitFuncDef(ctx);
         // 回到上一层 Scope
         currentScope = currentScope.getEnclosingScope();
-        System.out.println(currentScope.getName());
         return ret;
     }
 
