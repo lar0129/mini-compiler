@@ -1,32 +1,22 @@
 GlobalScope
-voidFunc1
 GlobalScope
 GlobalScope
-voidFunc2
 GlobalScope
 GlobalScope
-voidFunc3
 GlobalScope
 GlobalScope
-intFunc1
 GlobalScope
 GlobalScope
-intFunc1 fix:20
 GlobalScope
 GlobalScope
-intFunc2
 GlobalScope
 GlobalScope
-intFunc3
 GlobalScope
 GlobalScope
-voidFunc1 fix:32
 GlobalScope
 GlobalScope
-test
 GlobalScope
 GlobalScope
-main
 GlobalScope
 Error type 4 at Line 20: Func_Repeat
 Error type 4 at Line 32: Func_Repeat

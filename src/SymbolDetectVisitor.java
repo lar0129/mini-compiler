@@ -32,7 +32,6 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         String funName = ctx.IDENT().getText();
         FunctionSymbol funcSymbolInTable = (FunctionSymbol)currentScope.resolve(funName);
 
-        System.out.println(currentScope.getName());
         // 报告 Error type 4 函数重复定义
         if(funcSymbolInTable != null){
             errorTable.addErrorTable(getLineNo(ctx),4);
@@ -49,7 +48,6 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         Void ret = super.visitFuncDef(ctx);
         // 回到上一层 Scope
         currentScope = currentScope.getEnclosingScope();
-        System.out.println(currentScope.getName());
         return ret;
     }
 
