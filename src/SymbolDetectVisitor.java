@@ -36,7 +36,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         // 报告 Error type 4 函数重复定义
         if(funcSymbolInTable != null){
             errorTable.addErrorTable(getLineNo(ctx),4);
-            funName = funName + "mix:"getLineNo(ctx);
+            funName = funName + "mix:"+getLineNo(ctx);
         }
 
         // 修复错误，进入新的 Scope，定义新的 Symbol
