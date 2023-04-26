@@ -36,11 +36,11 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         // 报告 Error type 4 函数重复定义
         if(funcSymbolInTable != null){
             errorTable.addErrorTable(getLineNo(ctx),4);
-            funName = funName + getLineNo(ctx);
+            funName = funName + "mix:"getLineNo(ctx);
         }
 
         // 修复错误，进入新的 Scope，定义新的 Symbol
-        FunctionSymbol fun = new FunctionSymbol(funName, currentScope);
+        FunctionSymbol fun = new FunctionSymbol(funName, globalScope);
         // 是scope也是symbol,需要放到符号表里
         currentScope.define(fun);
         currentScope = fun;

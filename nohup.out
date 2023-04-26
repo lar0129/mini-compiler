@@ -1,3 +1,23 @@
+GlobalScope
+voidFunc1
+voidFunc1
+voidFunc2
+voidFunc2
+voidFunc3
+voidFunc3
+intFunc1
+intFunc1
+intFunc120
+intFunc120
+intFunc2
+intFunc2
 intFunc3
+intFunc3
+voidFunc132
+voidFunc132
+test
+test
+LocalScope9
+Error type 4 at Line 20: Func_Repeat
 Error type 4 at Line 32: Func_Repeat
 Error type 3 at Line 43: Var_Repeat
