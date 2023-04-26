@@ -189,6 +189,12 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     public Void visitExp(SysYParser.ExpContext ctx) {
         if (ctx.IDENT() != null) { // IDENT L_PAREN funcRParams? R_PAREN
             // 报告 Error type 2 函数未定义
+            String funcName = ctx.IDENT().getText();
+            Symbol funcNameInTable = currentScope.resolve(funcName);
+            if(funcNameInTable == null){
+                errorTable.addErrorTable(getLineNo(ctx),2);
+            }
+
             // 报告 Error type 10 对变量使用函数调用
             // 报告 Error type 8 函数参数不适用
         } else if (ctx.unaryOp() != null) { // unaryOp exp
