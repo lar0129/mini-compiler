@@ -92,10 +92,10 @@ public class SymbolTableListener extends SysYParserBaseListener{
     /**
      * (4) When to resolve symbols?
      */
-    @Override
-    public void exitId(CymbolParser.IdContext ctx) {
-        String varName = ctx.ID().getText();
-        currentScope.resolve(varName);
-    }
+//    @Override
+//    public void exitId(CymbolParser.IdContext ctx) {
+//        String varName = ctx.ID().getText();
+//        currentScope.resolve(varName);
+//    }
 
 }
