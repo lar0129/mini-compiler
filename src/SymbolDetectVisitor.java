@@ -3,10 +3,15 @@ import scope.*;
 import symbol.*;
 import type.*;
 
+import java.util.Map;
+
 public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     private GlobalScope globalScope = null;
     private Scope currentScope = null;
     private int localScopeCounter = 0;
+
+    private boolean errorStatus = false;
+    private SymbolErrorTable errorTable = new SymbolErrorTable();
 
     @Override
     public Void visitProgram(SysYParser.ProgramContext ctx) {
@@ -23,16 +28,20 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     @Override
     public Void visitFuncDef(SysYParser.FuncDefContext ctx) {
         // 报告 Error type 4 函数重复定义
+        String typeName = ctx.funcType().getText();
+        Symbol funcSymbolInTable = globalScope.resolve(typeName);
+        if(funcSymbolInTable != null){
+            errorTable.addErrorTable(getLineNo(ctx),4);
+        }
 
         // 进入新的 Scope，定义新的 Symbol
-        String typeName = ctx.funcType().getText();
-        globalScope.resolve(typeName);
-        String funName = ctx.IDENT().getText();
-        FunctionSymbol fun = new FunctionSymbol(funName, currentScope);
-        // 是scope也是symbol,需要放到符号表里
-        currentScope.define(fun);
-        currentScope = fun;
-
+        else {
+            String funName = ctx.IDENT().getText();
+            FunctionSymbol fun = new FunctionSymbol(funName, currentScope);
+            // 是scope也是symbol,需要放到符号表里
+            currentScope.define(fun);
+            currentScope = fun;
+        }
         // 遍历子树
         Void ret = super.visitFuncDef(ctx);
         // 回到上一层 Scope
@@ -170,9 +179,14 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         return super.visitCond(ctx);
     }
 
+    public boolean getErrorStatus() {
+        return errorStatus;
+    }
 
-    public boolean getErrorFound() {
-        return false;
+    public void printErrors(){
+        if(errorStatus){
+            errorTable.printErrorTable();
+        }
     }
 }
 

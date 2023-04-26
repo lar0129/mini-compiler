@@ -12,4 +12,4 @@ define+ test1
 resolve* int
 define+ test1
 resolve* int
-define+ array[2]={0,0}
+define+ array
