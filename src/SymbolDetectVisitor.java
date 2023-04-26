@@ -73,14 +73,19 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     @Override
     public Void visitVarDecl(SysYParser.VarDeclContext ctx) {
         for (SysYParser.VarDefContext varDefContext : ctx.varDef()) {
+            String varName = varDefContext.IDENT().getText();
+            Symbol varNameInTable = currentScope.resolveInScope(varName);
             // 报告 Error type 3 变量重复声明
+            if(varNameInTable != null){
+                errorTable.addErrorTable(getLineNo(ctx),3);
+            }
             if (varDefContext.ASSIGN() != null) {
                 // 报告 Error type 5 赋值号两侧类型不匹配
             }
+
             // 定义新的 Symbol
             String typeName = ctx.bType().getText();
             Type type = (Type) globalScope.resolve(typeName);
-            String varName = varDefContext.IDENT().getText();
             VariableSymbol varSymbol = new VariableSymbol(varName, type);
             currentScope.define(varSymbol);
         }
