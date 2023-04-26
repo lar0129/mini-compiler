@@ -26,7 +26,7 @@ public class SymbolErrorTable {
 
     public void printErrorTable(){
         for (Map.Entry<Integer, Integer> entry : symbolErrors.entrySet()){
-            System.err.printf("Error type %d at Line%d: %s\n",
+            System.err.printf("Error type %d at Line %d: %s\n",
                     entry.getValue(),entry.getKey(),errorString[entry.getValue()]);
         }
     }

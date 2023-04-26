@@ -10,6 +10,6 @@ resolve* int
 define+ test1
 resolve* int
 define+ array
-Error type 4 at Line1: Var_Decl
-Error type 4 at Line5: Assign_UnMatch
-Error type 4 at Line9: Array_UnMatch
+Error type 4 at Line1: Func_Repeat
+Error type 4 at Line5: Func_Repeat
+Error type 4 at Line9: Func_Repeat

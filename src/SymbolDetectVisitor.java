@@ -27,16 +27,17 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 
     @Override
     public Void visitFuncDef(SysYParser.FuncDefContext ctx) {
-        // 报告 Error type 4 函数重复定义
         String typeName = ctx.funcType().getText();
-        Symbol funcSymbolInTable = globalScope.resolve(typeName);
+        String funName = ctx.IDENT().getText();
+        Symbol funcSymbolInTable = currentScope.resolve(funName);
+
+        // 报告 Error type 4 函数重复定义
         if(funcSymbolInTable != null){
             errorTable.addErrorTable(getLineNo(ctx),4);
         }
 
         // 进入新的 Scope，定义新的 Symbol
         else {
-            String funName = ctx.IDENT().getText();
             FunctionSymbol fun = new FunctionSymbol(funName, currentScope);
             // 是scope也是symbol,需要放到符号表里
             currentScope.define(fun);
