@@ -7,7 +7,7 @@ voidFunc3
 LocalScope3
 intFunc1
 LocalScope4
-intFunc1
+intFunc1 fix:20
 LocalScope5
 intFunc2
 LocalScope6
@@ -18,5 +18,6 @@ LocalScope8
 test
 LocalScope10
 LocalScope9
+Error type 4 at Line 20: Func_Repeat
 Error type 4 at Line 32: Func_Repeat
 Error type 3 at Line 43: Var_Repeat
