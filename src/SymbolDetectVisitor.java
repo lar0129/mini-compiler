@@ -147,6 +147,12 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     @Override
     public Void visitLVal(SysYParser.LValContext ctx) {
         // 报告 Error type 1 变量未声明
+        String varName = ctx.IDENT().getText();
+        Symbol varNameInTable = currentScope.resolve(varName);
+        if(varNameInTable != null){
+            errorTable.addErrorTable(getLineNo(ctx),1);
+        }
+
         int arrayDimension = 0;
         for (int i = 0; i < arrayDimension; ++i) {
             // 报告 Error type 9 对非数组使用下标运算符
