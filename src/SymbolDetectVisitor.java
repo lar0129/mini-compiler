@@ -307,6 +307,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     private Type getExpType(SysYParser.ExpContext ctx) {
 //      也可以在g4中直接标记？
         if (ctx.IDENT() != null) { // IDENT L_PAREN funcRParams? R_PAREN
+            System.out.println(ctx.IDENT().getText());
             Symbol symbol =  currentScope.resolve(ctx.IDENT().getText());
             if(symbol == null)
                 return new BasicTypeSymbol("no type");
