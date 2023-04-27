@@ -287,7 +287,9 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             String Ltype = getLValType(ctx.lVal()).toString();
             String Rtype = getExpType(ctx.exp()).toString();
             System.out.println(getLineNo(ctx) + " Ltype: " + Ltype + ", Rtype: " + Rtype);
-            if(!Ltype.equals(Rtype) && (Ltype!="BasicType no type" && Rtype != "BasicType no type")){
+            if(!Ltype.equals(Rtype) &&
+                    !(Ltype.equals("BasicType no type") || Rtype.equals("BasicType no type") ) )
+            {
                 errorTable.addErrorTable(getLineNo(ctx),5);
 
             }

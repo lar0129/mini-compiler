@@ -1,15 +1,15 @@
 Error type 4 at Line 20: Func_Repeat
 Error type 4 at Line 32: Func_Repeat
 Error type 3 at Line 36: Var_Repeat
-41Ltype: BasicType no type, Rtype: BasicType int
+41 Ltype: BasicType no type, Rtype: BasicType int
 Error type 5 at Line 41: Assign_UnMatch
 Error type 1 at Line 41: Var_Decl
 Error type 5 at Line 42: Assign_UnMatch
 Error type 2 at Line 42: Func_Decl
-47Ltype: ArrayType : 2, Rtype: ArrayType : 2
-48Ltype: ArrayType : 1, Rtype: ArrayType : 2
+47 Ltype: ArrayType : 2, Rtype: ArrayType : 2
+48 Ltype: ArrayType : 1, Rtype: ArrayType : 2
 Error type 5 at Line 48: Assign_UnMatch
-49Ltype: ArrayType : 1, Rtype: ArrayType : 2
+49 Ltype: ArrayType : 1, Rtype: ArrayType : 2
 Error type 5 at Line 49: Assign_UnMatch
 Exception in thread "main" java.lang.ClassCastException: class symbol.VariableSymbol cannot be cast to class symbol.FunctionSymbol (symbol.VariableSymbol and symbol.FunctionSymbol are in unnamed module of loader 'app')
 	at SymbolDetectVisitor.getExpType(SymbolDetectVisitor.java:308)
