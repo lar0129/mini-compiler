@@ -304,7 +304,10 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             Symbol symbol =  currentScope.resolve(ctx.IDENT().getText());
             if(symbol == null)
                 return new BasicTypeSymbol("no type");
-            return ((FunctionSymbol) symbol).getType();
+            else {
+                System.out.println(getLineNo(ctx));
+                return ((FunctionSymbol) symbol).getType();
+            }
         } else if (ctx.L_PAREN() != null) { // L_PAREN exp R_PAREN
             return getExpType(ctx.exp(0));
         } else if (ctx.unaryOp() != null) { // unaryOp exp
