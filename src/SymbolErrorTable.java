@@ -8,6 +8,12 @@ public class SymbolErrorTable {
     private final Map<Integer, Integer> symbolErrors = new LinkedHashMap<>();
     // map(错误行号，错误类型)
 
+    private boolean Error_Status = false;
+
+    public boolean isError_Status() {
+        return Error_Status;
+    }
+
     static String errorString[] =
             {null,"Var_Decl","Func_Decl","Var_Repeat","Func_Repeat",
             "Assign_UnMatch","Operator_UnMatch","Return_UnMatch","FuncCall_UnMatch",
@@ -18,6 +24,7 @@ public class SymbolErrorTable {
 
     public void addErrorTable(int errorLine,int errorType){
         symbolErrors.put(errorLine,errorType);
+        Error_Status = true;
         System.err.printf("Error type %d at Line %d: %s\n",
                 errorType,errorLine,errorString[errorType]);
 
