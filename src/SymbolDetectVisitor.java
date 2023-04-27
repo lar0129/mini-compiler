@@ -308,6 +308,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             System.out.println("ret: " +returnType + " trueRet: " + funcRetType);
             if(returnType != funcRetType){
                 errorTable.addErrorTable(getLineNo(ctx),7);
+                return null;
             }
         }
         return super.visitStmt(ctx);
