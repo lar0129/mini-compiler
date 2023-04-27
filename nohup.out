@@ -1,67 +1,14 @@
 Cannot find main
-Program
-  CompUnit
-    FuncDef
-      FuncType
-        void VOID[orange]
-      main IDENT[red]
-      Block
-        BlockItem
-          Decl
-            VarDecl
-              BType
-                int INT[orange]
-              VarDef
-                a IDENT[red]
-                ConstExp
-                  Exp
-                    Number
-                      3 INTEGER_CONST[green]
-                ConstExp
-                  Exp
-                    Number
-                      3 INTEGER_CONST[green]
-                ConstExp
-                  Exp
-                    Number
-                      3 INTEGER_CONST[green]
-        BlockItem
-          Decl
-            VarDecl
-              BType
-                int INT[orange]
-              VarDef
-                b IDENT[red]
-                ConstExp
-                  Exp
-                    Number
-                      2 INTEGER_CONST[green]
-                ConstExp
-                  Exp
-                    Number
-                      2 INTEGER_CONST[green]
-        BlockItem
-          Stmt
-            LVal
-              a IDENT[red]
-              Exp
-                Number
-                  1 INTEGER_CONST[green]
-            = ASSIGN[blue]
-            Exp
-              LVal
-                b IDENT[red]
-        BlockItem
-          Stmt
-            LVal
-              a IDENT[red]
-              Exp
-                Number
-                  1 INTEGER_CONST[green]
-              Exp
-                Number
-                  1 INTEGER_CONST[green]
-            = ASSIGN[blue]
-            Exp
-              LVal
-                b IDENT[red]
+Ltype: ArratType :3, Rtype: ArratType :2
+Error type 5 at Line 5: Assign_UnMatch
+Ltype: ArratType :2, Rtype: ArratType :2
+Ltype: ArratType :0, Rtype: ArratType :2
+Error type 5 at Line 7: Assign_UnMatch
+Ltype: ArratType :-3, Rtype: ArratType :2
+Error type 5 at Line 8: Assign_UnMatch
+Ltype: ArratType :-6, Rtype: ArratType :1
+Error type 5 at Line 10: Assign_UnMatch
+Ltype: ArratType :-9, Rtype: ArratType :-1
+Error type 5 at Line 11: Assign_UnMatch
+Ltype: ArratType :-12, Rtype: ArratType :-4
+Error type 5 at Line 12: Assign_UnMatch
