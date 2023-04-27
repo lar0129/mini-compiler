@@ -1,9 +1,9 @@
-void a(){
+int a(){
     return 1;
 }
 
-int a2(){
-    return;
+int a(){
+    return 0;
 }
 
 int main(){
