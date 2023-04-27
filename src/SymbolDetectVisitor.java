@@ -286,6 +286,14 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     public Void visitStmt(SysYParser.StmtContext ctx) {
         if (ctx.ASSIGN() != null) {
             // 报告 Error type 11 对函数进行赋值操作
+            String lValName = ctx.lVal().IDENT().getText();
+            Symbol lValInTable = currentScope.resolve(lValName);
+            if(lValInTable == null){
+                errorTable.addErrorTable(getLineNo(ctx),2);
+            }
+            else if (lValInTable instanceof FunctionSymbol){
+                errorTable.addErrorTable(getLineNo(ctx),11);
+            }
 
             // 报告 Error type 5 赋值号两侧类型不匹配
             String Ltype = getLValType(ctx.lVal()).toString();
@@ -340,7 +348,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 ctx.PLUS() != null || ctx.MINUS() != null) {
             return new BasicTypeSymbol("int");
         }
-        return new BasicTypeSymbol("noType");
+        return new BasicTypeSymbol("no type");
     }
 
 
@@ -393,11 +401,13 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         if (ctx.IDENT() != null) { // IDENT L_PAREN funcRParams? R_PAREN
             // 报告 Error type 2 函数未定义
             String funcName = ctx.IDENT().getText();
-            Symbol funcNameInTable = currentScope.resolve(funcName);
-            if(funcNameInTable == null){
+            Symbol funcInTable = currentScope.resolve(funcName);
+            if(funcInTable == null){
                 errorTable.addErrorTable(getLineNo(ctx),2);
             }
-
+            if(funcInTable instanceof VariableSymbol){
+                errorTable.addErrorTable(getLineNo(ctx),10);
+            }
             // 报告 Error type 10 对变量使用函数调用
             // 报告 Error type 8 函数参数不适用
         } else if (ctx.unaryOp() != null) { // unaryOp exp
