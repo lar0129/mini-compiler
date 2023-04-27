@@ -4,35 +4,9 @@ Error type 2 at Line 10: Func_Decl
 Error type 3 at Line 12: Var_Repeat
 Error type 5 at Line 14: Assign_UnMatch
 Error type 6 at Line 15: Operator_UnMatch
-Exception in thread "main" java.lang.NullPointerException
-	at SymbolDetectVisitor.visitExp(SymbolDetectVisitor.java:440)
-	at SymbolDetectVisitor.visitExp(SymbolDetectVisitor.java:9)
-	at SysYParser$ExpContext.accept(SysYParser.java:1552)
-	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
-	at SysYParserBaseVisitor.visitStmt(SysYParserBaseVisitor.java:131)
-	at SymbolDetectVisitor.visitStmt(SymbolDetectVisitor.java:320)
-	at SymbolDetectVisitor.visitStmt(SymbolDetectVisitor.java:9)
-	at SysYParser$StmtContext.accept(SysYParser.java:1369)
-	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
-	at SysYParserBaseVisitor.visitBlockItem(SysYParserBaseVisitor.java:124)
-	at SysYParser$BlockItemContext.accept(SysYParser.java:1272)
-	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
-	at SysYParserBaseVisitor.visitBlock(SysYParserBaseVisitor.java:117)
-	at SymbolDetectVisitor.visitBlock(SymbolDetectVisitor.java:68)
-	at SymbolDetectVisitor.visitBlock(SymbolDetectVisitor.java:9)
-	at SysYParser$BlockContext.accept(SysYParser.java:1208)
-	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
-	at SysYParserBaseVisitor.visitFuncDef(SysYParserBaseVisitor.java:89)
-	at SymbolDetectVisitor.visitFuncDef(SymbolDetectVisitor.java:52)
-	at SymbolDetectVisitor.visitFuncDef(SymbolDetectVisitor.java:9)
-	at SysYParser$FuncDefContext.accept(SysYParser.java:928)
-	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
-	at SysYParserBaseVisitor.visitCompUnit(SysYParserBaseVisitor.java:26)
-	at SysYParser$CompUnitContext.accept(SysYParser.java:182)
-	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
-	at SysYParserBaseVisitor.visitProgram(SysYParserBaseVisitor.java:19)
-	at SymbolDetectVisitor.visitProgram(SymbolDetectVisitor.java:24)
-	at SymbolDetectVisitor.visitProgram(SymbolDetectVisitor.java:9)
-	at SysYParser$ProgramContext.accept(SysYParser.java:128)
-	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visit(AbstractParseTreeVisitor.java:18)
-	at Main.main(Main.java:70)
+LFuncType: (); RFuncType: ()
+Error type 8 at Line 16: FuncCall_UnMatch
+Error type 9 at Line 17: Array_UnMatch
+Error type 10 at Line 18: Var_Call
+Error type 11 at Line 19: Assign_Func
+Error type 7 at Line 20: Return_UnMatch
