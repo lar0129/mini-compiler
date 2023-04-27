@@ -7,11 +7,3 @@ Rtype: ArratType :1
 Ltype: BasicType int
 Rtype: BasicType int
 Error type 1 at Line 16: Var_Decl
-Ltype: ArratType :3
-Rtype: ArratType :2
-Ltype: ArratType :2
-Rtype: ArratType :1
-Ltype: ArratType :1
-Rtype: ArratType :1
-Ltype: BasicType int
-Rtype: ArratType :3

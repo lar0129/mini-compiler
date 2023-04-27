@@ -105,8 +105,14 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 
             if (varDefContext.ASSIGN() != null) {
                 // 报告 Error type 5 赋值号两侧类型不匹配
-                System.out.println("Ltype: "+ type);
-                System.out.println("Rtype: "+ getInitValType(varDefContext.initVal()));
+                String Ltype = type.toString();
+                String Rtype = getInitValType(varDefContext.initVal()).toString();
+//                System.out.println("Ltype: "+ type);
+//                System.out.println("Rtype: "+ getInitValType(varDefContext.initVal()));
+                if(Ltype != Rtype){
+                    errorTable.addErrorTable(getLineNo(ctx),5);
+                    continue;
+                }
             }
 
 //             定义新的 Symbol

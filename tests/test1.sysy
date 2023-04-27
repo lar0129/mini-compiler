@@ -6,7 +6,7 @@ void b(int b1,int b2[],int b3[][3][4][5]){
    int c1[3][4][5] = {{2},{3}};
    int c3[2][3] = {5+5};
    int c2[2] = {};
-   const int c4 = {{{3}}};
+   int c4 = {{{3}}};
 }
 
 void main(){
