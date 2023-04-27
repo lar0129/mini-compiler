@@ -234,6 +234,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 
     private Type getLValType(SysYParser.LValContext ctx) {
         Symbol symbol =  currentScope.resolve(ctx.IDENT().getText());
+
         if(symbol instanceof FunctionSymbol) {
             return ((FunctionSymbol)symbol).getType();
         }
