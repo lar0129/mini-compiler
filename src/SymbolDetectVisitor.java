@@ -108,7 +108,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             if(type instanceof ArrayType) {
                 Type type1 = type;
                 while (type1 instanceof ArrayType){
-                    System.out.println(((ArrayType) type).elementNums);
+                    System.out.println(((ArrayType) type1).elementNums);
                     type1 = ((ArrayType) type1).elementType;
                 }
                 System.out.println(type1);
