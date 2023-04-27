@@ -1,5 +1,41 @@
+Error type B at Line 18: mismatched input '}' expecting {',', ';'}.
 Ltype: BasicType int
 Rtype: BasicType int
 Error type 1 at Line 13: Var_Decl
 Ltype: ArratType :0
 Rtype: ArratType :2
+Ltype: ArratType :0
+Rtype: ArratType :1
+Ltype: ArratType :0
+Exception in thread "main" java.lang.NullPointerException
+	at SymbolDetectVisitor.getInitValType(SymbolDetectVisitor.java:278)
+	at SymbolDetectVisitor.getInitValType(SymbolDetectVisitor.java:283)
+	at SymbolDetectVisitor.visitVarDecl(SymbolDetectVisitor.java:106)
+	at SymbolDetectVisitor.visitVarDecl(SymbolDetectVisitor.java:9)
+	at SysYParser$VarDeclContext.accept(SysYParser.java:635)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
+	at SysYParserBaseVisitor.visitDecl(SysYParserBaseVisitor.java:33)
+	at SysYParser$DeclContext.accept(SysYParser.java:256)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
+	at SysYParserBaseVisitor.visitBlockItem(SysYParserBaseVisitor.java:124)
+	at SysYParser$BlockItemContext.accept(SysYParser.java:1272)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
+	at SysYParserBaseVisitor.visitBlock(SysYParserBaseVisitor.java:117)
+	at SymbolDetectVisitor.visitBlock(SymbolDetectVisitor.java:68)
+	at SymbolDetectVisitor.visitBlock(SymbolDetectVisitor.java:9)
+	at SysYParser$BlockContext.accept(SysYParser.java:1208)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
+	at SysYParserBaseVisitor.visitFuncDef(SysYParserBaseVisitor.java:89)
+	at SymbolDetectVisitor.visitFuncDef(SymbolDetectVisitor.java:52)
+	at SymbolDetectVisitor.visitFuncDef(SymbolDetectVisitor.java:9)
+	at SysYParser$FuncDefContext.accept(SysYParser.java:928)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
+	at SysYParserBaseVisitor.visitCompUnit(SysYParserBaseVisitor.java:26)
+	at SysYParser$CompUnitContext.accept(SysYParser.java:182)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
+	at SysYParserBaseVisitor.visitProgram(SysYParserBaseVisitor.java:19)
+	at SymbolDetectVisitor.visitProgram(SymbolDetectVisitor.java:24)
+	at SymbolDetectVisitor.visitProgram(SymbolDetectVisitor.java:9)
+	at SysYParser$ProgramContext.accept(SysYParser.java:128)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visit(AbstractParseTreeVisitor.java:18)
+	at Main.main(Main.java:70)

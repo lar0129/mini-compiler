@@ -94,7 +94,10 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 tempArrayType.setElementType(type);
                 if(varDefContext.constExp(arrayDimension-1).exp().number()!=null) {
                     tempArrayType.setElementNums(Integer.parseInt(varDefContext.constExp(arrayDimension - 1).exp().number().getText()));
-                    tempArrayType.setArrayDimension(tempArrayType.arrayDimension++);
+                    if(type instanceof BasicTypeSymbol)
+                        tempArrayType.setArrayDimension(1);
+                    else if(type instanceof ArrayType)
+                        tempArrayType.setArrayDimension(((ArrayType)type).arrayDimension+1);
                 }
                 type = tempArrayType;
                 arrayDimension--;
