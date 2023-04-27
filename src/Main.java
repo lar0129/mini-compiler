@@ -74,7 +74,8 @@ public class Main {
         }
 
         // 若无语法错误(listener) + 无语义错误(visitor)
-        else if (!myParserListener.status) {
+//        else if (!myParserListener.status) {
+        else {
             ParseTreeWalker walker = new ParseTreeWalker();
             PrintTreeListener pt = new PrintTreeListener();
             walker.walk(pt, tree);
