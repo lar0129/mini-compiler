@@ -18,13 +18,21 @@ public class FunctionType implements Type {
         this.paramsType = paramsType;
     }
 
+    public void addParams(Type type){
+        paramsType.add(type);
+    }
+
     public Type getRetTy() {
         return retTy;
     }
 
     @Override
     public String toString() {
-        return retTy.toString() + " params";
+        String ret = "";
+        for(int i=0;i<paramsType.size();i++){
+            ret = ret + paramsType.get(i).toString();
+        }
+        return retTy + ":" + ret;
     }
 
 

@@ -1,6 +1,4 @@
-ret: void trueRet: int
 Error type 7 at Line 2: Return_UnMatch
-ret: int trueRet: void
 Error type 7 at Line 6: Return_UnMatch
 Error type 1 at Line 10: Var_Decl
 Error type 2 at Line 10: Func_Decl
@@ -10,5 +8,4 @@ Error type 6 at Line 15: Operator_UnMatch
 Error type 9 at Line 17: Array_UnMatch
 Error type 10 at Line 18: Var_Call
 Error type 11 at Line 19: Assign_Func
-ret: int params trueRet: int
 Error type 7 at Line 20: Return_UnMatch

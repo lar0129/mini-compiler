@@ -213,9 +213,15 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         }
 
         printType(type);
-
+        // 存入scope
         VariableSymbol varSymbol = new VariableSymbol(varName, type);
         currentScope.define(varSymbol);
+        // 存入funcType
+        Symbol funcSymbol = globalScope.resolve(currentScope.getName());
+        if(funcSymbol instanceof FunctionSymbol){
+            FunctionType funcType = ((FunctionSymbol) funcSymbol).getType();
+            funcType.addParams(type);
+        }
 
         return super.visitFuncFParam(ctx);
     }
@@ -305,7 +311,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 FunctionType funcType = ((FunctionSymbol) funcSymbol).getType();
                 funcRetType = funcType.getRetTy().toString();
             }
-//            System.out.println("ret: " +returnType + " trueRet: " + funcRetType);
+            System.out.println("ret: " +returnType + " trueRet: " + funcRetType);
             if(returnType != funcRetType){
                 errorTable.addErrorTable(getLineNo(ctx),7);
                 return null;
