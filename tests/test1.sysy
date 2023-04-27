@@ -2,8 +2,8 @@ void a(){
     return 1;
 }
 
-int a(){
-    return 0;
+int a2(){
+    return;
 }
 
 int main(){
