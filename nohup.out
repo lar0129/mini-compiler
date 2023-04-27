@@ -1,1 +1,67 @@
-Error type B at Line 3: extraneous input 'a' expecting {<EOF>, 'const', 'int', 'void'}.
+Cannot find main
+Program
+  CompUnit
+    FuncDef
+      FuncType
+        void VOID[orange]
+      main IDENT[red]
+      Block
+        BlockItem
+          Decl
+            VarDecl
+              BType
+                int INT[orange]
+              VarDef
+                a IDENT[red]
+                ConstExp
+                  Exp
+                    Number
+                      3 INTEGER_CONST[green]
+                ConstExp
+                  Exp
+                    Number
+                      3 INTEGER_CONST[green]
+                ConstExp
+                  Exp
+                    Number
+                      3 INTEGER_CONST[green]
+        BlockItem
+          Decl
+            VarDecl
+              BType
+                int INT[orange]
+              VarDef
+                b IDENT[red]
+                ConstExp
+                  Exp
+                    Number
+                      2 INTEGER_CONST[green]
+                ConstExp
+                  Exp
+                    Number
+                      2 INTEGER_CONST[green]
+        BlockItem
+          Stmt
+            LVal
+              a IDENT[red]
+              Exp
+                Number
+                  1 INTEGER_CONST[green]
+            = ASSIGN[blue]
+            Exp
+              LVal
+                b IDENT[red]
+        BlockItem
+          Stmt
+            LVal
+              a IDENT[red]
+              Exp
+                Number
+                  1 INTEGER_CONST[green]
+              Exp
+                Number
+                  1 INTEGER_CONST[green]
+            = ASSIGN[blue]
+            Exp
+              LVal
+                b IDENT[red]

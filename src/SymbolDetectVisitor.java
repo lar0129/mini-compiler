@@ -237,7 +237,12 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         if(symbol instanceof FunctionSymbol) {
             return ((FunctionSymbol)symbol).getType();
         }
-        else{
+        else {
+            Type tempType = ((VariableSymbol)symbol).getType();
+            if(tempType instanceof ArrayType){
+                int arrayDeep = ctx.exp().size();
+                ((ArrayType) tempType).setArrayDimension(((ArrayType) tempType).arrayDimension-arrayDeep);
+            }
             return ((VariableSymbol)symbol).getType();
         }
     }
@@ -265,7 +270,15 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     public Void visitStmt(SysYParser.StmtContext ctx) {
         if (ctx.ASSIGN() != null) {
             // 报告 Error type 11 对函数进行赋值操作
+
             // 报告 Error type 5 赋值号两侧类型不匹配
+            String Ltype = getLValType(ctx.lVal()).toString();
+            String Rtype = getExpType(ctx.exp()).toString();
+            System.out.println("Ltype: " + Ltype + ", Rtype: " + Rtype);
+            if(!Ltype.equals(Rtype)){
+                errorTable.addErrorTable(getLineNo(ctx),5);
+
+            }
         } else if (ctx.RETURN() != null) {
             // 报告 Error type 7 返回值类型不匹配
 //            int returnType = ctx.exp();
