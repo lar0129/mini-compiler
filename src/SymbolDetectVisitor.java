@@ -299,8 +299,13 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             }
         } else if (ctx.RETURN() != null) {
             // 报告 Error type 7 返回值类型不匹配
-            String returnType = getExpType(ctx.exp()).toString();
+            String returnType = "";
             String funcType = "can't find";
+            if(ctx.exp() != null)
+                returnType = getExpType(ctx.exp()).toString();
+            else
+                returnType = "void";
+
             Symbol funcSymbol = globalScope.resolve(currentScope.getEnclosingScope().getName());
             if(funcSymbol instanceof FunctionSymbol){
                 funcType = ((FunctionSymbol) funcSymbol).getType().toString();
