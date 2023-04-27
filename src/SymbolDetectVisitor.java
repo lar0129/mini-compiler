@@ -301,10 +301,10 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     private Type getExpType(SysYParser.ExpContext ctx) {
 //      也可以在g4中直接标记？
         if (ctx.IDENT() != null) { // IDENT L_PAREN funcRParams? R_PAREN
-            FunctionSymbol symbol = (FunctionSymbol) currentScope.resolve(ctx.IDENT().getText());
+            Symbol symbol =  currentScope.resolve(ctx.IDENT().getText());
             if(symbol == null)
                 return new BasicTypeSymbol("no type");
-            return symbol.getType();
+            return ((FunctionSymbol) symbol).getType();
         } else if (ctx.L_PAREN() != null) { // L_PAREN exp R_PAREN
             return getExpType(ctx.exp(0));
         } else if (ctx.unaryOp() != null) { // unaryOp exp
