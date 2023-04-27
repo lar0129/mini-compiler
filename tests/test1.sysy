@@ -1,16 +1,16 @@
 int globalVar;
 int globalArray[2];
 
-int f1(){
-    return f3(1,2);
-}
-
 void f2(){
     return;
 }
 
 int f3(int p1,int p2){
     return p1;
+}
+
+int f1(){
+    return f3(1,2);
 }
 
 int main(){

@@ -1,1 +1,5 @@
+ret: no type funcRetType: int
 Error type 7 at Line 5: Return_UnMatch
+ret: void funcRetType: void
+ret: int funcRetType: int
+ret: int funcRetType: int
