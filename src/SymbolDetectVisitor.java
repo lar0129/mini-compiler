@@ -302,6 +302,8 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 //      也可以在g4中直接标记？
         if (ctx.IDENT() != null) { // IDENT L_PAREN funcRParams? R_PAREN
             FunctionSymbol symbol = (FunctionSymbol) currentScope.resolve(ctx.IDENT().getText());
+            if(symbol == null)
+                return new BasicTypeSymbol("no func type");
             return symbol.getType();
         } else if (ctx.L_PAREN() != null) { // L_PAREN exp R_PAREN
             return getExpType(ctx.exp(0));
