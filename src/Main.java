@@ -74,7 +74,7 @@ public class Main {
             visitor.visit(tree);
 
 //          若无语法错误(listener) + 无语义错误(visitor)
-            if (visitor.getErrorStatus()) {
+            if (!visitor.getErrorStatus()) {
 //              visitor.printErrors();
                 ParseTreeWalker walker = new ParseTreeWalker();
                 PrintTreeListener pt = new PrintTreeListener();
