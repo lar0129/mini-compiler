@@ -65,21 +65,21 @@ public class Main {
         sysYParser.addErrorListener(myParserListener);
         // 建树时检测错误
 
+        // 从树根开始 深度优先遍历
         ParseTree tree = sysYParser.program();
         SymbolDetectVisitor visitor = new SymbolDetectVisitor();
         visitor.visit(tree);
-        // 从树根开始 深度优先遍历
-        if (visitor.getErrorStatus()) {
+
+        if (!myParserListener.status) {
+            // 若无语法错误(listener) + 无语义错误(visitor)
+            if (visitor.getErrorStatus()) {
 //            visitor.printErrors();
+                ParseTreeWalker walker = new ParseTreeWalker();
+                PrintTreeListener pt = new PrintTreeListener();
+                walker.walk(pt, tree);
+            }
         }
 
-        // 若无语法错误(listener) + 无语义错误(visitor)
-//        else if (!myParserListener.status) {
-        else {
-            ParseTreeWalker walker = new ParseTreeWalker();
-            PrintTreeListener pt = new PrintTreeListener();
-            walker.walk(pt, tree);
-        }
     }
 
     public static String HEXtoTEN(String text){
