@@ -13,6 +13,6 @@ void main(){
    int a1[2][3],a2,a3;
    int b1;
    int b2 = 4;
-   const b3 = 2;
+   const int b3 = 2;
 
 }
