@@ -108,7 +108,8 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 String Ltype = type.toString();
                 String Rtype = getInitValType(varDefContext.initVal()).toString();
                 System.out.println(getLineNo(ctx) + " Ltype: " + Ltype + ", Rtype: " + Rtype);
-                if(!Ltype.equals(Rtype)){
+                if(!Ltype.equals(Rtype) &&
+                        !(Ltype.equals("BasicType no type") || Rtype.equals("BasicType no type") )){
                     errorTable.addErrorTable(getLineNo(ctx),5);
                     continue;
                 }
@@ -157,7 +158,9 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 // 报告 Error type 5 赋值号两侧类型不匹配
                 String Ltype = type.toString();
                 String Rtype = getConstInitValType(constDefContext.constInitVal()).toString();
-                if(!Ltype.equals(Rtype)){
+                if(!Ltype.equals(Rtype) &&
+                        !(Ltype.equals("BasicType no type") || Rtype.equals("BasicType no type") ))
+                {
                     errorTable.addErrorTable(getLineNo(ctx),5);
                     continue;
                 }
