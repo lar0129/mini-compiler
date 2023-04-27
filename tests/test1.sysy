@@ -3,5 +3,5 @@ int globalArray[2];
 
 int main(){
 
-    return globalArray[1];
+    return globalArray[6];
 }

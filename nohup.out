@@ -1,1 +1,32 @@
-Error type 7 at Line 6: Return_UnMatch
+Program
+  CompUnit
+    Decl
+      VarDecl
+        BType
+          int INT[orange]
+        VarDef
+          globalVar IDENT[red]
+    Decl
+      VarDecl
+        BType
+          int INT[orange]
+        VarDef
+          globalArray IDENT[red]
+          ConstExp
+            Exp
+              Number
+                2 INTEGER_CONST[green]
+    FuncDef
+      FuncType
+        int INT[orange]
+      main IDENT[red]
+      Block
+        BlockItem
+          Stmt
+            return RETURN[orange]
+            Exp
+              LVal
+                globalArray IDENT[red]
+                Exp
+                  Number
+                    1 INTEGER_CONST[green]
