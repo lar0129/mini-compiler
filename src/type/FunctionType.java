@@ -24,7 +24,7 @@ public class FunctionType implements Type {
 
     @Override
     public String toString() {
-        return retTy.toString() + "params";
+        return retTy.toString() + " params";
     }
 
 
