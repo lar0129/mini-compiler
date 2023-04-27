@@ -2,15 +2,15 @@ Error type B at Line 18: mismatched input '}' expecting {',', ';'}.
 Ltype: BasicType int
 Rtype: BasicType int
 Error type 1 at Line 13: Var_Decl
-Ltype: ArratType :0
+Ltype: ArratType :3
 Rtype: ArratType :2
-Ltype: ArratType :0
+Ltype: ArratType :2
 Rtype: ArratType :1
-Ltype: ArratType :0
+Ltype: ArratType :1
 Exception in thread "main" java.lang.NullPointerException
-	at SymbolDetectVisitor.getInitValType(SymbolDetectVisitor.java:278)
-	at SymbolDetectVisitor.getInitValType(SymbolDetectVisitor.java:283)
-	at SymbolDetectVisitor.visitVarDecl(SymbolDetectVisitor.java:106)
+	at SymbolDetectVisitor.getInitValType(SymbolDetectVisitor.java:281)
+	at SymbolDetectVisitor.getInitValType(SymbolDetectVisitor.java:286)
+	at SymbolDetectVisitor.visitVarDecl(SymbolDetectVisitor.java:109)
 	at SymbolDetectVisitor.visitVarDecl(SymbolDetectVisitor.java:9)
 	at SysYParser$VarDeclContext.accept(SysYParser.java:635)
 	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)

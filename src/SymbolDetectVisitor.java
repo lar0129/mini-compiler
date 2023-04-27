@@ -279,7 +279,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 
     private Type getInitValType(SysYParser.InitValContext ctx) {
         if(ctx.L_BRACE()!=null) {
-            if(ctx.initVal()==null){
+            if(ctx.initVal().size()==0){
                 return new ArrayType(new BasicTypeSymbol("int"),0,1);
             }
             else {
