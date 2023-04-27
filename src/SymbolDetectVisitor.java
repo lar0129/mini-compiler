@@ -305,7 +305,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 FunctionType funcType = ((FunctionSymbol) funcSymbol).getType();
                 funcRetType = funcType.getRetTy().toString();
             }
-            System.out.println("ret: " +returnType + " trueRet: " + funcRetType);
+//            System.out.println("ret: " +returnType + " trueRet: " + funcRetType);
             if(returnType != funcRetType){
                 errorTable.addErrorTable(getLineNo(ctx),7);
                 return null;
