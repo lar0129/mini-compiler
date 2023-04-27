@@ -11,5 +11,5 @@ void f2(){
 
 int main(){
 
-    return f2();
+    return f1();
 }
