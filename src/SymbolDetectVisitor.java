@@ -244,7 +244,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 int arrayDeep = ctx.exp().size();
                 while (arrayDeep>0) {
                     if (!(tempType instanceof ArrayType)){
-                        tempType = new BasicTypeSymbol("error array");
+                        tempType = new BasicTypeSymbol("Error_Array");
                         return tempType;
                     }
                     tempType = ((ArrayType)tempType).elementType;
