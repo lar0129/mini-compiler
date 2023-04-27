@@ -1,19 +1,9 @@
-int globalVar;
-int globalArray[2];
-
-void f2(){
-    return;
-}
-
-int f3(int p1,int p2){
-    return p1;
-}
-
-int f1(){
-    return f3(1,globalArray[1]);
-}
 
 int main(){
+    int a1[2][1] = {{1}, {2}};
+    int a[3][3][3];
+    int b[2][2];
 
-    return f1();
+    a[1] = b;
+    return 1;
 }
