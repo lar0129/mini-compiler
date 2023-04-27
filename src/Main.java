@@ -82,7 +82,7 @@ public class Main {
             ParseTreeWalker walker2 = new ParseTreeWalker();
             PrintTreeListener pt2 = new PrintTreeListener();
             ParseTree tree2 = sysYParser.program();
-            walker2.walk(pt2, tree);
+
 //          若无语法错误(listener) + 无语义错误(visitor)
 //            if (!visitor.getErrorStatus()) {
 //                ParseTreeWalker walker = new ParseTreeWalker();
