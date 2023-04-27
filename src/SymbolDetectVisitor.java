@@ -437,7 +437,9 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 String LFuncType = ((FunctionSymbol) funcInTable).getType().toString();
                 LFuncType = LFuncType.substring(LFuncType.indexOf('('));
                 String RFuncType = "(";
-                int RFuncParamsNum = ctx.funcRParams().param().size();
+                int RFuncParamsNum = 0;
+                if(ctx.funcRParams() != null)
+                   RFuncParamsNum = ctx.funcRParams().param().size();
                 for (int i=0;i<RFuncParamsNum;i++){
                     RFuncType = RFuncType +  getExpType(ctx.funcRParams().param(i).exp()).toString();
                 }
