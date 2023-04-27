@@ -289,6 +289,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                     !(Ltype.equals("no type") || Rtype.equals("no type") ) )
             {
                 errorTable.addErrorTable(getLineNo(ctx),5);
+                return ;
 
             }
         } else if (ctx.RETURN() != null) {
