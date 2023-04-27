@@ -39,7 +39,7 @@ public class ArrayType implements Type {
     }
 
     public String toString() {
-        return "ArrayType :" + arrayDimension;
+        return "ArrayType : " + arrayDimension;
     }
 }
 
