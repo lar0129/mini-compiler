@@ -244,6 +244,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         if(varNameInTable == null){
 //            System.out.println(varNameInTable.getName());
             errorTable.addErrorTable(getLineNo(ctx),1);
+            return null;
         }
 
         // 报告 Error type 9 对非数组使用下标运算符
@@ -418,6 +419,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             Symbol funcInTable = currentScope.resolve(funcName);
             if(funcInTable == null){
                 errorTable.addErrorTable(getLineNo(ctx),2);
+                return  null;
             }
             if(funcInTable instanceof VariableSymbol){
                 errorTable.addErrorTable(getLineNo(ctx),10);
