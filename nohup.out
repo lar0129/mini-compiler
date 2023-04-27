@@ -1,4 +1,9 @@
-2: 
-3 2 0: 
-3: 
-5 4 3 Error type 1 at Line 7: Var_Decl
+2
+2
+int
+int
+3
+3
+3
+int
+Error type 1 at Line 7: Var_Decl
