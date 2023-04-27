@@ -318,7 +318,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             return new BasicTypeSymbol("no type");
         }
         if(symbol instanceof FunctionSymbol) {
-            return ((FunctionSymbol)symbol).getType().getRetTy();
+            return ((FunctionSymbol)symbol).getType();
         }
         else {
             Type tempType = ((VariableSymbol)symbol).getType();
