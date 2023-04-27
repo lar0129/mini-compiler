@@ -1,17 +1,2 @@
 Error type B at Line 5: extraneous input 'a' expecting {<EOF>, 'const', 'int', 'void'}.
-Error type A at Line 6: token recognition error at: '这'.
-Error type A at Line 6: token recognition error at: '种'.
-Error type A at Line 6: token recognition error at: '是'.
-Error type A at Line 6: token recognition error at: '不'.
-Error type A at Line 6: token recognition error at: '合'.
-Error type A at Line 6: token recognition error at: '法'.
-Error type A at Line 6: token recognition error at: '的'.
-Error type A at Line 6: token recognition error at: '，'.
-Error type A at Line 6: token recognition error at: '因'.
-Error type A at Line 6: token recognition error at: '为'.
-Error type A at Line 6: token recognition error at: '维'.
-Error type A at Line 6: token recognition error at: '度'.
-Error type A at Line 6: token recognition error at: '不'.
-Error type A at Line 6: token recognition error at: '一'.
-Error type A at Line 6: token recognition error at: '致'.
 Error type 3 at Line 3: Var_Repeat
