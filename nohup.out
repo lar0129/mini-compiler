@@ -1,18 +1,12 @@
 Cannot find main
-Ltype: ArrayType : 3, Rtype: ArrayType : 2
+Ltype: ArrayType : 2, Rtype: ArrayType : 1
 Error type 5 at Line 6: Assign_UnMatch
-Ltype: ArrayType : 2, Rtype: ArrayType : 2
-Ltype: ArrayType : 1, Rtype: ArrayType : 2
-Error type 5 at Line 8: Assign_UnMatch
-Ltype: BasicType int, Rtype: ArrayType : 2
-Error type 5 at Line 9: Assign_UnMatch
+Ltype: ArrayType : 1, Rtype: ArrayType : 1
 Ltype: BasicType int, Rtype: ArrayType : 1
-Error type 5 at Line 11: Assign_UnMatch
-Ltype: BasicType int, Rtype: BasicType int
+Error type 5 at Line 8: Assign_UnMatch
 Exception in thread "main" java.lang.ClassCastException: class symbol.BasicTypeSymbol cannot be cast to class type.ArrayType (symbol.BasicTypeSymbol and type.ArrayType are in unnamed module of loader 'app')
 	at SymbolDetectVisitor.getLValType(SymbolDetectVisitor.java:246)
-	at SymbolDetectVisitor.getExpType(SymbolDetectVisitor.java:304)
-	at SymbolDetectVisitor.visitStmt(SymbolDetectVisitor.java:281)
+	at SymbolDetectVisitor.visitStmt(SymbolDetectVisitor.java:280)
 	at SymbolDetectVisitor.visitStmt(SymbolDetectVisitor.java:9)
 	at SysYParser$StmtContext.accept(SysYParser.java:1369)
 	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
