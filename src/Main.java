@@ -62,14 +62,14 @@ public class Main {
 //         lab3:
         sysYParser.removeErrorListeners();
         myParserErrorListener myParserListener = new myParserErrorListener();
-        sysYParser.addErrorListener(myParserListener);
+//        sysYParser.addErrorListener(myParserListener);
         // 建树时检测错误
 
         // 从树根开始 深度优先遍历
         ParseTree tree = sysYParser.program();
 
 //        若无语法错误(listener)
-        if (! myParserListener.status) {
+//        if (! myParserListener.status) {
 
             ParseTreeWalker walker1 = new ParseTreeWalker();
             PrintTreeListener pt1 = new PrintTreeListener();
@@ -92,7 +92,7 @@ public class Main {
 //            }
         }
 
-    }
+//    }
 
     public static String HEXtoTEN(String text){
         if (text.length() > 2 && (text.charAt(1) == 'x' || text.charAt(1) == 'X')) {
