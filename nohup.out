@@ -29,4 +29,4 @@ Program
                 globalArray IDENT[red]
                 Exp
                   Number
-                    1 INTEGER_CONST[green]
+                    6 INTEGER_CONST[green]
