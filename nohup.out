@@ -1,14 +1,14 @@
 Cannot find main
-Ltype: ArrayType :3, Rtype: ArrayType :2
+Ltype: ArrayType : 3, Rtype: ArrayType : 2
 Error type 5 at Line 5: Assign_UnMatch
-Ltype: ArrayType :2, Rtype: ArrayType :2
-Ltype: ArrayType :0, Rtype: ArrayType :2
+Ltype: ArrayType : 2, Rtype: ArrayType : 2
+Ltype: ArrayType : 0, Rtype: ArrayType : 2
 Error type 5 at Line 7: Assign_UnMatch
-Ltype: ArrayType :-3, Rtype: ArrayType :2
+Ltype: ArrayType : -3, Rtype: ArrayType : 2
 Error type 5 at Line 8: Assign_UnMatch
-Ltype: ArrayType :-6, Rtype: ArrayType :1
+Ltype: ArrayType : -6, Rtype: ArrayType : 1
 Error type 5 at Line 10: Assign_UnMatch
-Ltype: ArrayType :-9, Rtype: ArrayType :-1
+Ltype: ArrayType : -9, Rtype: ArrayType : -1
 Error type 5 at Line 11: Assign_UnMatch
-Ltype: ArrayType :-12, Rtype: ArrayType :-4
+Ltype: ArrayType : -12, Rtype: ArrayType : -4
 Error type 5 at Line 12: Assign_UnMatch

@@ -241,9 +241,10 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             Type tempType = ((VariableSymbol)symbol).getType();
             if(tempType instanceof ArrayType){
                 int arrayDeep = ctx.exp().size();
+                tempType = ((ArrayType) tempType).clone();
                 ((ArrayType) tempType).setArrayDimension(((ArrayType) tempType).arrayDimension-arrayDeep);
             }
-            return ((VariableSymbol)symbol).getType();
+            return tempType;
         }
     }
 

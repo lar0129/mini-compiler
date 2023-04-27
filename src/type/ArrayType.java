@@ -38,6 +38,11 @@ public class ArrayType implements Type {
         this.arrayDimension = arrayDimension;
     }
 
+    @Override
+    public ArrayType clone(){
+        return new ArrayType(elementType,elementNums,arrayDimension);
+    }
+
     public String toString() {
         return "ArrayType : " + arrayDimension;
     }
