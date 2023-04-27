@@ -1,7 +1,14 @@
-Error type B at Line 18: mismatched input '}' expecting {',', ';'}.
+Ltype: ArratType :3
+Rtype: ArratType :2
+Ltype: ArratType :2
+Rtype: ArratType :1
+Ltype: ArratType :1
+Rtype: ArratType :1
+Ltype: BasicType int
+Rtype: ArratType :3
 Ltype: BasicType int
 Rtype: BasicType int
-Error type 1 at Line 13: Var_Decl
+Error type 1 at Line 16: Var_Decl
 Ltype: ArratType :3
 Rtype: ArratType :2
 Ltype: ArratType :2
