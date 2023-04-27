@@ -9,7 +9,6 @@ import java.util.Map;
 public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     private GlobalScope globalScope = null;
     private Scope currentScope = null;
-    private Type currentReturnType = null;
     private int localScopeCounter = 0;
 
     private SymbolErrorTable errorTable = new SymbolErrorTable();
