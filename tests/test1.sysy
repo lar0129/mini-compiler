@@ -2,8 +2,11 @@ int a(int b[][3],int c){
     return 0;
 }
 
+void b(int b1,int b2[],int b3[][3][4][5])
+
 void main(){
-   int a[2][3],e;
-   int c = 4;
-   int b[3][4][5] = d;
+   int a1[2][3],a2,a3;
+   int b1;
+   int b2 = 4;
+   int c[][4][5] = d;
 }

@@ -83,15 +83,16 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             if(varNameInTable != null){
                 errorTable.addErrorTable(getLineNo(ctx),3);
             }
+
+            String typeName = ctx.bType().getText();
+            Type type = (Type) globalScope.resolve(typeName);
+            int arrayDimension = varDefContext.constExp().size();
             if (varDefContext.ASSIGN() != null) {
                 // 报告 Error type 5 赋值号两侧类型不匹配
 //                Type leftType = varDefContext.
             }
 
             // 定义新的 Symbol
-            String typeName = ctx.bType().getText();
-            Type type = (Type) globalScope.resolve(typeName);
-            int arrayDimension = varDefContext.constExp().size();
             while(arrayDimension!=0){
                 ArrayType tempArrayType = new ArrayType();
                 tempArrayType.setElementType(type);
@@ -102,17 +103,9 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 type = tempArrayType;
                 arrayDimension--;
             }
-            if(type instanceof BasicTypeSymbol){
-                System.out.println(type);
-            }
-            if(type instanceof ArrayType) {
-                Type type1 = type;
-                while (type1 instanceof ArrayType){
-                    System.out.println(((ArrayType) type1).elementNums);
-                    type1 = ((ArrayType) type1).elementType;
-                }
-                System.out.println(type1);
-            }
+
+            printType(type);
+
             VariableSymbol varSymbol = new VariableSymbol(varName, type);
             currentScope.define(varSymbol);
         }
@@ -125,20 +118,35 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         // 结构同 visitVarDecl
         for (SysYParser.ConstDefContext constDefContext : ctx.constDef()) {
 
-            String varName = constDefContext.IDENT().getText();
-            Symbol varNameInTable = currentScope.resolveInScope(varName);
+            String constName = constDefContext.IDENT().getText();
+            Symbol constNameInTable = currentScope.resolveInScope(constName);
             // 报告 Error type 3 变量重复声明
-            if(varNameInTable != null){
+            if(constNameInTable != null){
                 errorTable.addErrorTable(getLineNo(ctx),3);
             }
 
+            String typeName = ctx.bType().getText();
+            Type type = (Type) globalScope.resolve("const " + typeName);
+            int arrayDimension = constDefContext.constExp().size();
             if (constDefContext.ASSIGN() != null) {
                 // 报告 Error type 5 赋值号两侧类型不匹配
             }
+
             // 定义新的 Symbol
-            String typeName = ctx.bType().getText();
-            Type type = (Type) globalScope.resolve(typeName);
-            VariableSymbol varSymbol = new VariableSymbol(varName, type);
+            while(arrayDimension!=0){
+                ArrayType tempArrayType = new ArrayType();
+                tempArrayType.setElementType(type);
+                if(constDefContext.constExp(arrayDimension-1).exp().number()!=null) {
+                    tempArrayType.setElementNums(Integer.parseInt(constDefContext.constExp(arrayDimension - 1).exp().number().getText()));
+                    tempArrayType.setArrayDimension(tempArrayType.arrayDimension++);
+                }
+                type = tempArrayType;
+                arrayDimension--;
+            }
+
+            printType(type);
+
+            VariableSymbol varSymbol = new VariableSymbol(constName, type);
             currentScope.define(varSymbol);
         }
         return super.visitConstDecl(ctx);
@@ -157,10 +165,44 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         // 定义新的 Symbol
         String typeName = ctx.bType().getText();
         Type type = (Type) globalScope.resolve(typeName);
+        int arrayDimension = ctx.L_BRACKT().size();
+
+        // 处理定长数组
+        while(arrayDimension>=1){
+            ArrayType tempArrayType = new ArrayType();
+            tempArrayType.setElementType(type);
+            if(ctx.exp(arrayDimension-2).number()!=null) {
+                tempArrayType.setElementNums(Integer.parseInt(ctx.exp(arrayDimension - 2).number().getText()));
+                tempArrayType.setArrayDimension(tempArrayType.arrayDimension++);
+            }
+            type = tempArrayType;
+            arrayDimension--;
+        }
+        // 处理不定长数组
+        type = new ArrayType(type,-1,((ArrayType) type).arrayDimension+1 );
+
+        printType(type);
+
         VariableSymbol varSymbol = new VariableSymbol(varName, type);
         currentScope.define(varSymbol);
 
         return super.visitFuncFParam(ctx);
+    }
+
+    private void printType(Type type){
+        //            打印数组类型
+            if(type instanceof BasicTypeSymbol){
+                System.out.println("BasicTypeSymbol : " + type);
+            }
+            if(type instanceof ArrayType) {
+                System.out.println("ArrayType : ");
+                Type type1 = type;
+                while (type1 instanceof ArrayType){
+                    System.out.print(((ArrayType) type1).elementNums + " ");
+                    type1 = ((ArrayType) type1).elementType;
+                }
+                System.out.println(type1);
+            }
     }
 
     private Type getLValType(SysYParser.LValContext ctx) {

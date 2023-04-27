@@ -24,5 +24,14 @@ public class ArrayType implements Type {
     public void setElementNums(int elementNums) {
         this.elementNums = elementNums;
     }
+
+    public ArrayType() {
+    }
+
+    public ArrayType(Type elementType, int elementNums, int arrayDimension) {
+        this.elementType = elementType;
+        this.elementNums = elementNums;
+        this.arrayDimension = arrayDimension;
+    }
 }
 

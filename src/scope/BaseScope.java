@@ -41,6 +41,11 @@ public class BaseScope implements Scope {
 //        System.out.println("define+ " + symbol.getName());
     }
 
+    public void revokeDefine(Symbol symbol) {
+//        symbols.remove(symbols.entrySet().iterator());
+    }
+
+
     @Override
     public Symbol resolve(String name) {
         Symbol symbol = symbols.get(name);
