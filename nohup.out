@@ -1,4 +1,4 @@
-Error type 7 at Line 2: Return_UnMatch
+ret: int funcRet: int
 Error type 4 at Line 5: Func_Repeat
 Error type 1 at Line 10: Var_Decl
 Error type 2 at Line 10: Func_Decl
@@ -10,4 +10,5 @@ Error type 9 at Line 17: Array_UnMatch
 Error type 10 at Line 18: Var_Call
 Error type 11 at Line 19: Assign_Func
 Error type 5 at Line 19: Assign_UnMatch
+ret: type.FunctionType@13b6d03 funcRet: int
 Error type 7 at Line 20: Return_UnMatch

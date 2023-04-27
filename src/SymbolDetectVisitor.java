@@ -301,7 +301,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 
             Symbol funcSymbol = globalScope.resolve(currentScope.getEnclosingScope().getName());
             if(funcSymbol instanceof FunctionSymbol){
-                Type funcType = ((FunctionSymbol) funcSymbol).getType();
+                Type funcType = ((FunctionSymbol) funcSymbol).getType().getRetTy();
                 funcRetType = ((FunctionType)funcType).retToString();
             }
             System.out.println("ret: " +returnType + " funcRet: " + funcRetType);
@@ -318,7 +318,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             return new BasicTypeSymbol("no type");
         }
         if(symbol instanceof FunctionSymbol) {
-            return ((FunctionSymbol)symbol).getType();
+            return ((FunctionSymbol)symbol).getType().getRetTy();
         }
         else {
             Type tempType = ((VariableSymbol)symbol).getType();
@@ -345,7 +345,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 //            System.out.println(ctx.IDENT().getText());
             Symbol symbol =  currentScope.resolve(ctx.IDENT().getText());
             if(symbol instanceof FunctionSymbol)
-                return ((FunctionSymbol) symbol).getType();
+                return ((FunctionSymbol) symbol).getType().getRetTy();
             else {
                 return new BasicTypeSymbol("no type");
             }

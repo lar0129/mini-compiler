@@ -18,6 +18,10 @@ public class FunctionType implements Type {
         this.paramsType = paramsType;
     }
 
+    public Type getRetTy() {
+        return retTy;
+    }
+
     public String retToString() {
         return retTy.toString();
     }
