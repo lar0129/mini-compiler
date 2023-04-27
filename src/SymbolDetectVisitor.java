@@ -202,18 +202,18 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 
     private void printType(Type type){
         //            打印数组类型
-            if(type instanceof BasicTypeSymbol){
-                System.out.println("BasicTypeSymbol : " + type);
-            }
-            if(type instanceof ArrayType) {
-                System.out.print("ArrayType : ");
-                Type type1 = type;
-                while (type1 instanceof ArrayType){
-                    System.out.print(((ArrayType) type1).elementNums + " ");
-                    type1 = ((ArrayType) type1).elementType;
-                }
-                System.out.println(type1);
-            }
+//            if(type instanceof BasicTypeSymbol){
+//                System.out.println("BasicTypeSymbol : " + type);
+//            }
+//            if(type instanceof ArrayType) {
+//                System.out.print("ArrayType : ");
+//                Type type1 = type;
+//                while (type1 instanceof ArrayType){
+//                    System.out.print(((ArrayType) type1).elementNums + " ");
+//                    type1 = ((ArrayType) type1).elementType;
+//                }
+//                System.out.println(type1);
+//            }
     }
 
     private Type getLValType(SysYParser.LValContext ctx) {
