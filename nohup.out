@@ -1,2 +1,28 @@
-Error type B at Line 5: extraneous input 'a' expecting {<EOF>, 'const', 'int', 'void'}.
-Error type 3 at Line 3: Var_Repeat
+Program
+  CompUnit
+    Decl
+      VarDecl
+        BType
+          int INT[orange]
+        VarDef
+          a IDENT[red]
+          ConstExp
+            Exp
+              Number
+                2 INTEGER_CONST[green]
+          ConstExp
+            Exp
+              Number
+                1 INTEGER_CONST[green]
+          = ASSIGN[blue]
+          InitVal
+            InitVal
+              InitVal
+                Exp
+                  Number
+                    1 INTEGER_CONST[green]
+            InitVal
+              InitVal
+                Exp
+                  Number
+                    2 INTEGER_CONST[green]
