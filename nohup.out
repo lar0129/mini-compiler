@@ -1,5 +1,7 @@
-Exception in thread "main" java.lang.NullPointerException
-	at SymbolDetectVisitor.visitFuncFParam(SymbolDetectVisitor.java:174)
+ArrayType : 
+-1 3 int
+Exception in thread "main" java.lang.ClassCastException: class symbol.BasicTypeSymbol cannot be cast to class type.ArrayType (symbol.BasicTypeSymbol and type.ArrayType are in unnamed module of loader 'app')
+	at SymbolDetectVisitor.visitFuncFParam(SymbolDetectVisitor.java:182)
 	at SymbolDetectVisitor.visitFuncFParam(SymbolDetectVisitor.java:9)
 	at SysYParser$FuncFParamContext.accept(SysYParser.java:1126)
 	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)

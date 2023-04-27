@@ -179,7 +179,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             arrayDimension--;
         }
         // 处理不定长数组
-        type = new ArrayType(type,-1,((ArrayType) type).arrayDimension+1 );
+        type = new ArrayType(type,-1,((ArrayType) type).arrayDimension + 1 );
 
         printType(type);
 
@@ -195,7 +195,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 System.out.println("BasicTypeSymbol : " + type);
             }
             if(type instanceof ArrayType) {
-                System.out.println("ArrayType : ");
+                System.out.print("ArrayType : ");
                 Type type1 = type;
                 while (type1 instanceof ArrayType){
                     System.out.print(((ArrayType) type1).elementNums + " ");
