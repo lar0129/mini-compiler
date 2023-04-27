@@ -13,7 +13,7 @@ int main(){
     int array[2] = {0,0};
     test1 = array;
     test1 = a + array;
-    test1 = a(1);
+    test1 = a();
     test1 = test1[0];
     test1();
     a = 1;
