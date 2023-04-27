@@ -242,10 +242,10 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             return new BasicTypeSymbol("no type");
         }
         if(symbol instanceof FunctionSymbol) {
+            System.out.println(getLineNo(ctx)+": 1");
             return ((FunctionSymbol)symbol).getType();
         }
         else {
-            System.out.println(getLineNo(ctx)+": 1");
             Type tempType = ((VariableSymbol)symbol).getType();
             if(tempType instanceof ArrayType){
                 tempType = ((ArrayType) tempType).clone();
