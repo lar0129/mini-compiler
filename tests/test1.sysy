@@ -2,7 +2,9 @@ int a(int b[][3],int c){
     return 0;
 }
 
-void b(int b1,int b2[],int b3[][3][4][5])
+void b(int b1,int b2[],int b3[][3][4][5]){
+
+}
 
 void main(){
    int a1[2][3],a2,a3;

@@ -1,7 +1,4 @@
 Error type B at Line 7: mismatched input 'void' expecting {'+', '-', '*', '/', '%', ']'}.
-Error type B at Line 11: no viable alternative at input 'c[]'.
-Error type B at Line 11: mismatched input ']' expecting {'+', '-', '*', '/', '%', ';'}.
-Error type B at Line 11: mismatched input ']' expecting {'+', '-', '*', '/', '%', ';'}.
 Exception in thread "main" java.lang.NullPointerException
 	at SymbolDetectVisitor.visitFuncFParam(SymbolDetectVisitor.java:174)
 	at SymbolDetectVisitor.visitFuncFParam(SymbolDetectVisitor.java:9)
