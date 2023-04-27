@@ -3,3 +3,4 @@ Error type 1 at Line 10: Var_Decl
 Error type 2 at Line 10: Func_Decl
 Error type 3 at Line 12: Var_Repeat
 Error type 5 at Line 14: Assign_UnMatch
+Error type 6 at Line 15: Operator_UnMatch
