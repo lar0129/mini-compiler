@@ -234,9 +234,13 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 
     private Type getLValType(SysYParser.LValContext ctx) {
         // 通过符号表获取？
-        VariableSymbol symbol = (VariableSymbol) currentScope.resolve(ctx.IDENT().getText());
-        return symbol.getType();
-
+        Symbol symbol =  currentScope.resolve(ctx.IDENT().getText());
+        if(symbol instanceof FunctionSymbol) {
+            return ((FunctionSymbol)symbol).getType();
+        }
+        else{
+            return ((VariableSymbol)symbol).getType();
+        }
     }
 
 
