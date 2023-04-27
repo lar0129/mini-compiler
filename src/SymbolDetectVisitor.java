@@ -248,7 +248,9 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 
         // 报告 Error type 9 对非数组使用下标运算符
         if(varNameInTable instanceof FunctionSymbol){
-            errorTable.addErrorTable(getLineNo(ctx),9);
+            if(ctx.exp().size() > 0) {
+                errorTable.addErrorTable(getLineNo(ctx), 9);
+            }
             return null;
         }
         else if(varNameInTable instanceof VariableSymbol) {
