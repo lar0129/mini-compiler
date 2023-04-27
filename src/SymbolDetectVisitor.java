@@ -109,7 +109,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 String Rtype = getInitValType(varDefContext.initVal()).toString();
 //                System.out.println(getLineNo(ctx) + " Ltype: " + Ltype + ", Rtype: " + Rtype);
                 if(!Ltype.equals(Rtype) &&
-                        !(Ltype.equals("BasicType no type") || Rtype.equals("BasicType no type") )){
+                        !(Ltype.equals("no type") || Rtype.equals("no type") )){
                     errorTable.addErrorTable(getLineNo(ctx),5);
                     continue;
                 }
@@ -159,7 +159,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 String Ltype = type.toString();
                 String Rtype = getConstInitValType(constDefContext.constInitVal()).toString();
                 if(!Ltype.equals(Rtype) &&
-                        !(Ltype.equals("BasicType no type") || Rtype.equals("BasicType no type") ))
+                        !(Ltype.equals("no type") || Rtype.equals("no type") ))
                 {
                     errorTable.addErrorTable(getLineNo(ctx),5);
                     continue;
@@ -292,7 +292,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             String Rtype = getExpType(ctx.exp()).toString();
 //            System.out.println(getLineNo(ctx) + " Ltype: " + Ltype + ", Rtype: " + Rtype);
             if(!Ltype.equals(Rtype) &&
-                    !(Ltype.equals("BasicType no type") || Rtype.equals("BasicType no type") ) )
+                    !(Ltype.equals("no type") || Rtype.equals("no type") ) )
             {
                 errorTable.addErrorTable(getLineNo(ctx),5);
 
@@ -328,6 +328,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         }
         return new BasicTypeSymbol("noType");
     }
+
 
     private Type getInitValType(SysYParser.InitValContext ctx) {
         if(ctx.L_BRACE()!=null) {
@@ -387,8 +388,17 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             // 报告 Error type 8 函数参数不适用
         } else if (ctx.unaryOp() != null) { // unaryOp exp
             // 报告 Error type 6 运算符需求类型与提供类型不匹配
+            String Rtype = getExpType(ctx.exp(0)).toString();
+            if (! Rtype.equals("int") ){
+                errorTable.addErrorTable(getLineNo(ctx),6);
+            }
         } else if (ctx.MUL() != null || ctx.DIV() != null || ctx.MOD() != null || ctx.PLUS() != null || ctx.MINUS() != null) {
             // 报告 Error type 6 运算符需求类型与提供类型不匹配
+            String Ltype = getExpType(ctx.exp(0)).toString();
+            String Rtype = getExpType(ctx.exp(1)).toString();
+            if (! ( Ltype.equals("int") && Rtype.equals("int") ) ){
+                errorTable.addErrorTable(getLineNo(ctx),6);
+            }
         }
         return super.visitExp(ctx);
     }
@@ -396,6 +406,12 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     @Override
     public Void visitCond(SysYParser.CondContext ctx) {
         // 报告 Error type 6 运算符需求类型与提供类型不匹配
+        if(ctx.exp()!=null){
+            String type = getExpType(ctx.exp()).toString();
+            if (! type.equals("int") ){
+                errorTable.addErrorTable(getLineNo(ctx),6);
+            }
+        }
         return super.visitCond(ctx);
     }
 
