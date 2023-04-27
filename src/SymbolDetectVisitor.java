@@ -179,7 +179,9 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             arrayDimension--;
         }
         // 处理不定长数组
-        type = new ArrayType(type,-1,((ArrayType) type).arrayDimension + 1 );
+        if(arrayDimension == 1) {
+            type = new ArrayType(type, -1, ((ArrayType) type).arrayDimension + 1);
+        }
 
         printType(type);
 
