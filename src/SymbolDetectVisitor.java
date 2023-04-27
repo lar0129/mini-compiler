@@ -180,7 +180,12 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         }
         // 处理不定长数组
         if(arrayDimension == 1) {
-            type = new ArrayType(type, -1, ((ArrayType) type).arrayDimension + 1);
+            if(type instanceof ArrayType){
+                type = new ArrayType(type, -1, ((ArrayType) type).arrayDimension + 1);
+            }
+            else if(type instanceof  BasicTypeSymbol){
+                type = new ArrayType(type, -1, 1);
+            }
         }
 
         printType(type);
