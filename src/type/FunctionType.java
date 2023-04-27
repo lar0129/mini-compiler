@@ -32,7 +32,7 @@ public class FunctionType implements Type {
         for(int i=0;i<paramsType.size();i++){
             ret = ret + paramsType.get(i).toString();
         }
-        return retTy + ":" + ret;
+        return retTy + "(" + ret + ")";
     }
 
 
