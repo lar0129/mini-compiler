@@ -257,8 +257,8 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         if(varNameInTable instanceof FunctionSymbol){
             if(ctx.exp().size() > 0) {
                 errorTable.addErrorTable(getLineNo(ctx), 9);
+                return null;
             }
-            return null;
         }
         else if(varNameInTable instanceof VariableSymbol) {
             // 检查数组内部（包含0维）
