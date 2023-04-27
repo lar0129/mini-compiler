@@ -11,5 +11,5 @@ void f2(){
 
 int main(){
 
-    return globalArray[6];
+    return f2;
 }
