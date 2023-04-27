@@ -1,7 +1,6 @@
-Error type 4 at Line 5: Func_Repeat
 Exception in thread "main" java.lang.NullPointerException
-	at SymbolDetectVisitor.getLValType(SymbolDetectVisitor.java:241)
-	at SymbolDetectVisitor.visitStmt(SymbolDetectVisitor.java:284)
+	at SymbolDetectVisitor.getLValType(SymbolDetectVisitor.java:242)
+	at SymbolDetectVisitor.visitStmt(SymbolDetectVisitor.java:285)
 	at SymbolDetectVisitor.visitStmt(SymbolDetectVisitor.java:9)
 	at SysYParser$StmtContext.accept(SysYParser.java:1369)
 	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
