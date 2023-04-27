@@ -71,6 +71,7 @@ public class Main {
 //        若无语法错误(listener)
         if (! myParserListener.status) {
             SymbolDetectVisitor visitor = new SymbolDetectVisitor();
+            visitor.setErrorStatus(true);
             visitor.visit(tree);
 
 //          若无语法错误(listener) + 无语义错误(visitor)

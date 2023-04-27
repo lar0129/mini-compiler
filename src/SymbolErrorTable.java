@@ -10,10 +10,6 @@ public class SymbolErrorTable {
 
     private boolean Error_Status = false;
 
-    public boolean isError_Status() {
-        return Error_Status;
-    }
-
     static String errorString[] =
             {null,"Var_Decl","Func_Decl","Var_Repeat","Func_Repeat",
             "Assign_UnMatch","Operator_UnMatch","Return_UnMatch","FuncCall_UnMatch",
@@ -28,6 +24,14 @@ public class SymbolErrorTable {
         System.err.printf("Error type %d at Line %d: %s\n",
                 errorType,errorLine,errorString[errorType]);
 
+    }
+
+    public void setError_Status(boolean bool){
+        Error_Status = bool;
+    }
+
+    public boolean isError_Status() {
+        return Error_Status;
     }
 
     public boolean isErrorTableEmpty(){

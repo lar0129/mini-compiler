@@ -12,7 +12,6 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     private Type currentReturnType = null;
     private int localScopeCounter = 0;
 
-    private boolean errorStatus = false;
     private SymbolErrorTable errorTable = new SymbolErrorTable();
 
     @Override
@@ -488,10 +487,9 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         return errorTable.isError_Status();
     }
 
-    public void printErrors(){
-        if(errorStatus){
-            errorTable.printErrorTable();
-        }
+    public void setErrorStatus(boolean bool) {
+        errorTable.setError_Status(bool);
     }
+
 }
 
