@@ -3,6 +3,7 @@ import scope.*;
 import symbol.*;
 import type.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
@@ -40,6 +41,8 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 
         // 修复错误，进入新的 Scope，定义新的 Symbol
         FunctionSymbol fun = new FunctionSymbol(funName, currentScope);
+        fun.setFunctionType((Type) globalScope.resolve(typeName),new ArrayList<>());// 具体参数待进入FParam再填入
+
         // 是scope也是symbol,需要放到符号表里
         currentScope.define(fun);
         currentScope = fun;
@@ -82,11 +85,25 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             }
             if (varDefContext.ASSIGN() != null) {
                 // 报告 Error type 5 赋值号两侧类型不匹配
+//                Type leftType = varDefContext.
             }
 
             // 定义新的 Symbol
             String typeName = ctx.bType().getText();
             Type type = (Type) globalScope.resolve(typeName);
+            int arrayDimension = varDefContext.constExp().size();
+            System.out.println(arrayDimension + ": ");
+            while(arrayDimension!=0){
+                ArrayType tempArrayType = new ArrayType();
+                tempArrayType.setElementType(type);
+                if(varDefContext.constExp(arrayDimension-1).exp().number()!=null) {
+                    tempArrayType.setElementNums(Integer.parseInt(varDefContext.constExp(arrayDimension - 1).exp().number().getText()));
+                    tempArrayType.setArrayDimension(tempArrayType.arrayDimension++);
+                }
+                type = tempArrayType;
+                arrayDimension--;
+                System.out.print(tempArrayType.elementNums+ " ");
+            }
             VariableSymbol varSymbol = new VariableSymbol(varName, type);
             currentScope.define(varSymbol);
         }
@@ -139,8 +156,9 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 
     private Type getLValType(SysYParser.LValContext ctx) {
         // 通过符号表获取？
-        Type varType = (Type) ctx.IDENT();
-        return varType;
+        VariableSymbol symbol = (VariableSymbol) currentScope.resolve(ctx.IDENT().getText());
+        return symbol.getType();
+
     }
 
 
@@ -169,6 +187,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             // 报告 Error type 5 赋值号两侧类型不匹配
         } else if (ctx.RETURN() != null) {
             // 报告 Error type 7 返回值类型不匹配
+//            int returnType = ctx.exp();
         }
         return super.visitStmt(ctx);
     }
@@ -176,11 +195,19 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     private Type getExpType(SysYParser.ExpContext ctx) {
 //      也可以在g4中直接标记？
         if (ctx.IDENT() != null) { // IDENT L_PAREN funcRParams? R_PAREN
+            VariableSymbol symbol = (VariableSymbol) currentScope.resolve(ctx.IDENT().getText());
+            return symbol.getType();
         } else if (ctx.L_PAREN() != null) { // L_PAREN exp R_PAREN
+            return getExpType(ctx.exp(0));
         } else if (ctx.unaryOp() != null) { // unaryOp exp
+            return getExpType(ctx.exp(0));
         } else if (ctx.lVal() != null) { // lVal
+            return getLValType(ctx.lVal());
         } else if (ctx.number() != null) { // number
-        } else if (ctx.MUL() != null || ctx.DIV() != null || ctx.MOD() != null || ctx.PLUS() != null || ctx.MINUS() != null) {
+            return new BasicTypeSymbol("int");
+        } else if (ctx.MUL() != null || ctx.DIV() != null || ctx.MOD() != null ||
+                ctx.PLUS() != null || ctx.MINUS() != null) {
+            return new BasicTypeSymbol("int");
         }
         return new BasicTypeSymbol("noType");
     }
