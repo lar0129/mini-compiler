@@ -309,10 +309,10 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         if (ctx.IDENT() != null) { // IDENT L_PAREN funcRParams? R_PAREN
             System.out.println(ctx.IDENT().getText());
             Symbol symbol =  currentScope.resolve(ctx.IDENT().getText());
-            if(symbol == null)
-                return new BasicTypeSymbol("no type");
-            else {
+            if(symbol instanceof FunctionSymbol)
                 return ((FunctionSymbol) symbol).getType();
+            else {
+                return new BasicTypeSymbol("no type");
             }
         } else if (ctx.L_PAREN() != null) { // L_PAREN exp R_PAREN
             return getExpType(ctx.exp(0));

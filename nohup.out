@@ -2,13 +2,17 @@ Error type 4 at Line 20: Func_Repeat
 Error type 4 at Line 32: Func_Repeat
 Error type 3 at Line 36: Var_Repeat
 Error type 1 at Line 41: Var_Decl
+func
 Error type 2 at Line 42: Func_Decl
 Error type 3 at Line 43: Var_Repeat
 Error type 5 at Line 48: Assign_UnMatch
 Error type 5 at Line 49: Assign_UnMatch
+intFunc3
+intFunc3
+c
 Exception in thread "main" java.lang.ClassCastException: class symbol.VariableSymbol cannot be cast to class symbol.FunctionSymbol (symbol.VariableSymbol and symbol.FunctionSymbol are in unnamed module of loader 'app')
-	at SymbolDetectVisitor.getExpType(SymbolDetectVisitor.java:314)
-	at SymbolDetectVisitor.getInitValType(SymbolDetectVisitor.java:349)
+	at SymbolDetectVisitor.getExpType(SymbolDetectVisitor.java:315)
+	at SymbolDetectVisitor.getInitValType(SymbolDetectVisitor.java:350)
 	at SymbolDetectVisitor.visitVarDecl(SymbolDetectVisitor.java:109)
 	at SymbolDetectVisitor.visitVarDecl(SymbolDetectVisitor.java:9)
 	at SysYParser$VarDeclContext.accept(SysYParser.java:635)
