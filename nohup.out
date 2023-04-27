@@ -76,7 +76,7 @@
                 InitVal
                   Exp
                     LVal
-                      a IDENT[red]
+                      b IDENT[red]
                       Exp
                         Number
                           3 INTEGER_CONST[green]
