@@ -236,34 +236,6 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 //            }
     }
 
-    private Type getLValType(SysYParser.LValContext ctx) {
-        Symbol symbol =  currentScope.resolve(ctx.IDENT().getText());
-        if(symbol == null){
-            return new BasicTypeSymbol("no type");
-        }
-        if(symbol instanceof FunctionSymbol) {
-            return ((FunctionSymbol)symbol).getType();
-        }
-        else {
-            Type tempType = ((VariableSymbol)symbol).getType();
-            if(tempType instanceof ArrayType){
-                tempType = ((ArrayType) tempType).clone();
-                int arrayDeep = ctx.exp().size();
-                while (arrayDeep>0) {
-                    if (!(tempType instanceof ArrayType)){
-                        tempType = new BasicTypeSymbol("Error_Array");
-                        return tempType;
-                    }
-                    tempType = ((ArrayType)tempType).elementType;
-                    arrayDeep--;
-//                    ((ArrayType) tempType).setArrayDimension(((ArrayType) tempType).arrayDimension - arrayDeep);
-                }
-            }
-            return tempType;
-        }
-    }
-
-
     @Override
     public Void visitLVal(SysYParser.LValContext ctx) {
         // 报告 Error type 1 变量未声明
@@ -274,11 +246,24 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             errorTable.addErrorTable(getLineNo(ctx),1);
         }
 
-        int arrayDimension = 0;
-        for (int i = 0; i < arrayDimension; ++i) {
-            // 报告 Error type 9 对非数组使用下标运算符
+        // 报告 Error type 9 对非数组使用下标运算符
+        if(varNameInTable instanceof FunctionSymbol){
+            errorTable.addErrorTable(getLineNo(ctx),9);
+            return null;
         }
-
+        else if(varNameInTable instanceof VariableSymbol) {
+            // 检查数组内部（包含0维）
+            Type varType = ((VariableSymbol) varNameInTable).getType();
+            int getInDimension = ctx.exp().size();
+            for (int i = 0; i < getInDimension; ++i) {
+                // 报告 Error type 9 对非数组使用下标运算符
+                if( !(varType instanceof ArrayType) ){
+                    errorTable.addErrorTable(getLineNo(ctx),9);
+                    return null;
+                }
+                varType = ((ArrayType) varType).elementType;
+            }
+        }
         return super.visitLVal(ctx);
     }
 
@@ -324,6 +309,33 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             }
         }
         return super.visitStmt(ctx);
+    }
+
+    private Type getLValType(SysYParser.LValContext ctx) {
+        Symbol symbol =  currentScope.resolve(ctx.IDENT().getText());
+        if(symbol == null){
+            return new BasicTypeSymbol("no type");
+        }
+        if(symbol instanceof FunctionSymbol) {
+            return ((FunctionSymbol)symbol).getType();
+        }
+        else {
+            Type tempType = ((VariableSymbol)symbol).getType();
+            if(tempType instanceof ArrayType){
+                tempType = ((ArrayType) tempType).clone();
+                int arrayDeep = ctx.exp().size();
+                while (arrayDeep>0) {
+                    if (!(tempType instanceof ArrayType)){
+                        tempType = new BasicTypeSymbol("Error_Array");
+                        return tempType;
+                    }
+                    tempType = ((ArrayType)tempType).elementType;
+                    arrayDeep--;
+//                    ((ArrayType) tempType).setArrayDimension(((ArrayType) tempType).arrayDimension - arrayDeep);
+                }
+            }
+            return tempType;
+        }
     }
 
     private Type getExpType(SysYParser.ExpContext ctx) {
