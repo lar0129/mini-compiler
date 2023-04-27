@@ -70,17 +70,16 @@ public class Main {
 
 //        若无语法错误(listener)
         if (! myParserListener.status) {
-            SymbolDetectVisitor visitor = new SymbolDetectVisitor();
-            visitor.setErrorStatus(false);
-            visitor.visit(tree);
+//            SymbolDetectVisitor visitor = new SymbolDetectVisitor();
+//            visitor.setErrorStatus(false);
+//            visitor.visit(tree);
 
 //          若无语法错误(listener) + 无语义错误(visitor)
-            if (!visitor.getErrorStatus()) {
-//              visitor.printErrors();
+//            if (!visitor.getErrorStatus()) {
                 ParseTreeWalker walker = new ParseTreeWalker();
                 PrintTreeListener pt = new PrintTreeListener();
                 walker.walk(pt, tree);
-            }
+//            }
         }
 
     }
