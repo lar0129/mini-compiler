@@ -109,7 +109,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 String Rtype = getInitValType(varDefContext.initVal()).toString();
 //                System.out.println("Ltype: "+ type);
 //                System.out.println("Rtype: "+ getInitValType(varDefContext.initVal()));
-                if(Ltype != Rtype){
+                if(!Ltype.equals(Rtype)){
                     errorTable.addErrorTable(getLineNo(ctx),5);
                     continue;
                 }

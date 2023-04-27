@@ -1,9 +1,6 @@
-Ltype: ArratType :3
-Rtype: ArratType :2
-Ltype: ArratType :2
-Rtype: ArratType :1
-Ltype: ArratType :1
-Rtype: ArratType :1
-Ltype: BasicType int
-Rtype: BasicType int
+Error type 5 at Line 6: Assign_UnMatch
+Error type 5 at Line 7: Assign_UnMatch
+Error type 5 at Line 8: Assign_UnMatch
+Error type 5 at Line 9: Assign_UnMatch
+Error type 5 at Line 15: Assign_UnMatch
 Error type 1 at Line 16: Var_Decl
