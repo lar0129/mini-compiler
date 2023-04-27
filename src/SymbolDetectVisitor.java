@@ -418,11 +418,12 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 errorTable.addErrorTable(getLineNo(ctx),2);
                 return  null;
             }
+            // 报告 Error type 10 对变量使用函数调用
             if(funcInTable instanceof VariableSymbol){
                 errorTable.addErrorTable(getLineNo(ctx),10);
             }
-            // 报告 Error type 10 对变量使用函数调用
             // 报告 Error type 8 函数参数不适用
+
         } else if (ctx.unaryOp() != null) { // unaryOp exp
             // 报告 Error type 6 运算符需求类型与提供类型不匹配
             String Rtype = getExpType(ctx.exp(0)).toString();

@@ -20,7 +20,7 @@ public class FunctionSymbol extends BaseScope implements Symbol {
   }
 
   public Type getType() {
-    return functionType.getRetTy();
+    return functionType;
   }
   public FunctionType getFunctionType() {
     return functionType;

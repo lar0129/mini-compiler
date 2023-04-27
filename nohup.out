@@ -1,16 +1,9 @@
 Error type 4 at Line 5: Func_Repeat
-Error type 2 at Line 10: Func_Decl
-10 Ltype: no type, Rtype: no type
 Error type 1 at Line 10: Var_Decl
 Error type 2 at Line 10: Func_Decl
 Error type 3 at Line 12: Var_Repeat
-14 Ltype: int, Rtype: ArrayType : 1
 Error type 5 at Line 14: Assign_UnMatch
-15 Ltype: int, Rtype: int
 Error type 6 at Line 15: Operator_UnMatch
-16 Ltype: int, Rtype: int
-17 Ltype: int, Rtype: int
 Error type 9 at Line 17: Array_UnMatch
 Error type 10 at Line 18: Var_Call
 Error type 11 at Line 19: Assign_Func
-19 Ltype: int, Rtype: int
