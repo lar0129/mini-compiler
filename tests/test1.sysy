@@ -3,16 +3,16 @@ int a(int b[][3],int c){
 }
 
 void b(int b1,int b2[],int b3[][3][4][5]){
-   int c1[3][4][5] = {{2},{3}};
-   int c3[2][3] = {5+5};
-   int c2[2] = {};
-   int c4 = {{{3}}};
+   const int c1[3][4][5] = {{2},{3}};
+   const int c3[2][3] = {5+5};
+   const int c2[2] = {};
+   const int c4 = {{{3}}};
 }
 
 void main(){
    int a1[2][3],a2,a3;
    int b1;
    int b2 = 4;
-   b3 = 2;
+   const b3 = 2;
 
 }

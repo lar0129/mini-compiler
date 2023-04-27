@@ -107,8 +107,6 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 // 报告 Error type 5 赋值号两侧类型不匹配
                 String Ltype = type.toString();
                 String Rtype = getInitValType(varDefContext.initVal()).toString();
-//                System.out.println("Ltype: "+ type);
-//                System.out.println("Rtype: "+ getInitValType(varDefContext.initVal()));
                 if(!Ltype.equals(Rtype)){
                     errorTable.addErrorTable(getLineNo(ctx),5);
                     continue;
@@ -138,24 +136,33 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             }
 
             String typeName = ctx.bType().getText();
-            Type type = (Type) globalScope.resolve("const " + typeName);
+            Type type = (Type) globalScope.resolve(typeName);
             int arrayDimension = constDefContext.constExp().size();
-            if (constDefContext.ASSIGN() != null) {
-                // 报告 Error type 5 赋值号两侧类型不匹配
-            }
-
-            // 定义新的 Symbol
             while(arrayDimension!=0){
                 ArrayType tempArrayType = new ArrayType();
                 tempArrayType.setElementType(type);
                 if(constDefContext.constExp(arrayDimension-1).exp().number()!=null) {
                     tempArrayType.setElementNums(Integer.parseInt(constDefContext.constExp(arrayDimension - 1).exp().number().getText()));
-                    tempArrayType.setArrayDimension(tempArrayType.arrayDimension++);
+                    if(type instanceof BasicTypeSymbol)
+                        tempArrayType.setArrayDimension(1);
+                    else if(type instanceof ArrayType)
+                        tempArrayType.setArrayDimension(((ArrayType)type).arrayDimension+1);
                 }
                 type = tempArrayType;
                 arrayDimension--;
             }
 
+            if (constDefContext.ASSIGN() != null) {
+                // 报告 Error type 5 赋值号两侧类型不匹配
+                String Ltype = type.toString();
+                String Rtype = getConstInitValType(constDefContext.constInitVal()).toString();
+                if(!Ltype.equals(Rtype)){
+                    errorTable.addErrorTable(getLineNo(ctx),5);
+                    continue;
+                }
+            }
+
+            // 定义新的 Symbol
             printType(type);
 
             VariableSymbol varSymbol = new VariableSymbol(constName, type);
@@ -303,7 +310,28 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         else {
             return getExpType(ctx.exp());
         }
+    }
 
+    private Type getConstInitValType(SysYParser.ConstInitValContext ctx) {
+        if(ctx.L_BRACE()!=null) {
+            if(ctx.constInitVal().size()==0){
+                return new ArrayType(new BasicTypeSymbol("int"),0,1);
+            }
+            else {
+                Type sonInitValType = getConstInitValType(ctx.constInitVal(0));
+                ArrayType arrayType = null;
+                if(sonInitValType instanceof ArrayType){
+                    arrayType = new ArrayType(sonInitValType,1,((ArrayType)sonInitValType).arrayDimension+1);
+                }
+                else {
+                    arrayType = new ArrayType(new BasicTypeSymbol("int"),0,1);
+                }
+                return arrayType;
+            }
+        }
+        else {
+            return getExpType(ctx.constExp().exp());
+        }
     }
 
     @Override
