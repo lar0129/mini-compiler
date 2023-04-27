@@ -244,6 +244,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 int arrayDeep = ctx.exp().size();
                 while (arrayDeep!=0) {
                     tempType = ((ArrayType)tempType).elementType;
+                    arrayDeep--;
 //                    ((ArrayType) tempType).setArrayDimension(((ArrayType) tempType).arrayDimension - arrayDeep);
                 }
             }

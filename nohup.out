@@ -1,13 +1,31 @@
 Cannot find main
 Ltype: ArrayType : 3, Rtype: ArrayType : 2
 Error type 5 at Line 6: Assign_UnMatch
-Ltype: ArrayType : 2, Rtype: ArrayType : 2
-Ltype: ArrayType : 1, Rtype: ArrayType : 2
-Error type 5 at Line 8: Assign_UnMatch
-Ltype: ArrayType : 0, Rtype: ArrayType : 2
-Error type 5 at Line 9: Assign_UnMatch
-Ltype: ArrayType : 0, Rtype: ArrayType : 1
-Error type 5 at Line 11: Assign_UnMatch
-Ltype: ArrayType : 0, Rtype: ArrayType : 0
-Ltype: ArrayType : 0, Rtype: ArrayType : -1
-Error type 5 at Line 13: Assign_UnMatch
+Exception in thread "main" java.lang.ClassCastException: class symbol.BasicTypeSymbol cannot be cast to class type.ArrayType (symbol.BasicTypeSymbol and type.ArrayType are in unnamed module of loader 'app')
+	at SymbolDetectVisitor.getLValType(SymbolDetectVisitor.java:246)
+	at SymbolDetectVisitor.visitStmt(SymbolDetectVisitor.java:279)
+	at SymbolDetectVisitor.visitStmt(SymbolDetectVisitor.java:9)
+	at SysYParser$StmtContext.accept(SysYParser.java:1369)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
+	at SysYParserBaseVisitor.visitBlockItem(SysYParserBaseVisitor.java:124)
+	at SysYParser$BlockItemContext.accept(SysYParser.java:1272)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
+	at SysYParserBaseVisitor.visitBlock(SysYParserBaseVisitor.java:117)
+	at SymbolDetectVisitor.visitBlock(SymbolDetectVisitor.java:68)
+	at SymbolDetectVisitor.visitBlock(SymbolDetectVisitor.java:9)
+	at SysYParser$BlockContext.accept(SysYParser.java:1208)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
+	at SysYParserBaseVisitor.visitFuncDef(SysYParserBaseVisitor.java:89)
+	at SymbolDetectVisitor.visitFuncDef(SymbolDetectVisitor.java:52)
+	at SymbolDetectVisitor.visitFuncDef(SymbolDetectVisitor.java:9)
+	at SysYParser$FuncDefContext.accept(SysYParser.java:928)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
+	at SysYParserBaseVisitor.visitCompUnit(SysYParserBaseVisitor.java:26)
+	at SysYParser$CompUnitContext.accept(SysYParser.java:182)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
+	at SysYParserBaseVisitor.visitProgram(SysYParserBaseVisitor.java:19)
+	at SymbolDetectVisitor.visitProgram(SymbolDetectVisitor.java:24)
+	at SymbolDetectVisitor.visitProgram(SymbolDetectVisitor.java:9)
+	at SysYParser$ProgramContext.accept(SysYParser.java:128)
+	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visit(AbstractParseTreeVisitor.java:18)
+	at Main.main(Main.java:70)
