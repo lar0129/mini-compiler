@@ -36,7 +36,8 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         // 报告 Error type 4 函数重复定义
         if(funcSymbolInTable != null){
             errorTable.addErrorTable(getLineNo(ctx),4);
-            funName = funName + " fix:"+getLineNo(ctx);
+            return null;
+//            funName = funName + " fix:"+getLineNo(ctx);
         }
 
         // 修复错误，进入新的 Scope，定义新的 Symbol
@@ -82,17 +83,12 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             // 报告 Error type 3 变量重复声明
             if(varNameInTable != null){
                 errorTable.addErrorTable(getLineNo(ctx),3);
+                continue;
             }
 
             String typeName = ctx.bType().getText();
             Type type = (Type) globalScope.resolve(typeName);
             int arrayDimension = varDefContext.constExp().size();
-            if (varDefContext.ASSIGN() != null) {
-                // 报告 Error type 5 赋值号两侧类型不匹配
-//                Type leftType = varDefContext.
-            }
-
-            // 定义新的 Symbol
             while(arrayDimension!=0){
                 ArrayType tempArrayType = new ArrayType();
                 tempArrayType.setElementType(type);
@@ -104,8 +100,14 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 arrayDimension--;
             }
 
-            printType(type);
+            if (varDefContext.ASSIGN() != null) {
+                // 报告 Error type 5 赋值号两侧类型不匹配
+                System.out.println("Ltype: "+ type);
+                System.out.println("Rtype: "+ getInitValType(varDefContext.initVal()));
+            }
 
+//             定义新的 Symbol
+            printType(type);
             VariableSymbol varSymbol = new VariableSymbol(varName, type);
             currentScope.define(varSymbol);
         }
@@ -123,6 +125,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             // 报告 Error type 3 变量重复声明
             if(constNameInTable != null){
                 errorTable.addErrorTable(getLineNo(ctx),3);
+                continue;
             }
 
             String typeName = ctx.bType().getText();
@@ -160,6 +163,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         // 报告 Error type 3 变量重复声明
         if(varNameInTable != null){
             errorTable.addErrorTable(getLineNo(ctx),3);
+            return null;
         }
 
         // 定义新的 Symbol
@@ -253,7 +257,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
     private Type getExpType(SysYParser.ExpContext ctx) {
 //      也可以在g4中直接标记？
         if (ctx.IDENT() != null) { // IDENT L_PAREN funcRParams? R_PAREN
-            VariableSymbol symbol = (VariableSymbol) currentScope.resolve(ctx.IDENT().getText());
+            FunctionSymbol symbol = (FunctionSymbol) currentScope.resolve(ctx.IDENT().getText());
             return symbol.getType();
         } else if (ctx.L_PAREN() != null) { // L_PAREN exp R_PAREN
             return getExpType(ctx.exp(0));
@@ -268,6 +272,29 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             return new BasicTypeSymbol("int");
         }
         return new BasicTypeSymbol("noType");
+    }
+
+    private Type getInitValType(SysYParser.InitValContext ctx) {
+        if(ctx.L_BRACE()!=null) {
+            if(ctx.initVal()==null){
+                return new ArrayType(new BasicTypeSymbol("int"),0,1);
+            }
+            else {
+                Type sonInitValType = getInitValType(ctx.initVal(0));
+                ArrayType arrayType = null;
+                if(sonInitValType instanceof ArrayType){
+                    arrayType = new ArrayType(sonInitValType,1,((ArrayType)sonInitValType).arrayDimension+1);
+                }
+                else {
+                    arrayType = new ArrayType(new BasicTypeSymbol("int"),0,1);
+                }
+                return arrayType;
+            }
+        }
+        else {
+            return getExpType(ctx.exp());
+        }
+
     }
 
     @Override

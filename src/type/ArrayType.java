@@ -28,10 +28,18 @@ public class ArrayType implements Type {
     public ArrayType() {
     }
 
+    public ArrayType(int arrayDimension) {
+        this.arrayDimension = arrayDimension;
+    }
+
     public ArrayType(Type elementType, int elementNums, int arrayDimension) {
         this.elementType = elementType;
         this.elementNums = elementNums;
         this.arrayDimension = arrayDimension;
+    }
+
+    public String toString() {
+        return "ArratType :" + arrayDimension;
     }
 }
 

@@ -14,6 +14,6 @@ public class BasicTypeSymbol extends BaseSymbol implements Type {
 
   @Override
   public String toString() {
-    return name;
+    return "BasicType " + name;
   }
 }
