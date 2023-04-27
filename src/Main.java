@@ -78,7 +78,8 @@ public class Main {
             if (!visitor.getErrorStatus()) {
                 ParseTreeWalker walker = new ParseTreeWalker();
                 PrintTreeListener pt = new PrintTreeListener();
-                walker.walk(pt, tree);
+                ParseTree tree2 = sysYParser.program();
+                walker.walk(pt, tree2);
             }
         }
 
