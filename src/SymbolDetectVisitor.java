@@ -457,6 +457,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             String Rtype = getExpType(ctx.exp(0)).toString();
             if (! Rtype.equals("int") ){
                 errorTable.addErrorTable(getLineNo(ctx),6);
+                return null;
             }
         } else if (ctx.MUL() != null || ctx.DIV() != null || ctx.MOD() != null || ctx.PLUS() != null || ctx.MINUS() != null) {
             // 报告 Error type 6 运算符需求类型与提供类型不匹配
@@ -464,6 +465,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             String Rtype = getExpType(ctx.exp(1)).toString();
             if (! ( Ltype.equals("int") && Rtype.equals("int") ) ){
                 errorTable.addErrorTable(getLineNo(ctx),6);
+                return null;
             }
         }
         return super.visitExp(ctx);
@@ -476,6 +478,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             String type = getExpType(ctx.exp()).toString();
             if (! type.equals("int") ){
                 errorTable.addErrorTable(getLineNo(ctx),6);
+                return null;
             }
         }
         return super.visitCond(ctx);
