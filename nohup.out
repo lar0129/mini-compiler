@@ -1,6 +1,5 @@
-ret: int trueRet: int
-ret: void trueRet: int
 Error type 7 at Line 6: Return_UnMatch
 Error type 1 at Line 9: Var_Decl
-ret: int(intint) trueRet: int
+LFuncType: (intint); RFuncType: (int)
+Error type 8 at Line 9: FuncCall_UnMatch
 Error type 7 at Line 10: Return_UnMatch
