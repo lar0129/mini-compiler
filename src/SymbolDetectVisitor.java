@@ -311,7 +311,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 FunctionType funcType = ((FunctionSymbol) funcSymbol).getType();
                 funcRetType = funcType.getRetTy().toString();
             }
-            System.out.println("ret: " +returnType + " trueRet: " + funcRetType);
+//            System.out.println("ret: " +returnType + " trueRet: " + funcRetType);
             if(returnType != funcRetType){
                 errorTable.addErrorTable(getLineNo(ctx),7);
                 return null;
@@ -428,11 +428,28 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 return  null;
             }
             // 报告 Error type 10 对变量使用函数调用
-            if(funcInTable instanceof VariableSymbol){
+            else if(funcInTable instanceof VariableSymbol){
                 errorTable.addErrorTable(getLineNo(ctx),10);
+                return null;
             }
             // 报告 Error type 8 函数参数不适用
+            else if(funcInTable instanceof FunctionSymbol) {
+                String LFuncType = ((FunctionSymbol) funcInTable).getType().toString();
+                LFuncType = LFuncType.substring(LFuncType.indexOf('('));
+                String RFuncType = "(";
+                int RFuncParamsNum = ctx.funcRParams().param().size();
+                for (int i=0;i<RFuncParamsNum;i++){
+                    RFuncType = RFuncType +  getExpType(ctx.funcRParams().param(i).exp()).toString();
+                }
 
+                RFuncType = RFuncType + ")";
+
+                System.out.println("LFuncType: " +LFuncType + "; RFuncType: " + RFuncType);
+                if(LFuncType != RFuncType){
+                    errorTable.addErrorTable(getLineNo(ctx),8);
+                    return null;
+                }
+            }
         } else if (ctx.unaryOp() != null) { // unaryOp exp
             // 报告 Error type 6 运算符需求类型与提供类型不匹配
             String Rtype = getExpType(ctx.exp(0)).toString();

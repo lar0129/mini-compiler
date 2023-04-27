@@ -22,8 +22,5 @@ public class FunctionSymbol extends BaseScope implements Symbol {
   public FunctionType getType() {
     return functionType;
   }
-  public FunctionType getFunctionType() {
-    return functionType;
-  }
 
 }
