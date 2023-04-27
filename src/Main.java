@@ -79,7 +79,8 @@ public class Main {
             visitor.setErrorStatus(false);
             visitor.visit(tree);
 
-            walker1.walk(pt1, tree);
+            ParseTree tree2 = sysYParser.program();
+
 //          若无语法错误(listener) + 无语义错误(visitor)
 //            if (!visitor.getErrorStatus()) {
 //                ParseTreeWalker walker = new ParseTreeWalker();

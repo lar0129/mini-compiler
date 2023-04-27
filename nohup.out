@@ -54,4 +54,3 @@ Program
             Exp
               LVal
                 a IDENT[red]
-Error type B at Line 10: mismatched input '<EOF>' expecting {'const', 'int', 'void'}.
