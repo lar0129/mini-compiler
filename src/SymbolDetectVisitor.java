@@ -92,7 +92,6 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             String typeName = ctx.bType().getText();
             Type type = (Type) globalScope.resolve(typeName);
             int arrayDimension = varDefContext.constExp().size();
-            System.out.println(arrayDimension + ": ");
             while(arrayDimension!=0){
                 ArrayType tempArrayType = new ArrayType();
                 tempArrayType.setElementType(type);
@@ -102,7 +101,17 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 }
                 type = tempArrayType;
                 arrayDimension--;
-                System.out.print(tempArrayType.elementNums+ " ");
+            }
+            if(type instanceof BasicTypeSymbol){
+                System.out.println(type);
+            }
+            if(type instanceof ArrayType) {
+                Type type1 = type;
+                while (type1 instanceof ArrayType){
+                    System.out.println(((ArrayType) type).elementNums);
+                    type1 = ((ArrayType) type1).elementType;
+                }
+                System.out.println(type1);
             }
             VariableSymbol varSymbol = new VariableSymbol(varName, type);
             currentScope.define(varSymbol);
