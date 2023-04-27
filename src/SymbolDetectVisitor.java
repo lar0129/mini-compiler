@@ -289,8 +289,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                     !(Ltype.equals("no type") || Rtype.equals("no type") ) )
             {
                 errorTable.addErrorTable(getLineNo(ctx),5);
-                return ;
-
+                return null;
             }
         } else if (ctx.RETURN() != null) {
             // 报告 Error type 7 返回值类型不匹配
