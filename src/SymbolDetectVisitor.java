@@ -286,8 +286,8 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             // 报告 Error type 5 赋值号两侧类型不匹配
             String Ltype = getLValType(ctx.lVal()).toString();
             String Rtype = getExpType(ctx.exp()).toString();
-            System.out.println("Ltype: " + Ltype + ", Rtype: " + Rtype);
-            if(!Ltype.equals(Rtype)){
+//            System.out.println("Ltype: " + Ltype + ", Rtype: " + Rtype);
+            if(!Ltype.equals(Rtype) && (Ltype!="BasicType no type" && Rtype != "BasicType no type")){
                 errorTable.addErrorTable(getLineNo(ctx),5);
 
             }
@@ -303,7 +303,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         if (ctx.IDENT() != null) { // IDENT L_PAREN funcRParams? R_PAREN
             FunctionSymbol symbol = (FunctionSymbol) currentScope.resolve(ctx.IDENT().getText());
             if(symbol == null)
-                return new BasicTypeSymbol("no func type");
+                return new BasicTypeSymbol("no type");
             return symbol.getType();
         } else if (ctx.L_PAREN() != null) { // L_PAREN exp R_PAREN
             return getExpType(ctx.exp(0));
