@@ -278,6 +278,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             Symbol lValInTable = currentScope.resolve(lValName);
             if (lValInTable instanceof FunctionSymbol){
                 errorTable.addErrorTable(getLineNo(ctx),11);
+                return null;
             }
 
             // 报告 Error type 5 赋值号两侧类型不匹配
