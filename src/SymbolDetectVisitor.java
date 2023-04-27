@@ -293,7 +293,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         } else if (ctx.RETURN() != null) {
             // 报告 Error type 7 返回值类型不匹配
             String returnType = "";
-            String funcType = "can't find";
+            String funcRetType = "can't find";
             if(ctx.exp() != null)
                 returnType = getExpType(ctx.exp()).toString();
             else
@@ -301,10 +301,11 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 
             Symbol funcSymbol = globalScope.resolve(currentScope.getEnclosingScope().getName());
             if(funcSymbol instanceof FunctionSymbol){
-                funcType = ((FunctionSymbol) funcSymbol).getType().toString();
+                Type funcType = ((FunctionSymbol) funcSymbol).getType();
+                funcRetType = ((FunctionType)funcType).retToString();
             }
-//            System.out.println("ret: " +returnType + " func: " + funcType);
-            if(returnType != funcType){
+            System.out.println("ret: " +returnType + " funcRet: " + funcRetType);
+            if(returnType != funcRetType){
                 errorTable.addErrorTable(getLineNo(ctx),7);
             }
         }
