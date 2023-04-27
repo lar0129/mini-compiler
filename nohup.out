@@ -3,13 +3,9 @@ Error type 4 at Line 5: Func_Repeat
 Error type 1 at Line 10: Var_Decl
 Error type 2 at Line 10: Func_Decl
 Error type 3 at Line 12: Var_Repeat
-14: 1
-14: 1
 Error type 5 at Line 14: Assign_UnMatch
 15: 1
-15: 1
 Error type 6 at Line 15: Operator_UnMatch
-16: 1
-17: 1
-17: 1
+19: 1
+20: 1
 ret: int func: int

@@ -242,7 +242,6 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             return new BasicTypeSymbol("no type");
         }
         if(symbol instanceof FunctionSymbol) {
-            System.out.println(getLineNo(ctx)+": 1");
             return ((FunctionSymbol)symbol).getType();
         }
         else {
