@@ -1,4 +1,3 @@
-Error type B at Line 7: mismatched input 'void' expecting {'+', '-', '*', '/', '%', ']'}.
 Exception in thread "main" java.lang.NullPointerException
 	at SymbolDetectVisitor.visitFuncFParam(SymbolDetectVisitor.java:174)
 	at SymbolDetectVisitor.visitFuncFParam(SymbolDetectVisitor.java:9)

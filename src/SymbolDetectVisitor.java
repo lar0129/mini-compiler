@@ -168,7 +168,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         int arrayDimension = ctx.L_BRACKT().size();
 
         // 处理定长数组
-        while(arrayDimension>=1){
+        while(arrayDimension>1){
             ArrayType tempArrayType = new ArrayType();
             tempArrayType.setElementType(type);
             if(ctx.exp(arrayDimension-2).number()!=null) {
