@@ -276,17 +276,14 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             // 报告 Error type 11 对函数进行赋值操作
             String lValName = ctx.lVal().IDENT().getText();
             Symbol lValInTable = currentScope.resolve(lValName);
-            if(lValInTable == null){
-                errorTable.addErrorTable(getLineNo(ctx),2);
-            }
-            else if (lValInTable instanceof FunctionSymbol){
+            if (lValInTable instanceof FunctionSymbol){
                 errorTable.addErrorTable(getLineNo(ctx),11);
             }
 
             // 报告 Error type 5 赋值号两侧类型不匹配
             String Ltype = getLValType(ctx.lVal()).toString();
             String Rtype = getExpType(ctx.exp()).toString();
-            System.out.println(getLineNo(ctx) + " Ltype: " + Ltype + ", Rtype: " + Rtype);
+//            System.out.println(getLineNo(ctx) + " Ltype: " + Ltype + ", Rtype: " + Rtype);
             if(!Ltype.equals(Rtype) &&
                     !(Ltype.equals("no type") || Rtype.equals("no type") ) )
             {
