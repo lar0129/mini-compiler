@@ -1,12 +1,141 @@
-ArrayType : -1 3 int
-BasicTypeSymbol : int
-BasicTypeSymbol : int
-ArrayType : -1 int
-ArrayType : -1 3 4 5 int
-ArrayType : 2 3 int
-BasicTypeSymbol : int
-BasicTypeSymbol : int
-BasicTypeSymbol : int
-BasicTypeSymbol : int
-ArrayType : 3 4 5 int
-Error type 1 at Line 13: Var_Decl
+ArrayType : -1 3 BasicType int
+BasicTypeSymbol : BasicType int
+BasicTypeSymbol : BasicType int
+ArrayType : -1 BasicType int
+ArrayType : -1 3 4 5 BasicType int
+ArrayType : 2 3 BasicType int
+BasicTypeSymbol : BasicType int
+BasicTypeSymbol : BasicType int
+BasicTypeSymbol : BasicType int
+Ltype: BasicType int
+Rtype: BasicType int
+BasicTypeSymbol : BasicType int
+Ltype: ArratType :0
+Rtype: ArratType :2
+ArrayType : 3 4 5 BasicType int
+Program
+  CompUnit
+    FuncDef
+      FuncType
+        int INT[orange]
+      a IDENT[red]
+      FuncFParams
+        FuncFParam
+          BType
+            int INT[orange]
+          b IDENT[red]
+          Exp
+            Number
+              3 INTEGER_CONST[green]
+        FuncFParam
+          BType
+            int INT[orange]
+          c IDENT[red]
+      Block
+        BlockItem
+          Stmt
+            return RETURN[orange]
+            Exp
+              Number
+                0 INTEGER_CONST[green]
+    FuncDef
+      FuncType
+        void VOID[orange]
+      b IDENT[red]
+      FuncFParams
+        FuncFParam
+          BType
+            int INT[orange]
+          b1 IDENT[red]
+        FuncFParam
+          BType
+            int INT[orange]
+          b2 IDENT[red]
+        FuncFParam
+          BType
+            int INT[orange]
+          b3 IDENT[red]
+          Exp
+            Number
+              3 INTEGER_CONST[green]
+          Exp
+            Number
+              4 INTEGER_CONST[green]
+          Exp
+            Number
+              5 INTEGER_CONST[green]
+      Block
+    FuncDef
+      FuncType
+        void VOID[orange]
+      main IDENT[red]
+      Block
+        BlockItem
+          Decl
+            VarDecl
+              BType
+                int INT[orange]
+              VarDef
+                a1 IDENT[red]
+                ConstExp
+                  Exp
+                    Number
+                      2 INTEGER_CONST[green]
+                ConstExp
+                  Exp
+                    Number
+                      3 INTEGER_CONST[green]
+              VarDef
+                a2 IDENT[red]
+              VarDef
+                a3 IDENT[red]
+        BlockItem
+          Decl
+            VarDecl
+              BType
+                int INT[orange]
+              VarDef
+                b1 IDENT[red]
+        BlockItem
+          Decl
+            VarDecl
+              BType
+                int INT[orange]
+              VarDef
+                b2 IDENT[red]
+                = ASSIGN[blue]
+                InitVal
+                  Exp
+                    Number
+                      4 INTEGER_CONST[green]
+        BlockItem
+          Decl
+            VarDecl
+              BType
+                int INT[orange]
+              VarDef
+                c IDENT[red]
+                ConstExp
+                  Exp
+                    Number
+                      3 INTEGER_CONST[green]
+                ConstExp
+                  Exp
+                    Number
+                      4 INTEGER_CONST[green]
+                ConstExp
+                  Exp
+                    Number
+                      5 INTEGER_CONST[green]
+                = ASSIGN[blue]
+                InitVal
+                  InitVal
+                    InitVal
+                      Exp
+                        Number
+                          2 INTEGER_CONST[green]
+                  InitVal
+                    InitVal
+                      Exp
+                        Number
+                          3 INTEGER_CONST[green]

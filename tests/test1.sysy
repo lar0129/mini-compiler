@@ -10,5 +10,6 @@ void main(){
    int a1[2][3],a2,a3;
    int b1;
    int b2 = 4;
+   b3 = 2;
    int c[3][4][5] = {{2},{3}};
 }
