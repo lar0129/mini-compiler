@@ -1,8 +1,8 @@
 int a(){
-    return 1;
+    return ;
 }
 
-int a(){
+void a2(){
     return 0;
 }
 
