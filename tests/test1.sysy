@@ -1,7 +1,8 @@
-void main(){
-   int a[2][3],c = 4;
-   b[3][4][5] = b[3];
-}
 int a(int b[][3],int c){
     return 0;
+}
+
+void main(){
+   int a[2][3],c = 4;
+   int b[3][4][5] = a[3];
 }
