@@ -1,2 +1,1 @@
-Error type B at Line 13: extraneous input '{' expecting {'+', '-', '!', '(', IDENT, INTEGER_CONST}.
-Error type B at Line 13: extraneous input '}' expecting ')'.
+Error type 8 at Line 13: FuncCall_UnMatch

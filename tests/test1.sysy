@@ -5,7 +5,7 @@ void f2(){
     return;
 }
 
-int f3(int p1,int p2[]){
+int f3(int p1,int p2){
     return p1;
 }
 
