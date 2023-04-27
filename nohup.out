@@ -1,6 +1,8 @@
-Cannot find a
+Cannot find a1
+Cannot find a2
 Cannot find b
-Error type 5 at Line 6: Assign_UnMatch
-Error type 5 at Line 7: Assign_UnMatch
-Error type 5 at Line 9: Assign_UnMatch
+Error type 5 at Line 10: Assign_UnMatch
+Error type 5 at Line 11: Assign_UnMatch
+Error type 5 at Line 13: Assign_UnMatch
+Error type 5 at Line 15: Assign_UnMatch
 Cannot find main

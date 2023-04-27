@@ -11,6 +11,10 @@ void b(int b1,int b2[],int b3[][3][4][5]){
    const int c3[2][3] = {5+5};
    const int c2[2] = {};
    const int c4 = {{{3}}};
+
+   int c5 = a1;
+   const int c4 = a2;
+
    int c5 = a1();
    const int c4 = a2();
 }
