@@ -67,13 +67,15 @@ public class Main {
 
         // 从树根开始 深度优先遍历
         ParseTree tree = sysYParser.program();
-        SymbolDetectVisitor visitor = new SymbolDetectVisitor();
-        visitor.visit(tree);
 
-        if (!myParserListener.status) {
-            // 若无语法错误(listener) + 无语义错误(visitor)
+//        若无语法错误(listener)
+        if (! myParserListener.status) {
+            SymbolDetectVisitor visitor = new SymbolDetectVisitor();
+            visitor.visit(tree);
+
+//          若无语法错误(listener) + 无语义错误(visitor)
             if (visitor.getErrorStatus()) {
-//            visitor.printErrors();
+//              visitor.printErrors();
                 ParseTreeWalker walker = new ParseTreeWalker();
                 PrintTreeListener pt = new PrintTreeListener();
                 walker.walk(pt, tree);

@@ -29,4 +29,4 @@ Exception in thread "main" java.lang.NullPointerException
 	at SymbolDetectVisitor.visitProgram(SymbolDetectVisitor.java:9)
 	at SysYParser$ProgramContext.accept(SysYParser.java:128)
 	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visit(AbstractParseTreeVisitor.java:18)
-	at Main.main(Main.java:70)
+	at Main.main(Main.java:71)
