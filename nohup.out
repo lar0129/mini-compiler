@@ -3,7 +3,13 @@ ret: int|| funcRetType: int
 ret: int|| funcRetType: int
 ret: int|| funcRetType: int
 ret: int|| funcRetType: int
-Error type 2 at Line 135: Func_Decl
-Error type 2 at Line 136: Func_Decl
-Error type 2 at Line 140: Func_Decl
+ret: int|| funcRetType: int
+ret: int|| funcRetType: int
+ret: int|| funcRetType: int
+ret: int|| funcRetType: int
+Error type 2 at Line 104: Func_Decl
+ret: int|| funcRetType: int
+Error type 2 at Line 118: Func_Decl
+Error type 2 at Line 119: Func_Decl
+Error type 2 at Line 123: Func_Decl
 ret: int|| funcRetType: int

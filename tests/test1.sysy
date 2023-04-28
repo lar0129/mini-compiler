@@ -1,127 +1,110 @@
-int BigIntarr[2][100];
-int BigIntLength[2];
-int Result[200];
-
-int min(int a, int b) {
-	if (a > b) {
-		return b;
-	}
-	else {
-		return a;
-	}
-}
-
-int max(int a, int b) {
-	if (a > b) {
-		return a;
-	}
-	else {
-		return b;
-	}
-}
-
-int compare() {
-	int i = 0;
-	if (BigIntLength[0] > BigIntLength[1]) {
-		return 1;
-	}
-	if (BigIntLength[0] < BigIntLength[1]) {
-		return -1;
-	}
-	while (i < BigIntLength[0]) {
-		if (BigIntarr[0][i] > BigIntarr[1][i]) {
-			return 1;
-		}
-		if (BigIntarr[0][i] < BigIntarr[1][i]){
-			return -1;
-		}
-		i = i + 1;
-	}
-	return 0;
-}
-
-int subtract() {
-	int a[100];//把较大的数放于减数
-	int b[100];//把较小的数放于被减数
-	int c[100] = { 0 };//差
-	int i, j, k;//i用来循环 ,两加数中较大加数的长度放到j里，两加数中较小加数的长度放到k里
-	int flag;//标志结果为正还是负。
-	int l1, l2;
-	int pp[100];
-	l1 = BigIntLength[0];
-	l2 = BigIntLength[1];
-	k = min(l1, l2);
-	j = max(l1, l2);
-	if (compare() >= 0) {//减数必须大于被减数。方便计算。如果小于，就调换位置。
-		flag = 0;
-		i = 0;
-		while (i < l1) { //字符串逆序导入数组中
-			a[i] = BigIntarr[0][l1 - 1 - i];
-			i = i + 1;
-		}
-		i = 0;
-		while (i < l2) {
-			b[i] = BigIntarr[1][l2 - 1 - i];
-			i = i + 1;
-		}
-	}
-	else {
-		flag = 1;
-		i = 0;
-		while (i < l2) {
-			a[i] = BigIntarr[1][l2 - 1 - i];
-			i = i + 1;
-		}
-		i = 0;
-		while (i < l1) {
-			b[i] = BigIntarr[0][l1 - 1 - i];
-			i = i + 1;
-		}
-	}
-	i = 0;
-	while (i < k) {
-		if (a[i] >= b[i]) {
-			c[i] = a[i] - b[i];
-		}
-		else {
-			c[i] = a[i] + 10 - b[i];
-			a[i + 1] = a[i + 1] - 1;
-		}
-		i = i + 1;
-	}
-	while (i < j) {
-		if (a[i] >= 0) { c[i] = a[i]; }
-		else {
-			c[i] = a[i] + 10;
-			a[i + 1] = a[i + 1] - 1;
-		}
-		i = i + 1;
-	}
-	while (c[i - 1] == 0) i = i - 1;
-	j = 0;
-	if (flag == 1)
-		//pp[j++] = '-';
-		putch(45);
-	k = i - 1;
-	while (k > -1) {
-		Result[j] = c[k];
-		k = k - 1;
-		j = j + 1;
-	}
-	return j;
-}
-
-int main()
+void QuickSort(int arr[], int low, int high)
 {
-	int n;
-	int i = 0;
-	BigIntLength[0] = getarray(BigIntarr[0]);
-    BigIntLength[1] = getarray(BigIntarr[1]);
-	i = 0;
-	n = subtract();
-	while (i < n) {
-        putint(Result[i]);
-        i = i + 1;
-	}
-	return 0;
+    if (low < high)
+    {
+        int i = low;
+        int j = high;
+        int k = arr[low];
+        while (i < j)
+        {
+            while(i < j && arr[j] >= k)
+            {
+                j=j-1;
+            }
+            if(i < j)
+            {
+                arr[i] = arr[j];
+                i=i+1;
+            }
+            while(i < j && arr[i] < k)
+            {
+                i=i+1;
+            }
+            if(i < j)
+            {
+                arr[j] = arr[i];
+                j=j-1;
+            }
+        }
+        arr[i] = k;
+        QuickSort(arr, low, i - 1);
+        QuickSort(arr, i + 1, high);
+    }
+}
+
+
+
+int find(int n,int a[],int l)
+{
+  int low=0;
+  int high=l-1;
+  int middle=0;
+  while(low<=high)
+  {
+    middle=(low+high)/2;
+    if(n==a[middle])
+    {
+      return middle;
+    }
+    else
+    {
+      if(n>a[middle])
+        low=middle+1;
+      else
+        high=middle-1;
+    }
+  }
+  return -1;
+}
+
+int fun(int arr[], int start, int end, int val)
+{
+    int mid;
+    mid = (start + end) / 2;
+
+    if (arr[mid] == val)
+        return mid;
+    if (start < end)
+    {
+        if (arr[mid] > val)
+            return fun(arr, start, mid, val);
+        else
+            return fun(arr, mid + 1, end, val);
+    }
+    else
+        return -1;
+}
+
+int main(){
+  int a[23]={2,3,5,6,7,8,9,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60};
+  int b[100];
+  int l1=23;
+  int i=0,n;
+
+  int l2=getarray(b);
+  QuickSort(b,0,l2-1);
+  putarray(l2,b);
+  putch(10);
+  int op=getint();
+  while(op!=-1){
+    n=getint();
+    if(op==0){
+      int x=find(n,a,l1);
+      int y=fun(a,0,l1-1,n);
+      if(x!=y){
+        return -1;
+      }
+      putint(x);
+    }else{
+      int x=find(n,b,l2);
+      int y=fun(b,0,l2-1,n);
+      if(x!=y){
+        return -1;
+      }
+      putint(x);
+    }
+    putch(10);
+    op=getint();
+  }
+  return 0;
 }
