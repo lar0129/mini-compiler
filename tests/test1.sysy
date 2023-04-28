@@ -16,6 +16,5 @@ int main()
         i = i + a;
     }
     i = i * a;
-    putint(i);
     return 0;
 }
