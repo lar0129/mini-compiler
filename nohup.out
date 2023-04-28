@@ -1,1 +1,123 @@
-Error type 2 at Line 19: Func_Decl
+Program
+  CompUnit
+    Decl
+      VarDecl
+        BType
+          int INT[orange]
+        VarDef
+          a IDENT[red]
+          = ASSIGN[blue]
+          InitVal
+            Exp
+              Number
+                3 INTEGER_CONST[green]
+    FuncDef
+      FuncType
+        int INT[orange]
+      main IDENT[red]
+      Block
+        BlockItem
+          Decl
+            VarDecl
+              BType
+                int INT[orange]
+              VarDef
+                i IDENT[red]
+                = ASSIGN[blue]
+                InitVal
+                  Exp
+                    Number
+                      0 INTEGER_CONST[green]
+        BlockItem
+          Stmt
+            Block
+              BlockItem
+                Decl
+                  VarDecl
+                    BType
+                      int INT[orange]
+                    VarDef
+                      a IDENT[red]
+                      = ASSIGN[blue]
+                      InitVal
+                        Exp
+                          Number
+                            4 INTEGER_CONST[green]
+              BlockItem
+                Stmt
+                  Block
+                    BlockItem
+                      Decl
+                        VarDecl
+                          BType
+                            int INT[orange]
+                          VarDef
+                            a IDENT[red]
+                    BlockItem
+                      Stmt
+                        Block
+                          BlockItem
+                            Decl
+                              VarDecl
+                                BType
+                                  int INT[orange]
+                                VarDef
+                                  a IDENT[red]
+                                  = ASSIGN[blue]
+                                  InitVal
+                                    Exp
+                                      Number
+                                        6 INTEGER_CONST[green]
+                    BlockItem
+                      Stmt
+                        LVal
+                          a IDENT[red]
+                        = ASSIGN[blue]
+                        Exp
+                          Number
+                            7 INTEGER_CONST[green]
+                    BlockItem
+                      Stmt
+                        LVal
+                          i IDENT[red]
+                        = ASSIGN[blue]
+                        Exp
+                          Exp
+                            LVal
+                              i IDENT[red]
+                          + PLUS[blue]
+                          Exp
+                            LVal
+                              a IDENT[red]
+              BlockItem
+                Stmt
+                  LVal
+                    i IDENT[red]
+                  = ASSIGN[blue]
+                  Exp
+                    Exp
+                      LVal
+                        i IDENT[red]
+                    + PLUS[blue]
+                    Exp
+                      LVal
+                        a IDENT[red]
+        BlockItem
+          Stmt
+            LVal
+              i IDENT[red]
+            = ASSIGN[blue]
+            Exp
+              Exp
+                LVal
+                  i IDENT[red]
+              * MUL[blue]
+              Exp
+                LVal
+                  a IDENT[red]
+        BlockItem
+          Stmt
+            return RETURN[orange]
+            Exp
+              Number
+                0 INTEGER_CONST[green]
