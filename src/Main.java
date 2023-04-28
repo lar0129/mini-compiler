@@ -71,23 +71,17 @@ public class Main {
 //        若无语法错误(listener)
         if (! myParserListener.status) {
 
-            ParseTreeWalker walker1 = new ParseTreeWalker();
-            PrintTreeListener pt1 = new PrintTreeListener();
-            walker1.walk(pt1, tree);
-
             SymbolDetectVisitor visitor = new SymbolDetectVisitor();
             visitor.setErrorStatus(false);
             visitor.visit(tree);
 
-            ParseTree tree2 = sysYParser.program();
-
 //          若无语法错误(listener) + 无语义错误(visitor)
-//            if (!visitor.getErrorStatus()) {
-//                ParseTreeWalker walker = new ParseTreeWalker();
-//                PrintTreeListener pt = new PrintTreeListener();
-//                ParseTree tree2 = sysYParser.program();
-//                walker.walk(pt, tree2);
-//            }
+            if (!visitor.getErrorStatus()) {
+                ParseTreeWalker walker = new ParseTreeWalker();
+                PrintTreeListener pt = new PrintTreeListener();
+                ParseTree tree2 = sysYParser.program();
+                walker.walk(pt, tree2);
+            }
         }
 
     }
