@@ -38,7 +38,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 //            funName = funName + " fix:"+getLineNo(ctx);
         }
 
-        // 修复错误，进入新的 Scope，定义新的 Symbol
+        // 不需要修复错误。进入新的 Scope，定义新的 Symbol
         FunctionSymbol fun = new FunctionSymbol(funName, currentScope);
         fun.setFunctionType((Type) globalScope.resolve(typeName),new ArrayList<>());// 具体参数待进入FParam再填入
 
