@@ -1,6 +1,4 @@
 Exception in thread "main" java.lang.StackOverflowError
-	at java.base/java.lang.StringCoding.resultCached(StringCoding.java:532)
-	at java.base/java.lang.StringCoding.decodeLatin1(StringCoding.java:594)
 	at java.base/java.lang.StringCoding.decode(StringCoding.java:260)
 	at java.base/java.lang.String.<init>(String.java:507)
 	at org.antlr.v4.runtime.CodePointCharStream$CodePoint8BitCharStream.getText(CodePointCharStream.java:160)
@@ -1023,3 +1021,5 @@ Exception in thread "main" java.lang.StackOverflowError
 	at SysYParser$ExpContext.accept(SysYParser.java:1552)
 	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
 	at SysYParserBaseVisitor.visitExp(SysYParserBaseVisitor.java:138)
+	at SymbolDetectVisitor.visitExp(SymbolDetectVisitor.java:469)
+	at SymbolDetectVisitor.visitExp(SymbolDetectVisitor.java:9)
