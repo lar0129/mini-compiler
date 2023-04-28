@@ -1,14 +1,2 @@
-Exception in thread "main" java.lang.ClassCastException: class symbol.VariableSymbol cannot be cast to class symbol.FunctionSymbol (symbol.VariableSymbol and symbol.FunctionSymbol are in unnamed module of loader 'app')
-	at SymbolDetectVisitor.visitFuncDef(SymbolDetectVisitor.java:32)
-	at SymbolDetectVisitor.visitFuncDef(SymbolDetectVisitor.java:9)
-	at SysYParser$FuncDefContext.accept(SysYParser.java:928)
-	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
-	at SysYParserBaseVisitor.visitCompUnit(SysYParserBaseVisitor.java:26)
-	at SysYParser$CompUnitContext.accept(SysYParser.java:182)
-	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visitChildren(AbstractParseTreeVisitor.java:46)
-	at SysYParserBaseVisitor.visitProgram(SysYParserBaseVisitor.java:19)
-	at SymbolDetectVisitor.visitProgram(SymbolDetectVisitor.java:22)
-	at SymbolDetectVisitor.visitProgram(SymbolDetectVisitor.java:9)
-	at SysYParser$ProgramContext.accept(SysYParser.java:128)
-	at org.antlr.v4.runtime.tree.AbstractParseTreeVisitor.visit(AbstractParseTreeVisitor.java:18)
-	at Main.main(Main.java:76)
+Error type 4 at Line 3: Func_Repeat
+Error type 6 at Line 11: Operator_UnMatch

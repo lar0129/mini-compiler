@@ -351,7 +351,10 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 //            System.out.println(ctx.IDENT().getText());
             Symbol symbol =  currentScope.resolve(ctx.IDENT().getText());
             if(symbol instanceof FunctionSymbol)
-                return ((FunctionSymbol) symbol).getType().getRetTy();
+                if(ctx.L_PAREN()!=null)
+                    return ((FunctionSymbol) symbol).getType().getRetTy();
+                else
+                    return ((FunctionSymbol) symbol).getType();
             else {
                 return new BasicTypeSymbol("no type");
             }
