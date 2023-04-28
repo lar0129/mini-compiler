@@ -5,6 +5,6 @@ int f(int a, int b)
 
 int main()
 {
-    int f = 2;
-    return f(1, f);
+    int c = 2;
+    return f(1, c);
 }
