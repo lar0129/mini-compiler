@@ -1,9 +1,9 @@
-ret: int|| funcRetType: can't find
-Error type 7 at Line 8: Return_UnMatch
-ret: int|| funcRetType: can't find
-Error type 7 at Line 11: Return_UnMatch
 ret: int|| funcRetType: int
-Error type 2 at Line 68: Func_Decl
-Error type 2 at Line 69: Func_Decl
-Error type 2 at Line 73: Func_Decl
+ret: int|| funcRetType: int
+ret: int|| funcRetType: int
+ret: int|| funcRetType: int
+ret: int|| funcRetType: int
+Error type 2 at Line 135: Func_Decl
+Error type 2 at Line 136: Func_Decl
+Error type 2 at Line 140: Func_Decl
 ret: int|| funcRetType: int
