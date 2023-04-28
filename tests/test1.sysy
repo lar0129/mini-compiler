@@ -1,4 +1,8 @@
-int f(int a, int f)
+void f(){
+    return;
+}
+
+int f2(int a, int f)
 {
     return a + f;
 }
@@ -6,5 +10,5 @@ int f(int a, int f)
 int main()
 {
     int f = 2;
-    return f(1, f);
+    return f2(1, f);
 }
