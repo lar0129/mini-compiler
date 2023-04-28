@@ -1,123 +1,21 @@
-Program
-  CompUnit
-    Decl
-      VarDecl
-        BType
-          int INT[orange]
-        VarDef
-          a IDENT[red]
-          = ASSIGN[blue]
-          InitVal
-            Exp
-              Number
-                3 INTEGER_CONST[green]
-    FuncDef
-      FuncType
-        int INT[orange]
-      main IDENT[red]
-      Block
-        BlockItem
-          Decl
-            VarDecl
-              BType
-                int INT[orange]
-              VarDef
-                i IDENT[red]
-                = ASSIGN[blue]
-                InitVal
-                  Exp
-                    Number
-                      0 INTEGER_CONST[green]
-        BlockItem
-          Stmt
-            Block
-              BlockItem
-                Decl
-                  VarDecl
-                    BType
-                      int INT[orange]
-                    VarDef
-                      a IDENT[red]
-                      = ASSIGN[blue]
-                      InitVal
-                        Exp
-                          Number
-                            4 INTEGER_CONST[green]
-              BlockItem
-                Stmt
-                  Block
-                    BlockItem
-                      Decl
-                        VarDecl
-                          BType
-                            int INT[orange]
-                          VarDef
-                            a IDENT[red]
-                    BlockItem
-                      Stmt
-                        Block
-                          BlockItem
-                            Decl
-                              VarDecl
-                                BType
-                                  int INT[orange]
-                                VarDef
-                                  a IDENT[red]
-                                  = ASSIGN[blue]
-                                  InitVal
-                                    Exp
-                                      Number
-                                        6 INTEGER_CONST[green]
-                    BlockItem
-                      Stmt
-                        LVal
-                          a IDENT[red]
-                        = ASSIGN[blue]
-                        Exp
-                          Number
-                            7 INTEGER_CONST[green]
-                    BlockItem
-                      Stmt
-                        LVal
-                          i IDENT[red]
-                        = ASSIGN[blue]
-                        Exp
-                          Exp
-                            LVal
-                              i IDENT[red]
-                          + PLUS[blue]
-                          Exp
-                            LVal
-                              a IDENT[red]
-              BlockItem
-                Stmt
-                  LVal
-                    i IDENT[red]
-                  = ASSIGN[blue]
-                  Exp
-                    Exp
-                      LVal
-                        i IDENT[red]
-                    + PLUS[blue]
-                    Exp
-                      LVal
-                        a IDENT[red]
-        BlockItem
-          Stmt
-            LVal
-              i IDENT[red]
-            = ASSIGN[blue]
-            Exp
-              Exp
-                LVal
-                  i IDENT[red]
-              * MUL[blue]
-              Exp
-                LVal
-                  a IDENT[red]
-        BlockItem
-          Stmt
-            return RETURN[orange]
-            Exp
-              Number
-                0 INTEGER_CONST[green]
+Error type 2 at Line 8: Func_Decl
+Error type 2 at Line 9: Func_Decl
+Error type 2 at Line 1010: Func_Decl
+Error type 2 at Line 1011: Func_Decl
+Error type 2 at Line 2012: Func_Decl
+Error type 2 at Line 2013: Func_Decl
+Error type 2 at Line 3014: Func_Decl
+Error type 2 at Line 3015: Func_Decl
+Error type 2 at Line 4016: Func_Decl
+Error type 2 at Line 4017: Func_Decl
+Error type 2 at Line 5018: Func_Decl
+Error type 2 at Line 5019: Func_Decl
+Error type 2 at Line 6020: Func_Decl
+Error type 2 at Line 6021: Func_Decl
+Error type 2 at Line 7022: Func_Decl
+Error type 2 at Line 7023: Func_Decl
+Error type 2 at Line 8024: Func_Decl
+Error type 2 at Line 8025: Func_Decl
+Error type 2 at Line 9026: Func_Decl
+Error type 2 at Line 9027: Func_Decl
+Error type 2 at Line 10028: Func_Decl
