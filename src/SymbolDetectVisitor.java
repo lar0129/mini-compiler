@@ -349,7 +349,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 //      也可以在g4中直接标记？
         if (ctx.IDENT() != null) { // IDENT L_PAREN funcRParams? R_PAREN
 //            System.out.println(ctx.IDENT().getText());
-            Symbol symbol =  currentScope.resolve(ctx.IDENT().getText());
+            Symbol symbol =  globalScope.resolve(ctx.IDENT().getText());
             if(symbol instanceof FunctionSymbol)
                 if(ctx.L_PAREN()!=null)
                     return ((FunctionSymbol) symbol).getType().getRetTy();
