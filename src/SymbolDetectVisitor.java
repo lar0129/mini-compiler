@@ -464,6 +464,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             // 报告 Error type 6 运算符需求类型与提供类型不匹配
             String Ltype = getExpType(ctx.exp(0)).toString();
             String Rtype = getExpType(ctx.exp(1)).toString();
+            System.out.println(Ltype + "||" + Rtype);
             if (! ( Ltype.equals("int") && Rtype.equals("int") ) ){
                 errorTable.addErrorTable(getLineNo(ctx),6);
                 return null;
