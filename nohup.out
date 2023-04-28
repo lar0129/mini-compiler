@@ -1,11 +1,20 @@
+ret: void|| funcRetType: void
 ret: int|| funcRetType: int
 ret: int|| funcRetType: int
 Program
   CompUnit
     FuncDef
       FuncType
-        int INT[orange]
+        void VOID[orange]
       f IDENT[red]
+      Block
+        BlockItem
+          Stmt
+            return RETURN[orange]
+    FuncDef
+      FuncType
+        int INT[orange]
+      f2 IDENT[red]
       FuncFParams
         FuncFParam
           BType
@@ -48,7 +57,7 @@ Program
           Stmt
             return RETURN[orange]
             Exp
-              f IDENT[red]
+              f2 IDENT[red]
               FuncRParams
                 Param
                   Exp
