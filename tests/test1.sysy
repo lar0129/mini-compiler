@@ -2,7 +2,7 @@ int getint(){
     return 1;
 }
 
-int putint(int getint){
+int putint(int putint){
     return 1;
 }
 
