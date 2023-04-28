@@ -1,10 +1,14 @@
-int f(int a, int f)
-{
-    return a + f;
+int getint(){
+    return 1;
+}
+
+int putint(int getint){
+    return 1;
 }
 
 int main()
 {
-    int f = 2;
-    return f(1, f);
+    int getint = getint();
+    putint(getint);
+    return getint;
 }
