@@ -304,7 +304,12 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
             else
                 returnType = "void";
 
-            Symbol funcSymbol = globalScope.resolve(currentScope.getEnclosingScope().getName());
+            Scope fatherScope = currentScope.getEnclosingScope();
+            Symbol funcSymbol = globalScope.resolve(fatherScope.getName());
+            while (!(funcSymbol instanceof FunctionSymbol) ){
+                fatherScope = fatherScope.getEnclosingScope();
+                funcSymbol = globalScope.resolve(fatherScope.getName());
+            }
             if(funcSymbol instanceof FunctionSymbol){
                 FunctionType funcType = ((FunctionSymbol) funcSymbol).getType();
                 funcRetType = funcType.getRetTy().toString();
