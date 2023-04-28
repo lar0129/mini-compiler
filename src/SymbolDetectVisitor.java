@@ -423,7 +423,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
         if (ctx.IDENT() != null) { // IDENT L_PAREN funcRParams? R_PAREN
             // 报告 Error type 2 函数未定义
             String funcName = ctx.IDENT().getText();
-            Symbol funcInTable = currentScope.resolve(funcName);
+            Symbol funcInTable = globalScope.resolve(funcName);
             if(funcInTable == null){
                 errorTable.addErrorTable(getLineNo(ctx),2);
                 return  null;
