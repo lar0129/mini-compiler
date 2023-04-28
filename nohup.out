@@ -1,3 +1,64 @@
-Error type B at Line 6: mismatched input '<EOF>' expecting {'const', 'int', 'void'}.
 Program
   CompUnit
+    FuncDef
+      FuncType
+        int INT[orange]
+      main IDENT[red]
+      Block
+        BlockItem
+          Stmt
+            Block
+              BlockItem
+                Stmt
+                  Block
+                    BlockItem
+                      Stmt
+                        Block
+                          BlockItem
+                            Stmt
+                              Block
+                                BlockItem
+                                  Stmt
+                                    Block
+                                      BlockItem
+                                        Decl
+                                          VarDecl
+                                            BType
+                                              int INT[orange]
+                                            VarDef
+                                              a IDENT[red]
+        BlockItem
+          Stmt
+            Block
+              BlockItem
+                Stmt
+                  Block
+                    BlockItem
+                      Stmt
+                        Block
+                          BlockItem
+                            Stmt
+                              Block
+                                BlockItem
+                                  Stmt
+        BlockItem
+          Stmt
+            Block
+              BlockItem
+                Stmt
+                  Block
+                    BlockItem
+                      Stmt
+                        Block
+                          BlockItem
+                            Stmt
+                              Block
+                                BlockItem
+                                  Stmt
+                                    Block
+        BlockItem
+          Stmt
+            return RETURN[orange]
+            Exp
+              Number
+                0 INTEGER_CONST[green]
