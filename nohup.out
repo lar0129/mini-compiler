@@ -1,1 +1,3 @@
+ret: int funcRetType: int
+ret: no type funcRetType: int
 Error type 7 at Line 9: Return_UnMatch
