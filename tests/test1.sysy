@@ -1,13 +1,10 @@
-int a = 3;
-
-int a()
+int f(int a, int f)
 {
-    return 4 + a;
+    return a + f;
 }
 
 int main()
 {
-    int i;
-    i = a + a();
-    return i;
+    int f = 2;
+    return f(1, f);
 }
