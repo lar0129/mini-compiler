@@ -22,7 +22,7 @@ Program
         FuncFParam
           BType
             int INT[orange]
-          getint IDENT[red]
+          putint IDENT[red]
       Block
         BlockItem
           Stmt
