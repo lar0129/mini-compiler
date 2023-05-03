@@ -18,94 +18,88 @@ decl
    ;
 
 constDecl
-    : CONST bType constDef (COMMA constDef)* SEMICOLON
-    ;
+   : CONST bType constDef (COMMA constDef)* SEMICOLON
+   ;
 
 bType
-    : INT
-    ;
+   : INT
+   ;
 
 constDef
-    : IDENT (L_BRACKT constExp R_BRACKT)* ASSIGN constInitVal
-    ;
+   : IDENT (L_BRACKT constExp R_BRACKT)* ASSIGN constInitVal
+   ;
 
 constInitVal
-    : constExp
-    | L_BRACE (constInitVal(COMMA constInitVal)*)? R_BRACE
-    ;
-    // 包含定义数组初值{0,1,2}
+   : constExp
+   | L_BRACE (constInitVal (COMMA constInitVal)*)? R_BRACE
+   ;
 
 varDecl
-    : bType varDef (COMMA varDef)* SEMICOLON
-    ;
+   : bType varDef (COMMA varDef)* SEMICOLON
+   ;
 
 varDef
-    : IDENT (L_BRACKT  constExp R_BRACKT)*
-    | IDENT (L_BRACKT  constExp R_BRACKT)* ASSIGN initVal
-    ;
+   : IDENT (L_BRACKT constExp R_BRACKT)* (ASSIGN initVal)?
+   ;
 
 initVal
-    : exp
-    | L_BRACE (initVal (COMMA initVal)*)? R_BRACE
-    ;
+   : exp
+   | L_BRACE (initVal (COMMA initVal)*)? R_BRACE
+   ;
 
 funcDef
-    : funcType IDENT L_PAREN (funcFParams)? R_PAREN block
-    ;
+   : funcType IDENT L_PAREN funcFParams? R_PAREN block
+   ;
 
 funcType
-    : VOID
-    | INT
-    ;
+   : VOID
+   | INT
+   ;
 
 funcFParams
-    : funcFParam (COMMA funcFParam)*
-    ;
+   : funcFParam (COMMA funcFParam)*
+   ;
 
 funcFParam
-    : bType IDENT (L_BRACKT R_BRACKT (L_BRACKT exp R_BRACKT)* )?
-    ;
+   : bType IDENT (L_BRACKT R_BRACKT (L_BRACKT exp R_BRACKT)*)?
+   ;
 
 block
-    : L_BRACE (blockItem)* R_BRACE
-    ;
+   : L_BRACE blockItem* R_BRACE
+   ;
 
 blockItem
-    : decl
-    | stmt
-    ;
+   : decl
+   | stmt
+   ;
 
 stmt
-    : lVal ASSIGN exp SEMICOLON
-    | (exp)? SEMICOLON
-    | block
-    | IF L_PAREN cond R_PAREN stmt ( ELSE stmt )?
-    | WHILE L_PAREN cond R_PAREN stmt
-    | BREAK SEMICOLON
-    | CONTINUE SEMICOLON
-    | RETURN (exp)? SEMICOLON
-    ;
-
-
+   : lVal ASSIGN exp SEMICOLON  #assignStmt
+   | exp? SEMICOLON #expStmt
+   | block #blockStmt
+   | IF L_PAREN cond R_PAREN stmt (ELSE stmt)? #conditionStmt
+   | WHILE L_PAREN cond R_PAREN stmt #whileStmt
+   | BREAK SEMICOLON #breakStmt
+   | CONTINUE SEMICOLON #continueStmt
+   | RETURN (exp)? SEMICOLON #returnStmt
+   ;
 
 exp
-   : L_PAREN exp R_PAREN
-   | lVal
-   | number
-//  函数调用
-   | IDENT L_PAREN funcRParams? R_PAREN
-//   取负
-   | unaryOp exp
-   | exp (MUL | DIV | MOD) exp
-   | exp (PLUS | MINUS) exp
+   : L_PAREN exp R_PAREN #expParenthesis
+   | lVal #lvalExp
+   | number #numberExp
+   | IDENT L_PAREN funcRParams? R_PAREN #callFuncExp
+   | unaryOp exp #unaryOpExp
+   | exp (MUL | DIV | MOD) exp #mulExp
+   | exp (PLUS | MINUS) exp #plusExp
    ;
 
 cond
-   : exp
-   | cond (LT | GT | LE | GE) cond
-   | cond (EQ | NEQ) cond
-   | cond AND cond
-   | cond OR cond
+   : exp #expCond
+   | cond (LT | GT | LE | GE) cond #ltCond
+   | cond (EQ | NEQ) cond #eqCond
+   | cond AND cond #andCond
+   | cond OR cond #orCond
    ;
 
 lVal

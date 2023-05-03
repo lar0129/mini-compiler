@@ -2,17 +2,7 @@ ret: int|| funcRetType: int
 ret: int|| funcRetType: int
 ret: int|| funcRetType: int
 ret: int|| funcRetType: int
-ret: int|| funcRetType: int
-ret: int|| funcRetType: int
-Error type 2 at Line 84: Func_Decl
-Error type 2 at Line 86: Func_Decl
-Error type 2 at Line 87: Func_Decl
-Error type 2 at Line 88: Func_Decl
-Error type 2 at Line 90: Func_Decl
-ret: int|| funcRetType: int
-Error type 2 at Line 97: Func_Decl
-ret: int|| funcRetType: int
-Error type 2 at Line 104: Func_Decl
-Error type 2 at Line 106: Func_Decl
-Error type 2 at Line 107: Func_Decl
+Error type 2 at Line 25: Func_Decl
+Error type 2 at Line 27: Func_Decl
+Error type 2 at Line 28: Func_Decl
 ret: int|| funcRetType: int
