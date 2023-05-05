@@ -1,8 +1,3 @@
-ret: int|| funcRetType: int
-ret: int|| funcRetType: int
-ret: int|| funcRetType: int
-ret: int|| funcRetType: int
 Error type 2 at Line 25: Func_Decl
 Error type 2 at Line 27: Func_Decl
 Error type 2 at Line 28: Func_Decl
-ret: int|| funcRetType: int
