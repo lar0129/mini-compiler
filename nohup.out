@@ -1,2 +1,3 @@
-Error type 7 at Line 3: Return_UnMatch
-Error type 8 at Line 14: FuncCall_UnMatch
+Error type B at Line 13: extraneous input '{' expecting {'+', '-', '!', '(', IDENT, INTEGER_CONST}.
+Error type B at Line 13: mismatched input '}' expecting {'+', '-', '*', '/', '%', ')', ','}.
+Error type B at Line 13: extraneous input ',' expecting {<EOF>, 'const', 'int', 'void'}.
