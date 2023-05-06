@@ -1,32 +1,11 @@
-1 Ltype: int, Rtype: int
-2 Ltype: ArrayType : 1, Rtype: ArrayType : 1
-3 Ltype: ArrayType : 1, Rtype: ArrayType : 1
-4 Ltype: ArrayType : 1, Rtype: ArrayType : 1
-5 Ltype: int, Rtype: int
-6 Ltype: ArrayType : 1, Rtype: ArrayType : 1
-7 Ltype: int, Rtype: int
-10 Ltype: int, Rtype: no type
 Error type 2 at Line 10: Func_Decl
 Error type 2 at Line 13: Func_Decl
-19 Ltype: int, Rtype: int
 LFuncType: (); RFuncType: ()
 LFuncType: (); RFuncType: ()
-28 Ltype: int, Rtype: no type
 Error type 2 at Line 28: Func_Decl
 Error type 2 at Line 33: Func_Decl
 Error type 2 at Line 35: Func_Decl
-36 Ltype: int, Rtype: int
 Error type 2 at Line 38: Func_Decl
-44 Ltype: int, Rtype: int
-45 Ltype: int, Rtype: int
-46 Ltype: int, Rtype: int
-47 Ltype: ArrayType : 1, Rtype: ArrayType : 1
-48 Ltype: int, Rtype: int
-51 Ltype: int, Rtype: int
-61 Ltype: int, Rtype: int
-67 Ltype: int, Rtype: int
-79 Ltype: int, Rtype: int
-101 Ltype: int, Rtype: int
 Error type 2 at Line 103: Func_Decl
 LFuncType: (); RFuncType: ()
 Error type 2 at Line 110: Func_Decl

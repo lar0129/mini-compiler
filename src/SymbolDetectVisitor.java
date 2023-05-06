@@ -452,7 +452,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
 
                 RFuncType = RFuncType + ")";
 
-                System.out.println("LFuncType: " +LFuncType + "; RFuncType: " + RFuncType);
+//                System.out.println("LFuncType: " +LFuncType + "; RFuncType: " + RFuncType);
                 if(! LFuncType.equals(RFuncType)){
                     errorTable.addErrorTable(getLineNo(ctx),8);
                     return null;
