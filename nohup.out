@@ -1,3 +1,1 @@
-Error type 7 at Line 3: Return_UnMatch
-LFuncType: (intArrayType : 1ArrayType : 1); RFuncType: (intArrayType : 1ArrayType : 2)
-Error type 8 at Line 14: FuncCall_UnMatch
+Error type 5 at Line 2: Assign_UnMatch

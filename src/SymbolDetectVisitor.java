@@ -105,7 +105,7 @@ public class SymbolDetectVisitor extends SysYParserBaseVisitor<Void>{
                 // 报告 Error type 5 赋值号两侧类型不匹配
                 String Ltype = type.toString();
                 String Rtype = getInitValType(varDefContext.initVal()).toString();
-//                System.out.println(getLineNo(ctx) + " Ltype: " + Ltype + ", Rtype: " + Rtype);
+                System.out.println(getLineNo(ctx) + " Ltype: " + Ltype + ", Rtype: " + Rtype);
                 if(!Ltype.equals(Rtype) &&
                         !(Ltype.equals("no type") || Rtype.equals("no type") )){
                     errorTable.addErrorTable(getLineNo(ctx),5);
