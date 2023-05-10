@@ -23,7 +23,8 @@ run: compile
 	java -classpath ./classes:$(ANTLRPATH) Main $(FILEPATH)
 
 
-antlr: $(LFILE) $(PFILE) 
+antlr: $(LFILE) $(PFILE)
+	$(call git_commit, "antlr")
 	$(ANTLR) $(PFILE) $(LFILE)
 
 
