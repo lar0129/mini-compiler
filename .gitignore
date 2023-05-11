@@ -15,3 +15,7 @@
 /.vscode
 ./nohup.out
 nohup.out
+/tests/*
+/target/*
+/test.ll
+/.gitignore
