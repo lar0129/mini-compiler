@@ -137,7 +137,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             else if (ctx.DIV() != null){// s:有符号整数
                 result = LLVMBuildSDiv(builder,LNum,RNum,"sdiv_");
             }
-            else if (ctx.MUL() != null){ // s:有符号整数
+            else if (ctx.MOD() != null){ // s:有符号整数
                 result = LLVMBuildSRem(builder,LNum,RNum,"srem_");
             }
             return result;
