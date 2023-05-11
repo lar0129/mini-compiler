@@ -41,7 +41,10 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         LLVMDumpModule(module);
         //输出到文件
         BytePointer error = new BytePointer();
-        LLVMPrintModuleToFile(module,"test.ll",error);
+//        if (LLVMPrintModuleToFile(module, Main.argsCopy[1]+"test.ll", error) != 0) {    // moudle是你自定义的LLVMModuleRef对象
+        if (LLVMPrintModuleToFile(module, Main.argsCopy[1], error) != 0) {    // moudle是你自定义的LLVMModuleRef对象
+            LLVMDisposeMessage(error);
+        }
 
         return llvmValueRef;
     }
@@ -104,7 +107,18 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         } else if (ctx.L_PAREN() != null) { // L_PAREN exp R_PAREN
             return visitExp(ctx.exp(0));
         } else if (ctx.unaryOp() != null) { // unaryOp exp
+            LLVMValueRef result = null;
             LLVMValueRef RNum = visitExp(ctx.exp(0));
+            if(ctx.unaryOp().MINUS()!=null){
+                result = LLVMBuildNeg(builder, RNum, "neg_");
+            }
+            else if(ctx.unaryOp().PLUS()!=null){
+                result = RNum;
+            }
+            else if(ctx.unaryOp().NOT()!=null){
+                result = LLVMBuildNot(builder, RNum, "not_");;
+            }
+            return result;
         } else if (ctx.lVal() != null) { // lVal
 
         } else if (ctx.number() != null) { // number
@@ -112,9 +126,32 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             //创建一个常量
             LLVMValueRef tempNum = LLVMConstInt(i32Type, num, /* signExtend */ 0);
             return tempNum;
-        } else if (ctx.MUL() != null || ctx.DIV() != null || ctx.MOD() != null ||
-                ctx.PLUS() != null || ctx.MINUS() != null) {
-
+        } else if (ctx.MUL() != null || ctx.DIV() != null || ctx.MOD() != null)
+        {
+            LLVMValueRef result = null;
+            LLVMValueRef LNum = visitExp(ctx.exp(0));
+            LLVMValueRef RNum = visitExp(ctx.exp(1));
+            if (ctx.MUL() != null){
+                result = LLVMBuildMul(builder,LNum,RNum,"mul_");
+            }
+            else if (ctx.DIV() != null){// s:有符号整数
+                result = LLVMBuildSDiv(builder,LNum,RNum,"sdiv_");
+            }
+            else if (ctx.MUL() != null){ // s:有符号整数
+                result = LLVMBuildSRem(builder,LNum,RNum,"srem_");
+            }
+            return result;
+        }else if(ctx.PLUS() != null || ctx.MINUS() != null){
+            LLVMValueRef result = null;
+            LLVMValueRef LNum = visitExp(ctx.exp(0));
+            LLVMValueRef RNum = visitExp(ctx.exp(1));
+            if (ctx.PLUS() != null){
+                result = LLVMBuildAdd(builder,LNum,RNum,"add_");
+            }
+            else{// s:有符号整数
+                result = LLVMBuildSub(builder,LNum,RNum,"sub_");
+            }
+            return result;
         }
         return super.visitExp(ctx);
     }

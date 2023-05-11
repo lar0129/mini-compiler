@@ -9,7 +9,11 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import java.io.*;
 
 public class Main {
+
+    public static String[] argsCopy;
+
     public static void main(String[] args) throws IOException {
+        argsCopy = args;
         if (args.length < 1) {
             System.err.println("input path is required");
         }
@@ -86,6 +90,7 @@ public class Main {
 //          lab4:
         LLVMGlobalVisitor llvmGlobalVisitor = new LLVMGlobalVisitor();
         llvmGlobalVisitor.visit(tree);
+
 
     }
 
