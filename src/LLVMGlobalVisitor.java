@@ -116,13 +116,14 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                 result = RNum;
             }
             else if(ctx.unaryOp().NOT()!=null){
-                result = LLVMBuildNot(builder, RNum, "not_");;
+//                result = LLVMBuildNot(builder, RNum, "not_");
+//                result=LLVMBuildICmp(builder, LLVMIntEQ, LLVMConstInt(i32Type, 0, 0), RNum, "not_");
             }
             return result;
         } else if (ctx.lVal() != null) { // lVal
 
         } else if (ctx.number() != null) { // number
-            int num = Integer.parseInt(Main.HEXtoTEN(ctx.number().getText()));
+            long num = Integer.parseInt(Main.HEXtoTEN(ctx.number().getText()));
             //创建一个常量
             LLVMValueRef tempNum = LLVMConstInt(i32Type, num, /* signExtend */ 0);
             return tempNum;
@@ -153,7 +154,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             }
             return result;
         }
-        return super.visitExp(ctx);
+        return null;
     }
 
     @Override
