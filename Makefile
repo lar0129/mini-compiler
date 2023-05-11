@@ -34,9 +34,11 @@ test: compile
 	nohup java -classpath ./classes:$(ANTLRPATH) Main ./tests/test1.sysy &
 	cp nohup.out ./tests/
 
+gen:
+	clang -S -emit-llvm ./tests/test.c -o ./tests/test.ll -O0
 
 clean:
-	rm -f src/*.tokens
+	rm -f src/main/java/*.tokens
 	rm -f src/*.interp
 	rm -f src/SysYLexer.java src/SysYParser.java src/SysYParserBaseListener.java src/SysYParserBaseVisitor.java src/SysYParserListener.java src/SysYParserVisitor.java
 	rm -rf classes

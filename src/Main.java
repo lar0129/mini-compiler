@@ -68,20 +68,24 @@ public class Main {
         // 从树根开始 深度优先遍历
         ParseTree tree = sysYParser.program();
 
-//        若无语法错误(listener)
-        if (! myParserListener.status) {
+////        若无语法错误(listener)
+//        if (! myParserListener.status) {
+//
+//            SymbolDetectVisitor visitor = new SymbolDetectVisitor();
+//            visitor.setErrorStatus(false);
+//            visitor.visit(tree);
+//
+////          若无语法错误(listener) + 无语义错误(visitor)
+//            if (!visitor.getErrorStatus()) {
+//                ParseTreeWalker walker = new ParseTreeWalker();
+//                PrintTreeListener pt = new PrintTreeListener();
+//                walker.walk(pt, tree);
+//            }
+//        }
 
-            SymbolDetectVisitor visitor = new SymbolDetectVisitor();
-            visitor.setErrorStatus(false);
-            visitor.visit(tree);
-
-//          若无语法错误(listener) + 无语义错误(visitor)
-            if (!visitor.getErrorStatus()) {
-                ParseTreeWalker walker = new ParseTreeWalker();
-                PrintTreeListener pt = new PrintTreeListener();
-                walker.walk(pt, tree);
-            }
-        }
+//          lab4:
+        LLVMGlobalVisitor llvmGlobalVisitor = new LLVMGlobalVisitor();
+        llvmGlobalVisitor.visit(tree);
 
     }
 
