@@ -122,7 +122,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         } else if (ctx.lVal() != null) { // lVal
 
         } else if (ctx.number() != null) { // number
-            int num = Integer.parseInt(ctx.number().getText());
+            int num = Integer.parseInt(Main.HEXtoTEN(ctx.number().getText()));
             //创建一个常量
             LLVMValueRef tempNum = LLVMConstInt(i32Type, num, /* signExtend */ 0);
             return tempNum;
