@@ -107,8 +107,8 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         } else if (ctx.L_PAREN() != null) { // L_PAREN exp R_PAREN
             return visitExp(ctx.exp(0));
         } else if (ctx.unaryOp() != null) { // unaryOp exp
-            LLVMValueRef result = null;
             LLVMValueRef RNum = visitExp(ctx.exp(0));
+            LLVMValueRef result = RNum;
             if(ctx.unaryOp().MINUS()!=null){
                 result = LLVMBuildNeg(builder, RNum, "neg_");
             }
@@ -117,7 +117,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             }
             else if(ctx.unaryOp().NOT()!=null){
 //                result = LLVMBuildNot(builder, RNum, "not_");
-                result=LLVMBuildICmp(builder, LLVMIntEQ, LLVMConstInt(i32Type, 0, 0), RNum, "not_");
+//                result=LLVMBuildICmp(builder, LLVMIntEQ, LLVMConstInt(i32Type, 0, 0), RNum, "not_");
             }
             return result;
         } else if (ctx.lVal() != null) { // lVal
