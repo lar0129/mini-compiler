@@ -117,7 +117,8 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             }
             else if(ctx.unaryOp().NOT()!=null){
 //                result = LLVMBuildNot(builder, RNum, "not_");
-//                result=LLVMBuildICmp(builder, LLVMIntEQ, LLVMConstInt(i32Type, 0, 0), RNum, "not_");
+                result=LLVMBuildICmp(builder, LLVMIntEQ, LLVMConstInt(i32Type, 0, 0), RNum, "not_");
+                result = LLVMBuildZExt(builder, result, i32Type, "zext_");
             }
             return result;
         } else if (ctx.lVal() != null) { // lVal
