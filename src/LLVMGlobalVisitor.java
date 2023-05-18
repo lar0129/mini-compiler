@@ -165,20 +165,80 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                     varSymbol.setNumber(currentVar);
                 }
             }
+            else {
+                LLVMValueRef currentVar = LLVMBuildAlloca(builder, i32Type, /*pointerName:String*/varName);
+                varSymbol.setNumber(currentVar);
+            }
 
         }
         return super.visitVarDecl(ctx);
     }
 
     @Override
+    public LLVMValueRef visitConstDecl(SysYParser.ConstDeclContext ctx) {
+        for (SysYParser.ConstDefContext varDefContext : ctx.constDef()) {
+            String varName = varDefContext.IDENT().getText();
+            Symbol varNameInTable = currentScope.resolveInScope(varName);
+            assert (varNameInTable == null);
+
+            String typeName = ctx.bType().getText();
+            Type type = (Type) globalScope.resolve(typeName);
+
+//             定义新的 Symbol
+            VariableSymbol varSymbol = new VariableSymbol(varName, type);
+            currentScope.define(varSymbol);
+
+//             存入LLVMVALUE
+            if (varDefContext.ASSIGN() != null) {
+                LLVMValueRef initVal = getConstInitVal(varDefContext.constInitVal());
+                // 全局变量创建
+                if (currentScope == globalScope) {
+                    //创建名为globalVar的全局变量
+                    LLVMValueRef globalVar = LLVMAddGlobal(module, i32Type, /*globalVarName:String*/varName);
+                    //为全局变量设置初始化器
+                    LLVMSetInitializer(globalVar, /* constantVal:LLVMValueRef*/initVal);
+                    varSymbol.setNumber(globalVar);
+                }
+                // 局部变量创建
+                else {
+                    LLVMValueRef currentVar = LLVMBuildAlloca(builder, i32Type, /*pointerName:String*/varName);
+                    //将数值存入该内存
+                    LLVMBuildStore(builder, initVal, currentVar);
+                    varSymbol.setNumber(currentVar);
+                }
+            }
+        }
+
+        return super.visitConstDecl(ctx);
+    }
+
+    @Override
     public LLVMValueRef visitStmt(SysYParser.StmtContext ctx) {
-        if (ctx.RETURN() != null){
+        if(ctx.ASSIGN()!=null){
+            LLVMValueRef Lval = getLVal(ctx.lVal());
+            LLVMValueRef Rval = visitExp(ctx.exp());
+            LLVMBuildStore(builder, Rval, Lval);
+        }
+        else if (ctx.RETURN() != null){
             LLVMValueRef retValue = visitExp(ctx.exp());
             //函数返回指令
             LLVMBuildRet(builder, /*result:LLVMValueRef*/retValue);
             return null;
         }
         return super.visitStmt(ctx);
+    }
+
+
+    public LLVMValueRef getConstInitVal(SysYParser.ConstInitValContext ctx) {
+        if (ctx.constExp()!=null){
+            return visitExp(ctx.constExp().exp());
+        }
+        else {
+
+        }
+
+        assert (ctx.constExp()!=null); // 抛出异常
+        return null;
     }
 
     @Override
@@ -248,6 +308,21 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             return result;
         }
         return null;
+    }
+
+
+    public LLVMValueRef getLVal(SysYParser.LValContext ctx) {
+        String varName = ctx.IDENT().getText();
+        Symbol varInTable = currentScope.resolve(varName);
+        assert (varInTable!=null);
+
+        assert (varInTable instanceof VariableSymbol);
+
+        LLVMValueRef res = ((VariableSymbol) varInTable).getNumber();
+//        LLVMValueRef value = LLVMBuildLoad(builder, res, /*varName:String*/varInTable.getName());
+
+
+        return res;
     }
 
     @Override
