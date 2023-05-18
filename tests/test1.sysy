@@ -1,3 +1,4 @@
 int main(){
-    return !-2121;
+    int a = 2;
+    return a;
 }
