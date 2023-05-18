@@ -5,13 +5,21 @@ import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.PointerPointer;
 import org.bytedeco.llvm.LLVM.*;
-import symbol.BasicTypeSymbol;
-import symbol.FunctionSymbol;
-import symbol.Symbol;
+import scope.GlobalScope;
+import symbol.*;
+import scope.*;
+import type.*;
+
+import java.util.ArrayList;
 
 import static org.bytedeco.llvm.global.LLVM.*;
 
 public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
+
+    private GlobalScope globalScope = null;
+    private Scope currentScope = null;
+    private int localScopeCounter = 0;
+
 
     LLVMModuleRef module;
     LLVMBuilderRef builder;
@@ -38,7 +46,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         LLVMValueRef llvmValueRef = tree.accept(this);
 
         //输出到控制台
-//        LLVMDumpModule(module);
+        LLVMDumpModule(module);
         //输出到文件
         BytePointer error = new BytePointer();
 //        if (LLVMPrintModuleToFile(module, Main.argsCopy[1]+"test.ll", error) != 0) {    // moudle是你自定义的LLVMModuleRef对象
@@ -51,7 +59,14 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitProgram(SysYParser.ProgramContext ctx) {
-        return super.visitProgram(ctx);
+        // 进入新的 Scope
+        globalScope = new GlobalScope(null);
+        currentScope = globalScope;
+        // 遍历子树
+        LLVMValueRef ret = super.visitProgram(ctx);
+        // 回到上一层 Scope
+        currentScope = currentScope.getEnclosingScope();
+        return ret;
     }
 
     @Override
@@ -62,6 +77,17 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     @Override
     public LLVMValueRef visitFuncDef(SysYParser.FuncDefContext ctx) {
         String funcName = ctx.IDENT().getText();
+        String typeName = ctx.funcType().getText();
+
+        Symbol funcSymbolInTable = globalScope.resolve(funcName);
+
+        // 不需要修复错误。进入新的 Scope，定义新的 Symbol
+        FunctionSymbol fun = new FunctionSymbol(funcName, currentScope);
+        fun.setFunctionType((Type) globalScope.resolve(typeName),new ArrayList<>());// 具体参数待进入FParam再填入
+
+        // 是scope也是symbol,需要放到符号表里
+        currentScope.define(fun);
+        currentScope = fun;
 
         //生成返回值类型
         LLVMTypeRef returnType = i32Type;
@@ -82,12 +108,66 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         //选择要在哪个基本块后追加指令
         LLVMPositionBuilderAtEnd(builder, block1);
 
-        return super.visitFuncDef(ctx);
+        // 遍历子树
+        LLVMValueRef res = super.visitFuncDef(ctx);
+        // 回到上一层 Scope
+        currentScope = currentScope.getEnclosingScope();
+
+        return res;
     }
 
     @Override
     public LLVMValueRef visitBlock(SysYParser.BlockContext ctx) {
-        return super.visitBlock(ctx);
+        // 进入新的 Scope
+        LocalScope localScope = new LocalScope(currentScope);
+        String localScopeName = localScope.getName() + localScopeCounter;
+        localScope.setName(localScopeName);
+        localScopeCounter++;
+        currentScope = localScope;
+
+        // 遍历子树
+        LLVMValueRef ret = super.visitBlock(ctx);
+        // 回到上一层 Scope
+        currentScope = currentScope.getEnclosingScope();
+        return ret;
+    }
+
+    @Override
+    public LLVMValueRef visitVarDecl(SysYParser.VarDeclContext ctx) {
+        for (SysYParser.VarDefContext varDefContext : ctx.varDef()) {
+            String varName = varDefContext.IDENT().getText();
+            Symbol varNameInTable = currentScope.resolveInScope(varName);
+            assert (varNameInTable == null);
+
+            String typeName = ctx.bType().getText();
+            Type type = (Type) globalScope.resolve(typeName);
+
+//             定义新的 Symbol
+            VariableSymbol varSymbol = new VariableSymbol(varName, type);
+            currentScope.define(varSymbol);
+
+//             存入LLVMVALUE
+            if (varDefContext.ASSIGN() != null) {
+                LLVMValueRef initVal = visitInitVal(varDefContext.initVal());
+                // 全局变量创建
+                if (currentScope == globalScope) {
+                    //创建名为globalVar的全局变量
+                    LLVMValueRef globalVar = LLVMAddGlobal(module, i32Type, /*globalVarName:String*/varName);
+                    //为全局变量设置初始化器
+                    LLVMSetInitializer(globalVar, /* constantVal:LLVMValueRef*/initVal);
+                    varSymbol.setNumber(globalVar);
+                }
+                // 局部变量创建
+                else {
+                    LLVMValueRef currentVar = LLVMBuildAlloca(builder, i32Type, /*pointerName:String*/varName);
+                    //将数值存入该内存
+                    LLVMBuildStore(builder, initVal, currentVar);
+                    varSymbol.setNumber(currentVar);
+                }
+            }
+
+        }
+        return super.visitVarDecl(ctx);
     }
 
     @Override
@@ -98,6 +178,17 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBuildRet(builder, /*result:LLVMValueRef*/retValue);
         }
         return super.visitStmt(ctx);
+    }
+
+    @Override
+    public LLVMValueRef visitInitVal(SysYParser.InitValContext ctx) {
+        if(ctx.L_BRACE()!=null) {
+
+        }
+        else {
+            return visitExp(ctx.exp());
+        }
+        return super.visitInitVal(ctx);
     }
 
     @Override
@@ -122,7 +213,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             }
             return result;
         } else if (ctx.lVal() != null) { // lVal
-
+            return visitLVal(ctx.lVal());
         } else if (ctx.number() != null) { // number
             long num = Integer.parseInt(Main.HEXtoTEN(ctx.number().getText()));
             //创建一个常量
@@ -156,6 +247,21 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             return result;
         }
         return null;
+    }
+
+    @Override
+    public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
+        String varName = ctx.IDENT().getText();
+        Symbol varInTable = currentScope.resolve(varName);
+        assert (varInTable!=null);
+
+        assert (varInTable instanceof VariableSymbol);
+
+        LLVMValueRef res = ((VariableSymbol) varInTable).getNumber();
+        LLVMValueRef value = LLVMBuildLoad(builder, res, /*varName:String*/varInTable.getName());
+
+
+        return value;
     }
 
     @Override
