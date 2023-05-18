@@ -176,6 +176,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef retValue = visitExp(ctx.exp());
             //函数返回指令
             LLVMBuildRet(builder, /*result:LLVMValueRef*/retValue);
+            return null;
         }
         return super.visitStmt(ctx);
     }
