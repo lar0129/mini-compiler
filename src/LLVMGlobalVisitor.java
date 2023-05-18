@@ -189,24 +189,24 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             currentScope.define(varSymbol);
 
 //             存入LLVMVALUE
-            if (varDefContext.ASSIGN() != null) {
-                LLVMValueRef initVal = getConstInitVal(varDefContext.constInitVal());
-                // 全局变量创建
-                if (currentScope == globalScope) {
-                    //创建名为globalVar的全局变量
-                    LLVMValueRef globalVar = LLVMAddGlobal(module, i32Type, /*globalVarName:String*/varName);
-                    //为全局变量设置初始化器
-                    LLVMSetInitializer(globalVar, /* constantVal:LLVMValueRef*/initVal);
-                    varSymbol.setNumber(globalVar);
-                }
-                // 局部变量创建
-                else {
-                    LLVMValueRef currentVar = LLVMBuildAlloca(builder, i32Type, /*pointerName:String*/varName);
-                    //将数值存入该内存
-                    LLVMBuildStore(builder, initVal, currentVar);
-                    varSymbol.setNumber(currentVar);
-                }
+            assert  (varDefContext.ASSIGN() != null) ;
+            LLVMValueRef initVal = getConstInitVal(varDefContext.constInitVal());
+            // 全局变量创建
+            if (currentScope == globalScope) {
+                //创建名为globalVar的全局变量
+                LLVMValueRef globalVar = LLVMAddGlobal(module, i32Type, /*globalVarName:String*/varName);
+                //为全局变量设置初始化器
+                LLVMSetInitializer(globalVar, /* constantVal:LLVMValueRef*/initVal);
+                varSymbol.setNumber(globalVar);
             }
+            // 局部变量创建
+            else {
+                LLVMValueRef currentVar = LLVMBuildAlloca(builder, i32Type, /*pointerName:String*/varName);
+                //将数值存入该内存
+                LLVMBuildStore(builder, initVal, currentVar);
+                varSymbol.setNumber(currentVar);
+            }
+
         }
 
         return super.visitConstDecl(ctx);
@@ -225,7 +225,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBuildRet(builder, /*result:LLVMValueRef*/retValue);
             return null;
         }
-        return super.visitStmt(ctx);
+        return null;
     }
 
 
@@ -311,6 +311,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     }
 
 
+    // 返回Lval, 无Load, 修改对原值有效
     public LLVMValueRef getLVal(SysYParser.LValContext ctx) {
         String varName = ctx.IDENT().getText();
         Symbol varInTable = currentScope.resolve(varName);
@@ -325,6 +326,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         return res;
     }
 
+    // 返回Load出来的Value, 修改对原值无效
     @Override
     public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
         String varName = ctx.IDENT().getText();
