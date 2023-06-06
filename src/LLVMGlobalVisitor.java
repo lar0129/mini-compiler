@@ -24,7 +24,8 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     LLVMModuleRef module;
     LLVMBuilderRef builder;
     LLVMTypeRef i32Type;
-
+    LLVMTypeRef voidType;
+    LLVMValueRef zero;
     @Override
     public LLVMValueRef visit(ParseTree tree) {
         //初始化LLVM
@@ -40,13 +41,14 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         this.builder = LLVMCreateBuilder();
         //考虑到我们的语言中仅存在int一个基本类型，可以通过下面的语句为LLVM的int型重命名方便以后使用
         this.i32Type = LLVMInt32Type();
-
+        this.voidType = LLVMVoidType();
+        this.zero = LLVMConstInt(i32Type, 0, /* signExtend */ 0);
 
         // 遍历子树
         LLVMValueRef llvmValueRef = tree.accept(this);
 
         //输出到控制台
-//        LLVMDumpModule(module);
+        LLVMDumpModule(module);
         //输出到文件
         BytePointer error = new BytePointer();
 //        if (LLVMPrintModuleToFile(module, Main.argsCopy[1]+"test.ll", error) != 0) {    // moudle是你自定义的LLVMModuleRef对象
@@ -80,6 +82,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         String typeName = ctx.funcType().getText();
 
         Symbol funcSymbolInTable = globalScope.resolve(funcName);
+        assert (funcSymbolInTable==null);
 
         // 不需要修复错误。进入新的 Scope，定义新的 Symbol
         FunctionSymbol fun = new FunctionSymbol(funcName, currentScope);
@@ -89,19 +92,36 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         currentScope.define(fun);
         currentScope = fun;
 
-        //生成返回值类型
-        LLVMTypeRef returnType = i32Type;
+        LLVMTypeRef returnType = null;
+        if(typeName.equals("int")) {
+            //生成返回值类型
+             returnType = i32Type;
+        }
+        else if(typeName.equals("void")){
+            returnType = voidType;
+        }
+        else {
+            throw new RuntimeException("funcType Error");
+        }
 
         //生成函数参数类型
         PointerPointer<Pointer> argumentTypes = new PointerPointer<>(0);
-
+        int paramNum = 0;
+        if(ctx.funcFParams()!=null) {
+            for (SysYParser.FuncFParamContext paramCtx : ctx.funcFParams().funcFParam()) {
+//                if (paramCtx.bType().getText().equals("int")) {
+                    argumentTypes.put(paramNum, i32Type);
+                    paramNum++;
+            }
+        }
         //生成函数类型
-        LLVMTypeRef ft = LLVMFunctionType(returnType, argumentTypes, /* argumentCount */ 0, /* isVariadic */ 0);
+        LLVMTypeRef ft = LLVMFunctionType(returnType, argumentTypes, /* argumentCount */ paramNum, /* isVariadic */ 0);
         //若仅需一个参数也可以使用如下方式直接生成函数类型
 //        ft = LLVMFunctionType(returnType, i32Type, /* argumentCount */ 0, /* isVariadic */ 0);
 
         //生成函数，即向之前创建的module中添加函数
         LLVMValueRef function = LLVMAddFunction(module, /*functionName:String*/funcName, ft);
+        fun.setFuncRef(function);
 
         //通过如下语句在函数中加入基本块，一个函数可以加入多个基本块
         LLVMBasicBlockRef block1 = LLVMAppendBasicBlock(function, /*blockName:String*/funcName + "Entry");
@@ -114,6 +134,33 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         currentScope = currentScope.getEnclosingScope();
 
         return res;
+    }
+
+    @Override
+    public LLVMValueRef visitFuncFParams(SysYParser.FuncFParamsContext ctx) {
+        int paramIdx = 0;
+        for (SysYParser.FuncFParamContext paramCtx : ctx.funcFParam()) {
+            String varName = paramCtx.IDENT().getText();
+            String typeName = paramCtx.bType().getText();
+            Type type = (Type) globalScope.resolve(typeName);
+            assert (type instanceof BasicTypeSymbol);
+
+            VariableSymbol varSymbol = new VariableSymbol(varName, type);
+            currentScope.define(varSymbol);
+
+            assert (currentScope instanceof FunctionSymbol);
+            LLVMValueRef funcLLVM = ((FunctionSymbol) currentScope).getFuncRef();
+            // 获取函数参数
+            LLVMValueRef param = LLVMGetParam(funcLLVM, /* parameterIndex */ paramIdx);
+            // 为参数分配内存
+            LLVMValueRef funcVar = LLVMBuildAlloca(builder, i32Type, /*pointerName:String*/varName);
+            // 将数值存入该内存
+            LLVMBuildStore(builder, param, funcVar);
+            varSymbol.setNumber(funcVar);
+
+            paramIdx++;
+        }
+        return super.visitFuncFParams(ctx);
     }
 
     @Override
@@ -252,10 +299,28 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         return super.visitInitVal(ctx);
     }
 
+     public LLVMValueRef[] getFuncRParams(SysYParser.FuncRParamsContext ctx) {
+         LLVMValueRef[] args = new LLVMValueRef[ctx.param().size()];
+         for (int i = 0; i < ctx.param().size(); i++) {
+             args[i] = visitExp(ctx.param(i).exp());
+         }
+         return args;
+     }
+
+
     @Override
     public LLVMValueRef visitExp(SysYParser.ExpContext ctx) {
         if (ctx.IDENT() != null) { // IDENT L_PAREN funcRParams? R_PAREN
-
+            String funcName = ctx.IDENT().getText();
+            FunctionSymbol funcSymbol = (FunctionSymbol) globalScope.resolve(funcName);
+            assert (funcSymbol != null);
+            LLVMValueRef func = funcSymbol.getFuncRef();
+            assert (func != null);
+            LLVMValueRef[] args = new LLVMValueRef[0];
+            if (ctx.funcRParams() != null) {
+                args = getFuncRParams(ctx.funcRParams());
+            }
+            return LLVMBuildCall(builder, func, new PointerPointer(args), args.length, "call_");
         } else if (ctx.L_PAREN() != null) { // L_PAREN exp R_PAREN
             return visitExp(ctx.exp(0));
         } else if (ctx.unaryOp() != null) { // unaryOp exp
@@ -331,7 +396,6 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
         String varName = ctx.IDENT().getText();
         Symbol varInTable = currentScope.resolve(varName);
-        assert (varInTable!=null);
 
         assert (varInTable instanceof VariableSymbol);
 

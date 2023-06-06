@@ -11,6 +11,8 @@ public class BaseScope implements Scope {
     private final Map<String, Symbol> symbols = new LinkedHashMap<>();
     private String name;
 
+
+
     public BaseScope(String name, Scope enclosingScope) {
         this.name = name;
         this.enclosingScope = enclosingScope;
@@ -70,6 +72,7 @@ public class BaseScope implements Scope {
         }
         return null;
     }
+
 
     @Override
     public String toString() {
