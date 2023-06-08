@@ -6,7 +6,7 @@ int main(){
     int a=0;
     int count=0;
     while(a<=0){
-       if(1<2 && 5 && 0 || 0 || 1){
+       if(1<2 && 5 && 0 || 1 && f(1){
             count=count+1;
             break;
        }

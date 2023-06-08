@@ -290,6 +290,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, /*blockName:String*/"ifEntry");
             //条件跳转指令，选择跳转到哪个块
             LLVMValueRef condition = visitCond(ctx.cond());
+            condition = condI32ToI1(condition);
             LLVMBuildCondBr(builder,
                     /*condition:LLVMValueRef*/ condition,
                     /*ifTrue:LLVMBasicBlockRef*/ ifTrue,
@@ -320,6 +321,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBuildBr(builder, whileCond);
             LLVMPositionBuilderAtEnd(builder, whileCond);//whileCond后续生成的指令将追加在后面
             LLVMValueRef condition = visitCond(ctx.cond());
+            condition = condI32ToI1(condition);
             LLVMBuildCondBr(builder,
                     /*condition:LLVMValueRef*/ condition,
                     /*ifTrue:LLVMBasicBlockRef*/ whileBody,
@@ -403,9 +405,17 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
     }
 
+    public LLVMValueRef condI32ToI1(LLVMValueRef condition){
+            assert (condition!=null); // 抛出异常
+            condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
+            condition = LLVMBuildICmp
+                    (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
+            return condition;
+    }
+
     public LLVMValueRef getCurrentFunc(){
         Scope tempScope = currentScope;
-        while (tempScope!=globalScope){
+        while (!(tempScope instanceof FunctionSymbol) ){
             tempScope = tempScope.getEnclosingScope();
         }
         assert (tempScope instanceof FunctionSymbol); // 抛出异常
