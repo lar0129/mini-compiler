@@ -340,9 +340,9 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBasicBlockRef whileCond = whileCondBlock.get(whileBlockIdx);
             LLVMBuildBr(builder, whileCond);
         }
-        else if(ctx.block()!=null){
+//        else if(ctx.block()!=null){
 //            super.visitBlock(ctx.block());
-        }
+//        }
 
         return null;
     }
