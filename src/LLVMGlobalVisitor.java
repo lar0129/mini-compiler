@@ -351,10 +351,10 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
         if(ctx.exp()!=null){
             LLVMValueRef condition = visitExp(ctx.exp());
-            assert (condition!=null); // 抛出异常
-            condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
-            condition = LLVMBuildICmp
-                    (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
+//            assert (condition!=null); // 抛出异常
+//            condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
+//            condition = LLVMBuildICmp
+//                    (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
             return condition;
         }
         else{
