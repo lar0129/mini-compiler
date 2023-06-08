@@ -283,68 +283,68 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                 LLVMBuildRet(builder, retValue);
             }
         }
-//        else if(ctx.IF()!=null){
-//            LLVMValueRef function = getCurrentFunc();
-//            LLVMBasicBlockRef ifTrue = LLVMAppendBasicBlock(function, /*blockName:String*/"ifTrue");
-//            LLVMBasicBlockRef ifFalse = LLVMAppendBasicBlock(function, /*blockName:String*/"ifFalse");
-//            LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, /*blockName:String*/"ifEntry");
-//            //条件跳转指令，选择跳转到哪个块
-//            LLVMValueRef condition = visitCond(ctx.cond());
-//            condition = condI32ToI1(condition);
-//            LLVMBuildCondBr(builder,
-//                    /*condition:LLVMValueRef*/ condition,
-//                    /*ifTrue:LLVMBasicBlockRef*/ ifTrue,
-//                    /*ifFalse:LLVMBasicBlockRef*/ ifFalse);
-//
-//            // 生成ifTrue ifFalse的指令
-//            LLVMPositionBuilderAtEnd(builder, ifTrue);//后续生成的指令将追加在后面
-//            visitStmt(ctx.stmt(0));
-//            LLVMBuildBr(builder, entry);
-//            LLVMPositionBuilderAtEnd(builder, ifFalse);//后续生成的指令将追加在后面
-//            if(ctx.ELSE()!=null) {
-//                visitStmt(ctx.stmt(1));
-//            }
-//            LLVMBuildBr(builder, entry);
-//            LLVMPositionBuilderAtEnd(builder, entry);//后续生成的指令将追加在后面
-//
-//        }
-//        else if(ctx.WHILE()!=null){
-//            LLVMValueRef function = getCurrentFunc();
-//            LLVMBasicBlockRef whileCond = LLVMAppendBasicBlock(function, /*blockName:String*/"whileCond");
-//            LLVMBasicBlockRef whileBody = LLVMAppendBasicBlock(function, /*blockName:String*/"whileBody");
-//            LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, /*blockName:String*/"whileEntry");
-//
-//            whileCondBlock.add(whileCond);
-//            whileEntryBlock.add(entry);
-//            whileBlockIdx++;
-//
-//            LLVMBuildBr(builder, whileCond);
-//            LLVMPositionBuilderAtEnd(builder, whileCond);//whileCond后续生成的指令将追加在后面
-//            LLVMValueRef condition = visitCond(ctx.cond());
-//            condition = condI32ToI1(condition);
-//            LLVMBuildCondBr(builder,
-//                    /*condition:LLVMValueRef*/ condition,
-//                    /*ifTrue:LLVMBasicBlockRef*/ whileBody,
-//                    /*ifFalse:LLVMBasicBlockRef*/ entry);
-//
-//            LLVMPositionBuilderAtEnd(builder, whileBody);//whileBody后续生成的指令将追加在后面
-//            visitStmt(ctx.stmt(0));
-//            whileBlockIdx--;
-//            LLVMBuildBr(builder, whileCond);
-//
-//            LLVMPositionBuilderAtEnd(builder, entry);//后续生成的指令将追加在后面
-//        }
-//        else if(ctx.BREAK()!=null){
-//            LLVMBasicBlockRef whileEntry = whileEntryBlock.get(whileBlockIdx);
-//            LLVMBuildBr(builder, whileEntry);
-//        }
-//        else if (ctx.CONTINUE()!=null){
-//            LLVMBasicBlockRef whileCond = whileCondBlock.get(whileBlockIdx);
-//            LLVMBuildBr(builder, whileCond);
-//        }
-//        else if(ctx.block()!=null){
-//            super.visitBlock(ctx.block());
-//        }
+        else if(ctx.IF()!=null){
+            LLVMValueRef function = getCurrentFunc();
+            LLVMBasicBlockRef ifTrue = LLVMAppendBasicBlock(function, /*blockName:String*/"ifTrue");
+            LLVMBasicBlockRef ifFalse = LLVMAppendBasicBlock(function, /*blockName:String*/"ifFalse");
+            LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, /*blockName:String*/"ifEntry");
+            //条件跳转指令，选择跳转到哪个块
+            LLVMValueRef condition = visitCond(ctx.cond());
+            condition = condI32ToI1(condition);
+            LLVMBuildCondBr(builder,
+                    /*condition:LLVMValueRef*/ condition,
+                    /*ifTrue:LLVMBasicBlockRef*/ ifTrue,
+                    /*ifFalse:LLVMBasicBlockRef*/ ifFalse);
+
+            // 生成ifTrue ifFalse的指令
+            LLVMPositionBuilderAtEnd(builder, ifTrue);//后续生成的指令将追加在后面
+            visitStmt(ctx.stmt(0));
+            LLVMBuildBr(builder, entry);
+            LLVMPositionBuilderAtEnd(builder, ifFalse);//后续生成的指令将追加在后面
+            if(ctx.ELSE()!=null) {
+                visitStmt(ctx.stmt(1));
+            }
+            LLVMBuildBr(builder, entry);
+            LLVMPositionBuilderAtEnd(builder, entry);//后续生成的指令将追加在后面
+
+        }
+        else if(ctx.WHILE()!=null){
+            LLVMValueRef function = getCurrentFunc();
+            LLVMBasicBlockRef whileCond = LLVMAppendBasicBlock(function, /*blockName:String*/"whileCond");
+            LLVMBasicBlockRef whileBody = LLVMAppendBasicBlock(function, /*blockName:String*/"whileBody");
+            LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, /*blockName:String*/"whileEntry");
+
+            whileCondBlock.add(whileCond);
+            whileEntryBlock.add(entry);
+            whileBlockIdx++;
+
+            LLVMBuildBr(builder, whileCond);
+            LLVMPositionBuilderAtEnd(builder, whileCond);//whileCond后续生成的指令将追加在后面
+            LLVMValueRef condition = visitCond(ctx.cond());
+            condition = condI32ToI1(condition);
+            LLVMBuildCondBr(builder,
+                    /*condition:LLVMValueRef*/ condition,
+                    /*ifTrue:LLVMBasicBlockRef*/ whileBody,
+                    /*ifFalse:LLVMBasicBlockRef*/ entry);
+
+            LLVMPositionBuilderAtEnd(builder, whileBody);//whileBody后续生成的指令将追加在后面
+            visitStmt(ctx.stmt(0));
+            whileBlockIdx--;
+            LLVMBuildBr(builder, whileCond);
+
+            LLVMPositionBuilderAtEnd(builder, entry);//后续生成的指令将追加在后面
+        }
+        else if(ctx.BREAK()!=null){
+            LLVMBasicBlockRef whileEntry = whileEntryBlock.get(whileBlockIdx);
+            LLVMBuildBr(builder, whileEntry);
+        }
+        else if (ctx.CONTINUE()!=null){
+            LLVMBasicBlockRef whileCond = whileCondBlock.get(whileBlockIdx);
+            LLVMBuildBr(builder, whileCond);
+        }
+        else if(ctx.block()!=null){
+            visitBlock(ctx.block());
+        }
 
         return null;
     }
