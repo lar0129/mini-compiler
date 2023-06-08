@@ -11,6 +11,7 @@ import scope.*;
 import type.*;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import static org.bytedeco.llvm.global.LLVM.*;
 
@@ -20,6 +21,9 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     private Scope currentScope = null;
     private int localScopeCounter = 0;
 
+    private ArrayList<LLVMBasicBlockRef> whileEntryBlock = new ArrayList<>();
+    private ArrayList<LLVMBasicBlockRef> whileCondBlock = new ArrayList<>();
+    private int whileBlockIdx = -1;
 
     LLVMModuleRef module;
     LLVMBuilderRef builder;
@@ -283,7 +287,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef function = getCurrentFunc();
             LLVMBasicBlockRef ifTrue = LLVMAppendBasicBlock(function, /*blockName:String*/"ifTrue");
             LLVMBasicBlockRef ifFalse = LLVMAppendBasicBlock(function, /*blockName:String*/"ifFalse");
-            LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, /*blockName:String*/"entry");
+            LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, /*blockName:String*/"ifEntry");
             //条件跳转指令，选择跳转到哪个块
             LLVMValueRef condition = visitCond(ctx.cond());
             LLVMBuildCondBr(builder,
@@ -293,27 +297,51 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
             // 生成ifTrue ifFalse的指令
             LLVMPositionBuilderAtEnd(builder, ifTrue);//后续生成的指令将追加在后面
-            super.visitStmt(ctx.stmt(0));
+            visitStmt(ctx.stmt(0));
             LLVMBuildBr(builder, entry);
             LLVMPositionBuilderAtEnd(builder, ifFalse);//后续生成的指令将追加在后面
             if(ctx.ELSE()!=null) {
-                super.visitStmt(ctx.stmt(1));
+                visitStmt(ctx.stmt(1));
             }
             LLVMBuildBr(builder, entry);
             LLVMPositionBuilderAtEnd(builder, entry);//后续生成的指令将追加在后面
 
         }
         else if(ctx.WHILE()!=null){
+            LLVMValueRef function = getCurrentFunc();
+            LLVMBasicBlockRef whileCond = LLVMAppendBasicBlock(function, /*blockName:String*/"whileCond");
+            LLVMBasicBlockRef whileBody = LLVMAppendBasicBlock(function, /*blockName:String*/"whileBody");
+            LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, /*blockName:String*/"whileEntry");
 
+            whileCondBlock.add(whileCond);
+            whileEntryBlock.add(entry);
+            whileBlockIdx++;
+
+            LLVMBuildBr(builder, whileCond);
+            LLVMPositionBuilderAtEnd(builder, whileCond);//whileCond后续生成的指令将追加在后面
+            LLVMValueRef condition = visitCond(ctx.cond());
+            LLVMBuildCondBr(builder,
+                    /*condition:LLVMValueRef*/ condition,
+                    /*ifTrue:LLVMBasicBlockRef*/ whileBody,
+                    /*ifFalse:LLVMBasicBlockRef*/ entry);
+
+            LLVMPositionBuilderAtEnd(builder, whileBody);//whileBody后续生成的指令将追加在后面
+            visitStmt(ctx.stmt(0));
+            whileBlockIdx--;
+            LLVMBuildBr(builder, whileCond);
+
+            LLVMPositionBuilderAtEnd(builder, entry);//后续生成的指令将追加在后面
         }
         else if(ctx.BREAK()!=null){
-
+            LLVMBasicBlockRef whileEntry = whileEntryBlock.get(whileBlockIdx);
+            LLVMBuildBr(builder, whileEntry);
         }
         else if (ctx.CONTINUE()!=null){
-
+            LLVMBasicBlockRef whileCond = whileCondBlock.get(whileBlockIdx);
+            LLVMBuildBr(builder, whileCond);
         }
         else if(ctx.block()!=null){
-            visitBlock(ctx.block());
+            super.visitBlock(ctx.block());
         }
 
         return null;
@@ -322,7 +350,12 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     @Override
     public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
         if(ctx.exp()!=null){
-            return visitExp(ctx.exp());
+            LLVMValueRef condition = visitExp(ctx.exp());
+            assert (condition!=null); // 抛出异常
+            condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
+            condition = LLVMBuildICmp
+                    (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
+            return condition;
         }
         else{
             LLVMValueRef Lcond = visitCond(ctx.cond(0));
@@ -339,24 +372,12 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                     condition = LLVMBuildICmp
                             (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, Lcond, Rcond, "neq_");
                 }
-                condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
-                condition = LLVMBuildICmp
-                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
-                return condition;
             }
             else if(ctx.AND()!=null){
                 condition = LLVMBuildAnd(builder, Lcond, Rcond, "and_");
-                condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
-                condition = LLVMBuildICmp
-                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
-                return condition;
             }
             else if(ctx.OR()!=null){
                 condition = LLVMBuildOr(builder, Lcond, Rcond, "or_");
-                condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
-                condition = LLVMBuildICmp
-                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
-                return condition;
             }
             else {
                 if (ctx.LT()!=null){
@@ -375,13 +396,12 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                     condition = LLVMBuildICmp
                             (builder, /*这是个int型常量，表示比较的方式*/LLVMIntSGE, Lcond, Rcond, "sge_");
                 }
-                assert (condition!=null); // 抛出异常
-                condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
-                condition = LLVMBuildICmp
-                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
-                return condition;
             }
-
+            assert (condition!=null); // 抛出异常
+            condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
+            condition = LLVMBuildICmp
+                    (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
+            return condition;
         }
 
     }
