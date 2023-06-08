@@ -131,6 +131,11 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         // 遍历子树
         LLVMValueRef res = super.visitFuncDef(ctx);
         // 回到上一层 Scope
+        LLVMTypeRef funcReturnType = LLVMGetReturnType(LLVMGetElementType(LLVMTypeOf(getCurrentFunc())));
+
+        if (funcReturnType.equals(voidType)){
+            LLVMBuildRetVoid(builder);
+        }
         currentScope = currentScope.getEnclosingScope();
 
         return res;
@@ -267,14 +272,116 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBuildStore(builder, Rval, Lval);
         }
         else if (ctx.RETURN() != null){
-            LLVMValueRef retValue = visitExp(ctx.exp());
-            //函数返回指令
-            LLVMBuildRet(builder, /*result:LLVMValueRef*/retValue);
-            return null;
+            LLVMTypeRef funcReturnType = LLVMGetReturnType(LLVMGetElementType(LLVMTypeOf(getCurrentFunc())));
+
+            if (funcReturnType.equals(i32Type)){
+                LLVMValueRef retValue = visitExp(ctx.exp());
+                LLVMBuildRet(builder, retValue);
+            }
         }
+        else if(ctx.IF()!=null){
+            LLVMValueRef function = getCurrentFunc();
+            LLVMBasicBlockRef ifTrue = LLVMAppendBasicBlock(function, /*blockName:String*/"ifTrue");
+            LLVMBasicBlockRef ifFalse = LLVMAppendBasicBlock(function, /*blockName:String*/"ifFalse");
+            LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, /*blockName:String*/"entry");
+            //条件跳转指令，选择跳转到哪个块
+            LLVMValueRef condition = visitCond(ctx.cond());
+            LLVMBuildCondBr(builder,
+                    /*condition:LLVMValueRef*/ condition,
+                    /*ifTrue:LLVMBasicBlockRef*/ ifTrue,
+                    /*ifFalse:LLVMBasicBlockRef*/ ifFalse);
+
+            // 生成ifTrue ifFalse的指令
+            LLVMPositionBuilderAtEnd(builder, ifTrue);//后续生成的指令将追加在后面
+            super.visitStmt(ctx.stmt(0));
+            LLVMBuildBr(builder, entry);
+            LLVMPositionBuilderAtEnd(builder, ifFalse);//后续生成的指令将追加在后面
+            if(ctx.ELSE()!=null) {
+                super.visitStmt(ctx.stmt(1));
+            }
+            LLVMBuildBr(builder, entry);
+            LLVMPositionBuilderAtEnd(builder, entry);//后续生成的指令将追加在后面
+
+        }
+        else if(ctx.WHILE()!=null){
+
+        }
+        else if(ctx.BREAK()!=null){
+
+        }
+        else if (ctx.CONTINUE()!=null){
+
+        }
+        else if(ctx.block()!=null){
+            visitBlock(ctx.block());
+        }
+
         return null;
     }
 
+    @Override
+    public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
+        if(ctx.exp()!=null){
+            return visitExp(ctx.exp());
+        }
+        else{
+            LLVMValueRef Lcond = visitCond(ctx.cond(0));
+            LLVMValueRef Rcond = visitCond(ctx.cond(1));
+            if(ctx.EQ()!=null || ctx.NEQ()!=null){
+                //生成比较指令
+                if (ctx.EQ()!=null){
+                    LLVMValueRef condition = LLVMBuildICmp
+                            (builder, /*这是个int型常量，表示比较的方式*/LLVMIntEQ, Lcond, Rcond, "eq_");
+                    return condition;
+                }
+                else {
+                    LLVMValueRef condition = LLVMBuildICmp
+                            (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, Lcond, Rcond, "neq_");
+                    return condition;
+                }
+            }
+            else if(ctx.AND()!=null){
+            }
+            else if(ctx.OR()!=null){
+
+            }
+            else {
+                LLVMValueRef condition = null;
+                if (ctx.LT()!=null){
+                    condition = LLVMBuildICmp
+                            (builder, /*这是个int型常量，表示比较的方式*/LLVMIntSLT, Lcond, Rcond, "slt_");
+                }
+                else if(ctx.GT()!=null){
+                    condition = LLVMBuildICmp
+                            (builder, /*这是个int型常量，表示比较的方式*/LLVMIntSGT, Lcond, Rcond, "sgt_");
+                }
+                else if(ctx.LE()!=null){
+                    condition = LLVMBuildICmp
+                            (builder, /*这是个int型常量，表示比较的方式*/LLVMIntSLE, Lcond, Rcond, "sle_");
+                }
+                else if(ctx.GE()!=null){
+                    condition = LLVMBuildICmp
+                            (builder, /*这是个int型常量，表示比较的方式*/LLVMIntSGE, Lcond, Rcond, "sge_");
+                }
+                assert (condition!=null); // 抛出异常
+                return condition;
+            }
+
+        }
+
+        return null;
+    }
+
+    public LLVMValueRef getCurrentFunc(){
+        Scope tempScope = currentScope;
+        while (tempScope!=globalScope){
+            if (tempScope instanceof FunctionSymbol){
+                return ((FunctionSymbol) tempScope).getFuncRef();
+            }
+            tempScope = tempScope.getEnclosingScope();
+        }
+        return null;
+    }
 
     public LLVMValueRef getConstInitVal(SysYParser.ConstInitValContext ctx) {
         if (ctx.constExp()!=null){
