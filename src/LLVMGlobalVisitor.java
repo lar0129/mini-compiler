@@ -327,26 +327,38 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         else{
             LLVMValueRef Lcond = visitCond(ctx.cond(0));
             LLVMValueRef Rcond = visitCond(ctx.cond(1));
+            LLVMValueRef condition = null;
             if(ctx.EQ()!=null || ctx.NEQ()!=null){
                 //生成比较指令
                 if (ctx.EQ()!=null){
-                    LLVMValueRef condition = LLVMBuildICmp
+                    condition = LLVMBuildICmp
                             (builder, /*这是个int型常量，表示比较的方式*/LLVMIntEQ, Lcond, Rcond, "eq_");
-                    return condition;
+
                 }
                 else {
-                    LLVMValueRef condition = LLVMBuildICmp
+                    condition = LLVMBuildICmp
                             (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, Lcond, Rcond, "neq_");
-                    return condition;
                 }
+                condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
+                condition = LLVMBuildICmp
+                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
+                return condition;
             }
             else if(ctx.AND()!=null){
+                condition = LLVMBuildAnd(builder, Lcond, Rcond, "and_");
+                condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
+                condition = LLVMBuildICmp
+                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
+                return condition;
             }
             else if(ctx.OR()!=null){
-
+                condition = LLVMBuildOr(builder, Lcond, Rcond, "or_");
+                condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
+                condition = LLVMBuildICmp
+                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
+                return condition;
             }
             else {
-                LLVMValueRef condition = null;
                 if (ctx.LT()!=null){
                     condition = LLVMBuildICmp
                             (builder, /*这是个int型常量，表示比较的方式*/LLVMIntSLT, Lcond, Rcond, "slt_");
@@ -364,12 +376,14 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                             (builder, /*这是个int型常量，表示比较的方式*/LLVMIntSGE, Lcond, Rcond, "sge_");
                 }
                 assert (condition!=null); // 抛出异常
+                condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
+                condition = LLVMBuildICmp
+                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
                 return condition;
             }
 
         }
 
-        return null;
     }
 
     public LLVMValueRef getCurrentFunc(){
