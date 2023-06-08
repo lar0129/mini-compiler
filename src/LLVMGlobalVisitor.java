@@ -223,6 +223,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             }
             else {
                 LLVMValueRef currentVar = LLVMBuildAlloca(builder, i32Type, /*pointerName:String*/varName);
+                LLVMBuildStore(builder, zero, currentVar);
                 varSymbol.setNumber(currentVar);
             }
 
