@@ -406,12 +406,10 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef getCurrentFunc(){
         Scope tempScope = currentScope;
         while (tempScope!=globalScope){
-            if (tempScope instanceof FunctionSymbol){
-                return ((FunctionSymbol) tempScope).getFuncRef();
-            }
             tempScope = tempScope.getEnclosingScope();
         }
-        return null;
+        assert (tempScope instanceof FunctionSymbol); // 抛出异常
+        return ((FunctionSymbol) tempScope).getFuncRef();
     }
 
     public LLVMValueRef getConstInitVal(SysYParser.ConstInitValContext ctx) {
