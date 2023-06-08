@@ -28,6 +28,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     LLVMModuleRef module;
     LLVMBuilderRef builder;
     LLVMTypeRef i32Type;
+    LLVMTypeRef i1Type;
     LLVMTypeRef voidType;
     LLVMValueRef zero;
     @Override
@@ -45,6 +46,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         this.builder = LLVMCreateBuilder();
         //考虑到我们的语言中仅存在int一个基本类型，可以通过下面的语句为LLVM的int型重命名方便以后使用
         this.i32Type = LLVMInt32Type();
+        this.i1Type = LLVMInt1Type();
         this.voidType = LLVMVoidType();
         this.zero = LLVMConstInt(i32Type, 0, /* signExtend */ 0);
 
@@ -52,7 +54,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         LLVMValueRef llvmValueRef = tree.accept(this);
 
         //输出到控制台
-//        LLVMDumpModule(module);
+        LLVMDumpModule(module);
         //输出到文件
         BytePointer error = new BytePointer();
 //        if (LLVMPrintModuleToFile(module, Main.argsCopy[1]+"test.ll", error) != 0) {    // moudle是你自定义的LLVMModuleRef对象
@@ -353,10 +355,12 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
         if(ctx.exp()!=null){
             LLVMValueRef condition = visitExp(ctx.exp());
-//            assert (condition!=null); // 抛出异常
-//            condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
-//            condition = LLVMBuildICmp
-//                    (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
+            if(i1Type == LLVMTypeOf(condition)){
+                condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
+                condition = LLVMBuildICmp
+                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
+            }
+            assert (condition!=null); // 抛出异常
             return condition;
         }
         else{
