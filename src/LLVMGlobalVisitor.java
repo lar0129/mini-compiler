@@ -340,9 +340,9 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBasicBlockRef whileCond = whileCondBlock.get(whileBlockIdx);
             LLVMBuildBr(builder, whileCond);
         }
-//        else if(ctx.block()!=null){
-//            super.visitBlock(ctx.block());
-//        }
+        else if(ctx.block()!=null){
+            super.visitBlock(ctx.block());
+        }
 
         return null;
     }
@@ -398,9 +398,6 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                 }
             }
             assert (condition!=null); // 抛出异常
-            condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
-            condition = LLVMBuildICmp
-                    (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
             return condition;
         }
 
