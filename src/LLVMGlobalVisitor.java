@@ -203,31 +203,30 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             currentScope.define(varSymbol);
 
 //             存入LLVMVALUE
+            LLVMValueRef initVal = null;
             if (varDefContext.ASSIGN() != null) {
-                LLVMValueRef initVal = visitInitVal(varDefContext.initVal());
-                // 全局变量创建
-                if (currentScope == globalScope) {
-                    //创建名为globalVar的全局变量
-                    LLVMValueRef globalVar = LLVMAddGlobal(module, i32Type, /*globalVarName:String*/varName);
-                    //为全局变量设置初始化器
-                    LLVMSetInitializer(globalVar, /* constantVal:LLVMValueRef*/initVal);
-                    varSymbol.setNumber(globalVar);
-                }
-                // 局部变量创建
-                else {
-                    LLVMValueRef currentVar = LLVMBuildAlloca(builder, i32Type, /*pointerName:String*/varName);
-                    //将数值存入该内存
-                    LLVMBuildStore(builder, initVal, currentVar);
-                    varSymbol.setNumber(currentVar);
-                }
+                 initVal = visitInitVal(varDefContext.initVal());
             }
             else {
+                initVal = zero;
+            }
+            // 全局变量创建
+            if (currentScope == globalScope) {
+                //创建名为globalVar的全局变量
+                LLVMValueRef globalVar = LLVMAddGlobal(module, i32Type, /*globalVarName:String*/varName);
+                //为全局变量设置初始化器
+                LLVMSetInitializer(globalVar, /* constantVal:LLVMValueRef*/initVal);
+                varSymbol.setNumber(globalVar);
+            }
+            // 局部变量创建
+            else {
                 LLVMValueRef currentVar = LLVMBuildAlloca(builder, i32Type, /*pointerName:String*/varName);
-                LLVMBuildStore(builder, zero, currentVar);
+                //将数值存入该内存
+                LLVMBuildStore(builder, initVal, currentVar);
                 varSymbol.setNumber(currentVar);
             }
-
         }
+
         return super.visitVarDecl(ctx);
     }
 
