@@ -327,6 +327,10 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                         /*ifTrue:LLVMBasicBlockRef*/ ifTrue,
                         /*ifFalse:LLVMBasicBlockRef*/ ifFalse);
             }
+            else {
+                LLVMDeleteBasicBlock(shortCircleTrueBlock.get(shortCircleFalseBlock.size()-1));
+                LLVMDeleteBasicBlock(shortCircleFalseBlock.get(shortCircleFalseBlock.size()-1));
+            }
             // 生成ifTrue ifFalse的指令
             LLVMPositionBuilderAtEnd(builder, ifTrue);//后续生成的指令将追加在后面
             visitStmt(ctx.stmt(0));
@@ -360,6 +364,10 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                         /*condition:LLVMValueRef*/ condition,
                         /*ifTrue:LLVMBasicBlockRef*/ whileBody,
                         /*ifFalse:LLVMBasicBlockRef*/ entry);
+            }
+            else {
+                LLVMDeleteBasicBlock(shortCircleTrueBlock.get(shortCircleFalseBlock.size()-1));
+                LLVMDeleteBasicBlock(shortCircleFalseBlock.get(shortCircleFalseBlock.size()-1));
             }
             LLVMPositionBuilderAtEnd(builder, whileBody);//whileBody后续生成的指令将追加在后面
             visitStmt(ctx.stmt(0));
