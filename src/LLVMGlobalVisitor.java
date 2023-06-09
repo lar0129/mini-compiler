@@ -361,8 +361,6 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef condition = visitExp(ctx.exp());
             if(i1Type.equals(LLVMTypeOf(condition))){
                 condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
-                condition = LLVMBuildICmp
-                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
             }
             assert (condition!=null); // 抛出异常
             return condition;
@@ -372,13 +370,9 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef Rcond = visitCond(ctx.cond(1));
             if(i1Type.equals(LLVMTypeOf(Lcond))){
                 Lcond = LLVMBuildZExt(builder, Lcond, i32Type, "cond_");
-                Lcond = LLVMBuildICmp
-                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, Lcond, "cond_");
             }
             if(i1Type.equals(LLVMTypeOf(Rcond))){
                 Rcond = LLVMBuildZExt(builder, Rcond, i32Type, "cond_");
-                Rcond = LLVMBuildICmp
-                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, Rcond, "cond_");
             }
 
             LLVMValueRef condition = null;
