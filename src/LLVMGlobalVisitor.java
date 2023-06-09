@@ -229,8 +229,10 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             }
         }
 
-        return super.visitVarDecl(ctx);
+//        return super.visitVarDecl(ctx);
+        return null;
     }
+
 
     @Override
     public LLVMValueRef visitConstDecl(SysYParser.ConstDeclContext ctx) {
@@ -267,8 +269,10 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
         }
 
-        return super.visitConstDecl(ctx);
+//        return super.visitConstDecl(ctx);
+        return null;
     }
+
 
     @Override
     public LLVMValueRef visitStmt(SysYParser.StmtContext ctx) {
@@ -355,7 +359,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
         if(ctx.exp()!=null){
             LLVMValueRef condition = visitExp(ctx.exp());
-            if(i1Type == LLVMTypeOf(condition)){
+            if(i1Type.equals(LLVMTypeOf(condition))){
                 condition = LLVMBuildZExt(builder, condition, i32Type, "cond_");
                 condition = LLVMBuildICmp
                         (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, condition, "cond_");
@@ -366,6 +370,17 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         else{
             LLVMValueRef Lcond = visitCond(ctx.cond(0));
             LLVMValueRef Rcond = visitCond(ctx.cond(1));
+            if(i1Type.equals(LLVMTypeOf(Lcond))){
+                Lcond = LLVMBuildZExt(builder, Lcond, i32Type, "cond_");
+                Lcond = LLVMBuildICmp
+                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, Lcond, "cond_");
+            }
+            if(i1Type.equals(LLVMTypeOf(Rcond))){
+                Rcond = LLVMBuildZExt(builder, Rcond, i32Type, "cond_");
+                Rcond = LLVMBuildICmp
+                        (builder, /*这是个int型常量，表示比较的方式*/LLVMIntNE, zero, Rcond, "cond_");
+            }
+
             LLVMValueRef condition = null;
             if(ctx.EQ()!=null || ctx.NEQ()!=null){
                 //生成比较指令
