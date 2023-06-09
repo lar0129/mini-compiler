@@ -63,18 +63,14 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
 
         for (LLVMBasicBlockRef llvmBasicBlockRef : shortCircleFalseBlock) {
-            if(LLVMGetBasicBlockParent(llvmBasicBlockRef).getPointer().isNull()){
-                LLVMDeleteBasicBlock(llvmBasicBlockRef);
-            }
+            LLVMBuildBr(builder,llvmBasicBlockRef);
         }
         for (LLVMBasicBlockRef llvmBasicBlockRef : shortCircleTrueBlock) {
-            if(LLVMGetPreviousBasicBlock(llvmBasicBlockRef).isNull()){
-                LLVMDeleteBasicBlock(llvmBasicBlockRef);
-            }
+            LLVMBuildBr(builder,llvmBasicBlockRef);
         }
 
         //输出到控制台
-//        LLVMDumpModule(module);
+        LLVMDumpModule(module);
         //输出到文件
         BytePointer error = new BytePointer();
 //        if (LLVMPrintModuleToFile(module, Main.argsCopy[1]+"test.ll", error) != 0) {    // moudle是你自定义的LLVMModuleRef对象
@@ -413,6 +409,8 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                     shortCircleFalseBlock.add(leftCondExitFalse);
                 }
                 else {
+                    LLVMDeleteBasicBlock(shortCircleTrueBlock.get(shortCircleBlockIdx + 1));
+                    LLVMDeleteBasicBlock(shortCircleFalseBlock.get(shortCircleBlockIdx + 1));
                     shortCircleTrueBlock.set(shortCircleBlockIdx+1, leftCondExitTrue);
                     shortCircleFalseBlock.set(shortCircleBlockIdx+1, leftCondExitFalse);
                 }
