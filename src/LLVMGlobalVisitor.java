@@ -64,13 +64,18 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
         for (LLVMBasicBlockRef llvmBasicBlockRef : shortCircleFalseBlock) {
             LLVMBuildBr(builder,llvmBasicBlockRef);
+            LLVMPositionBuilderAtEnd(builder,llvmBasicBlockRef);
+            LLVMBuildBr(builder,llvmBasicBlockRef);
+
         }
         for (LLVMBasicBlockRef llvmBasicBlockRef : shortCircleTrueBlock) {
+            LLVMBuildBr(builder,llvmBasicBlockRef);
+            LLVMPositionBuilderAtEnd(builder,llvmBasicBlockRef);
             LLVMBuildBr(builder,llvmBasicBlockRef);
         }
 
         //输出到控制台
-        LLVMDumpModule(module);
+//        LLVMDumpModule(module);
         //输出到文件
         BytePointer error = new BytePointer();
 //        if (LLVMPrintModuleToFile(module, Main.argsCopy[1]+"test.ll", error) != 0) {    // moudle是你自定义的LLVMModuleRef对象
