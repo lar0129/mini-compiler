@@ -462,35 +462,35 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                 }
                 else {  // OR != NULL
 //                    condition = LLVMBuildOr(builder, Lcond, Rcond, "or_");
-                    LLVMValueRef Lcond = visitCond(ctx.cond(0));
-                    if(Lcond != null) { // 左节点为表达式
-                        Lcond = condI32ToI1(Lcond);
-                        LLVMBuildCondBr(builder,
-                                /*condition:LLVMValueRef*/ Lcond,
-                                /*ifTrue:LLVMBasicBlockRef*/ lastTrueBlock,      // 回到上一层节点，返回正确
-                                /*ifFalse:LLVMBasicBlockRef*/ leftCondExit); // 到中间
-                    }
-                    else { // 左节点嵌套
-                        // if Lcond false
-                        LLVMPositionBuilderAtEnd(builder, leftCondExitFalse);
-                        LLVMBuildBr(builder,leftCondExit);
-                        LLVMPositionBuilderAtEnd(builder, leftCondExitTrue);
-                        LLVMBuildBr(builder,lastTrueBlock);
-                    }
-
-                    // if Lcond true
-                    LLVMPositionBuilderAtEnd(builder, leftCondExit);//
-                    LLVMValueRef Rcond = visitCond(ctx.cond(1));
-                    if(Rcond == null) { // 右节点嵌套
-                       LLVMBuildBr(builder, lastFalseBlock);
-                    }
-                    else { // 右节点为表达式
-                        Rcond = condI32ToI1(Rcond);
-                        LLVMBuildCondBr(builder,
-                                /*condition:LLVMValueRef*/ Rcond,
-                                /*ifTrue:LLVMBasicBlockRef*/ lastTrueBlock, // 回到上一层，返回正确
-                                /*ifFalse:LLVMBasicBlockRef*/ lastFalseBlock); // 回到上一层，返回右cond错误(关键bug，默认自己是左cond)
-                    }
+//                    LLVMValueRef Lcond = visitCond(ctx.cond(0));
+//                    if(Lcond != null) { // 左节点为表达式
+//                        Lcond = condI32ToI1(Lcond);
+//                        LLVMBuildCondBr(builder,
+//                                /*condition:LLVMValueRef*/ Lcond,
+//                                /*ifTrue:LLVMBasicBlockRef*/ lastTrueBlock,      // 回到上一层节点，返回正确
+//                                /*ifFalse:LLVMBasicBlockRef*/ leftCondExit); // 到中间
+//                    }
+//                    else { // 左节点嵌套
+//                        // if Lcond false
+//                        LLVMPositionBuilderAtEnd(builder, leftCondExitFalse);
+//                        LLVMBuildBr(builder,leftCondExit);
+//                        LLVMPositionBuilderAtEnd(builder, leftCondExitTrue);
+//                        LLVMBuildBr(builder,lastTrueBlock);
+//                    }
+//
+//                    // if Lcond true
+//                    LLVMPositionBuilderAtEnd(builder, leftCondExit);//
+//                    LLVMValueRef Rcond = visitCond(ctx.cond(1));
+//                    if(Rcond == null) { // 右节点嵌套
+//                       LLVMBuildBr(builder, lastFalseBlock);
+//                    }
+//                    else { // 右节点为表达式
+//                        Rcond = condI32ToI1(Rcond);
+//                        LLVMBuildCondBr(builder,
+//                                /*condition:LLVMValueRef*/ Rcond,
+//                                /*ifTrue:LLVMBasicBlockRef*/ lastTrueBlock, // 回到上一层，返回正确
+//                                /*ifFalse:LLVMBasicBlockRef*/ lastFalseBlock); // 回到上一层，返回右cond错误(关键bug，默认自己是左cond)
+//                    }
 
                     shortCircleBlockIdx--;
                     return null;
