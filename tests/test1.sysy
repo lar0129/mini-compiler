@@ -10,13 +10,14 @@ int f2(int a,int b){
 
 int main(){
     int a = 1;
+       if ( f1(a) && f2(a,1)  || f1(a) || f1(a+1) && 1 &&  f1(a) ){ //bug
 //       if (f1(a+1) && f1(a)  && f1(a) || f1(a) && f2(a,1) && f1(a)){ //bug
 //       if (f1(a) || f2(a,1) || f1(a) && f1(a) && f1(a)){ //bug
 //       if ( f1(a) && f2(a,1)  || f1(a+1) && f1(a) ){ //bug
-       if ( f1(a) || f2(a,1)  && f1(a) || f1(a) || f1(a)){ //bug
+//       if ( f1(a) || f2(a,1)  && f1(a) || f1(a) || f1(a)){ //bug
 //       if ( f1(a) && f2(a,1)  || f1(a+1) ){
 //       if ( f1(a) && f2(a,1) && f1(a) ){
-//       if ( f1(a) || f2(a,1) || f1(a) ){
+//       if ( f1(a) || f2(a,1) || f1(a) || f2(a,2) ){
             a = a+1;
         }
     return a;

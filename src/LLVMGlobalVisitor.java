@@ -25,8 +25,8 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     private ArrayList<LLVMBasicBlockRef> whileEntryBlock = new ArrayList<>();
     private ArrayList<LLVMBasicBlockRef> whileCondBlock = new ArrayList<>();
     private int whileBlockIdx = -1;
-    private ArrayList<LLVMBasicBlockRef> shortCircleFalseBlock = new ArrayList<>();
-    private ArrayList<LLVMBasicBlockRef> shortCircleTrueBlock = new ArrayList<>();
+    private Stack<LLVMBasicBlockRef> shortCircleFalseBlock = new Stack<>();
+    private Stack<LLVMBasicBlockRef> shortCircleTrueBlock = new Stack<>();
     private int shortCircleBlockIdx = 0;
     private ArrayList<LLVMBasicBlockRef> fixedBlock = new ArrayList<>();
 
@@ -69,7 +69,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         }
 
         //输出到控制台
-//        LLVMDumpModule(module);
+        LLVMDumpModule(module);
         //输出到文件
         BytePointer error = new BytePointer();
 //        if (LLVMPrintModuleToFile(module, Main.argsCopy[1]+"test.ll", error) != 0) {    // moudle是你自定义的LLVMModuleRef对象
@@ -311,8 +311,8 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, /*blockName:String*/"ifEntry");
             //条件跳转指令，选择跳转到哪个块
 
-            shortCircleTrueBlock.add(ifTrue);
-            shortCircleFalseBlock.add(ifFalse);
+            shortCircleTrueBlock.push(ifTrue);
+            shortCircleFalseBlock.push(ifFalse);
             LLVMValueRef condition = visitCond(ctx.cond());
 
             // 短路求值不需要再添跳转
@@ -323,10 +323,10 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                         /*ifTrue:LLVMBasicBlockRef*/ ifTrue,
                         /*ifFalse:LLVMBasicBlockRef*/ ifFalse);
             }
-            else {
-//                LLVMDeleteBasicBlock(shortCircleTrueBlock.get(shortCircleFalseBlock.size()-1));
-//                LLVMDeleteBasicBlock(shortCircleFalseBlock.get(shortCircleFalseBlock.size()-1));
-            }
+
+            shortCircleTrueBlock.pop();
+            shortCircleFalseBlock.pop();
+
             // 生成ifTrue ifFalse的指令
             LLVMPositionBuilderAtEnd(builder, ifTrue);//后续生成的指令将追加在后面
             visitStmt(ctx.stmt(0));
@@ -402,30 +402,35 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             if(ctx.AND()!=null || ctx.OR() != null){
                 // 保存当前函数上一层
                 LLVMValueRef function = getCurrentFunc();
-                LLVMBasicBlockRef leftCondExit = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExit");
-
-                LLVMBasicBlockRef lastTrueBlock = shortCircleTrueBlock.get(shortCircleBlockIdx);
-                LLVMBasicBlockRef lastFalseBlock = shortCircleFalseBlock.get(shortCircleBlockIdx);
-
+                LLVMBasicBlockRef leftCondExit = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExit"); // 中间
+                LLVMBasicBlockRef lastTrueBlock = shortCircleTrueBlock.peek(); // 上层正确
+                LLVMBasicBlockRef lastFalseBlock = shortCircleFalseBlock.peek(); // 上层错误
+//                LLVMBasicBlockRef lastTrueBlock = shortCircleTrueBlock.pop();
+//                LLVMBasicBlockRef lastFalseBlock = shortCircleFalseBlock.pop();
                 // 创建子函数的“上一层”
-                LLVMBasicBlockRef leftCondExitTrue = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExitTrue");
-                LLVMBasicBlockRef leftCondExitFalse = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExitFalse");
-                fixedBlock.add(leftCondExitTrue);
-                fixedBlock.add(leftCondExitFalse);
-
-                if(shortCircleFalseBlock.size()-1==shortCircleBlockIdx) {
-                    shortCircleTrueBlock.add(leftCondExitTrue);
-                    shortCircleFalseBlock.add(leftCondExitFalse);
-                }
-                else {
-
-                    shortCircleTrueBlock.set(shortCircleBlockIdx+1, leftCondExitTrue);
-                    shortCircleFalseBlock.set(shortCircleBlockIdx+1, leftCondExitFalse);
-                }
+//                LLVMBasicBlockRef leftCondExitTrue = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExitTrue");
+//                LLVMBasicBlockRef leftCondExitFalse = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExitFalse");
+//
+//                fixedBlock.add(leftCondExitTrue);
+//                fixedBlock.add(leftCondExitFalse);
+//
+////                if(shortCircleFalseBlock.size()-1==shortCircleBlockIdx) {
+//                    shortCircleTrueBlock.push(leftCondExitTrue);
+//                    shortCircleFalseBlock.push(leftCondExitFalse);
+//                }
+//                else {
+//
+//                    shortCircleTrueBlock.set(shortCircleBlockIdx+1, leftCondExitTrue);
+//                    shortCircleFalseBlock.set(shortCircleBlockIdx+1, leftCondExitFalse);
+//                }
                 shortCircleBlockIdx++;
 
                 if (ctx.AND()!=null){
-//                    condition = LLVMBuildAnd(builder, Lcond, Rcond, "and_");
+
+                    LLVMBasicBlockRef leftCondExitTrue = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExitTrue");
+                    fixedBlock.add(leftCondExitTrue);
+                    shortCircleTrueBlock.push(leftCondExitTrue);
+
                     LLVMValueRef Lcond = visitCond(ctx.cond(0));
                     if(Lcond != null) {  // 左节点为表达式
                         Lcond = condI32ToI1(Lcond);
@@ -436,11 +441,13 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                     }
                     else { // 左节点嵌套
                         // if Lcond false
-                        LLVMPositionBuilderAtEnd(builder, leftCondExitFalse);
+                        LLVMPositionBuilderAtEnd(builder, shortCircleFalseBlock.peek());
                         LLVMBuildBr(builder,lastFalseBlock);
                         LLVMPositionBuilderAtEnd(builder, leftCondExitTrue);
                         LLVMBuildBr(builder,leftCondExit);
                     }
+
+                    shortCircleTrueBlock.pop();
 
                     // if Lcond true
                     LLVMPositionBuilderAtEnd(builder, leftCondExit);//
@@ -453,44 +460,45 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                                 /*ifFalse:LLVMBasicBlockRef*/ lastFalseBlock); // 回到上一层，返回错误
 
                     }
-                    else {
 
-                    }
 
                     shortCircleBlockIdx--;
                     return null;
                 }
                 else {  // OR != NULL
 //                    condition = LLVMBuildOr(builder, Lcond, Rcond, "or_");
-//                    LLVMValueRef Lcond = visitCond(ctx.cond(0));
-//                    if(Lcond != null) { // 左节点为表达式
-//                        Lcond = condI32ToI1(Lcond);
-//                        LLVMBuildCondBr(builder,
-//                                /*condition:LLVMValueRef*/ Lcond,
-//                                /*ifTrue:LLVMBasicBlockRef*/ lastTrueBlock,      // 回到上一层节点，返回正确
-//                                /*ifFalse:LLVMBasicBlockRef*/ leftCondExit); // 到中间
-//                    }
-//                    else { // 左节点嵌套
-//                        // if Lcond false
-//                        LLVMPositionBuilderAtEnd(builder, leftCondExitFalse);
-//                        LLVMBuildBr(builder,leftCondExit);
-//                        LLVMPositionBuilderAtEnd(builder, leftCondExitTrue);
-//                        LLVMBuildBr(builder,lastTrueBlock);
-//                    }
-//
-//                    // if Lcond true
-//                    LLVMPositionBuilderAtEnd(builder, leftCondExit);//
-//                    LLVMValueRef Rcond = visitCond(ctx.cond(1));
-//                    if(Rcond == null) { // 右节点嵌套
-//                       LLVMBuildBr(builder, lastFalseBlock);
-//                    }
-//                    else { // 右节点为表达式
-//                        Rcond = condI32ToI1(Rcond);
-//                        LLVMBuildCondBr(builder,
-//                                /*condition:LLVMValueRef*/ Rcond,
-//                                /*ifTrue:LLVMBasicBlockRef*/ lastTrueBlock, // 回到上一层，返回正确
-//                                /*ifFalse:LLVMBasicBlockRef*/ lastFalseBlock); // 回到上一层，返回右cond错误(关键bug，默认自己是左cond)
-//                    }
+                    LLVMBasicBlockRef leftCondExitFalse = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExitFalse");
+                    fixedBlock.add(leftCondExitFalse);
+                    shortCircleFalseBlock.push(leftCondExitFalse);
+
+                    LLVMValueRef Lcond = visitCond(ctx.cond(0));
+                    if(Lcond != null) { // 左节点为表达式
+                        Lcond = condI32ToI1(Lcond);
+                        LLVMBuildCondBr(builder,
+                                /*condition:LLVMValueRef*/ Lcond,
+                                /*ifTrue:LLVMBasicBlockRef*/ lastTrueBlock,      // 回到上一层节点，返回正确
+                                /*ifFalse:LLVMBasicBlockRef*/ leftCondExit); // 到中间
+                    }
+                    else { // 左节点嵌套
+                        // if Lcond false
+                        LLVMPositionBuilderAtEnd(builder, leftCondExitFalse);
+                        LLVMBuildBr(builder,leftCondExit);
+                        LLVMPositionBuilderAtEnd(builder, shortCircleTrueBlock.peek());
+                        LLVMBuildBr(builder,lastTrueBlock);
+                    }
+
+                    shortCircleFalseBlock.pop();
+
+                    // if Lcond true
+                    LLVMPositionBuilderAtEnd(builder, leftCondExit);//
+                    LLVMValueRef Rcond = visitCond(ctx.cond(1));
+                    if(Rcond != null) { // 右节点表达式
+                        Rcond = condI32ToI1(Rcond);
+                        LLVMBuildCondBr(builder,
+                                /*condition:LLVMValueRef*/ Rcond,
+                                /*ifTrue:LLVMBasicBlockRef*/ lastTrueBlock, // 回到上一层，返回正确
+                                /*ifFalse:LLVMBasicBlockRef*/ lastFalseBlock); // 回到上一层，返回右cond错误(关键bug，默认自己是左cond)
+                    }
 
                     shortCircleBlockIdx--;
                     return null;
