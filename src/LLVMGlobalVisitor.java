@@ -410,24 +410,6 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                 LLVMBasicBlockRef leftCondExit = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExit"); // 中间
                 LLVMBasicBlockRef lastTrueBlock = shortCircleTrueBlock.peek(); // 上层正确
                 LLVMBasicBlockRef lastFalseBlock = shortCircleFalseBlock.peek(); // 上层错误
-//                LLVMBasicBlockRef lastTrueBlock = shortCircleTrueBlock.pop();
-//                LLVMBasicBlockRef lastFalseBlock = shortCircleFalseBlock.pop();
-                // 创建子函数的“上一层”
-//                LLVMBasicBlockRef leftCondExitTrue = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExitTrue");
-//                LLVMBasicBlockRef leftCondExitFalse = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExitFalse");
-//
-//                fixedBlock.add(leftCondExitTrue);
-//                fixedBlock.add(leftCondExitFalse);
-//
-////                if(shortCircleFalseBlock.size()-1==shortCircleBlockIdx) {
-//                    shortCircleTrueBlock.push(leftCondExitTrue);
-//                    shortCircleFalseBlock.push(leftCondExitFalse);
-//                }
-//                else {
-//
-//                    shortCircleTrueBlock.set(shortCircleBlockIdx+1, leftCondExitTrue);
-//                    shortCircleFalseBlock.set(shortCircleBlockIdx+1, leftCondExitFalse);
-//                }
                 shortCircleBlockIdx++;
 
                 if (ctx.AND()!=null){
@@ -435,6 +417,8 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                     LLVMBasicBlockRef leftCondExitTrue = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExitTrue");
                     fixedBlock.add(leftCondExitTrue);
                     shortCircleTrueBlock.push(leftCondExitTrue);
+                    // 如果下一层正确，则跳转到中间（leftCondExitTrue）
+                    // 如果下一层错误，则跳转到上一层错误（AND的特性）。之前出bug就是因为多了一个false块
 
                     LLVMValueRef Lcond = visitCond(ctx.cond(0));
                     if(Lcond != null) {  // 左节点为表达式
@@ -451,8 +435,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                         LLVMPositionBuilderAtEnd(builder, leftCondExitTrue);
                         LLVMBuildBr(builder,leftCondExit);
                     }
-
-                    shortCircleTrueBlock.pop();
+                    shortCircleTrueBlock.pop(); // 在最后pop也行。不影响lastTrueBlock
 
                     // if Lcond true
                     LLVMPositionBuilderAtEnd(builder, leftCondExit);//
@@ -466,7 +449,6 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
                     }
 
-
                     shortCircleBlockIdx--;
                     return null;
                 }
@@ -475,6 +457,8 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                     LLVMBasicBlockRef leftCondExitFalse = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExitFalse");
                     fixedBlock.add(leftCondExitFalse);
                     shortCircleFalseBlock.push(leftCondExitFalse);
+                    // 如果下一层错误，则跳转到中间（leftCondExitFalse）
+                    // 如果下一层正确，则跳转到上一层正确（OR的特性）之前出bug就是因为多了一个true块
 
                     LLVMValueRef Lcond = visitCond(ctx.cond(0));
                     if(Lcond != null) { // 左节点为表达式
