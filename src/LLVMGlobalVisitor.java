@@ -28,6 +28,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     private ArrayList<LLVMBasicBlockRef> shortCircleFalseBlock = new ArrayList<>();
     private ArrayList<LLVMBasicBlockRef> shortCircleTrueBlock = new ArrayList<>();
     private int shortCircleBlockIdx = 0;
+    private ArrayList<LLVMBasicBlockRef> fixedBlock = new ArrayList<>();
 
     LLVMModuleRef module;
     LLVMBuilderRef builder;
@@ -62,15 +63,10 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         LLVMValueRef llvmValueRef = tree.accept(this);
 
 
-//        for (LLVMBasicBlockRef llvmBasicBlockRef : shortCircleFalseBlock) {
-//            LLVMPositionBuilderAtEnd(builder,llvmBasicBlockRef);
-//            LLVMBuildBr(builder,llvmBasicBlockRef);
-//
-//        }
-//        for (LLVMBasicBlockRef llvmBasicBlockRef : shortCircleTrueBlock) {
-//            LLVMPositionBuilderAtEnd(builder,llvmBasicBlockRef);
-//            LLVMBuildBr(builder,llvmBasicBlockRef);
-//        }
+        for (LLVMBasicBlockRef llvmBasicBlockRef : fixedBlock) {
+            LLVMPositionBuilderAtEnd(builder, llvmBasicBlockRef);
+            LLVMBuildBr(builder, llvmBasicBlockRef);
+        }
 
         //输出到控制台
 //        LLVMDumpModule(module);
@@ -328,8 +324,8 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                         /*ifFalse:LLVMBasicBlockRef*/ ifFalse);
             }
             else {
-                LLVMDeleteBasicBlock(shortCircleTrueBlock.get(shortCircleFalseBlock.size()-1));
-                LLVMDeleteBasicBlock(shortCircleFalseBlock.get(shortCircleFalseBlock.size()-1));
+//                LLVMDeleteBasicBlock(shortCircleTrueBlock.get(shortCircleFalseBlock.size()-1));
+//                LLVMDeleteBasicBlock(shortCircleFalseBlock.get(shortCircleFalseBlock.size()-1));
             }
             // 生成ifTrue ifFalse的指令
             LLVMPositionBuilderAtEnd(builder, ifTrue);//后续生成的指令将追加在后面
@@ -349,6 +345,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBasicBlockRef whileBody = LLVMAppendBasicBlock(function, /*blockName:String*/"whileBody");
             LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, /*blockName:String*/"whileEntry");
 
+
             whileCondBlock.add(whileCond);
             whileEntryBlock.add(entry);
             whileBlockIdx++;
@@ -366,8 +363,6 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                         /*ifFalse:LLVMBasicBlockRef*/ entry);
             }
             else {
-                LLVMDeleteBasicBlock(shortCircleTrueBlock.get(shortCircleFalseBlock.size()-1));
-                LLVMDeleteBasicBlock(shortCircleFalseBlock.get(shortCircleFalseBlock.size()-1));
             }
             LLVMPositionBuilderAtEnd(builder, whileBody);//whileBody后续生成的指令将追加在后面
             visitStmt(ctx.stmt(0));
@@ -415,13 +410,15 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                 // 创建子函数的“上一层”
                 LLVMBasicBlockRef leftCondExitTrue = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExitTrue");
                 LLVMBasicBlockRef leftCondExitFalse = LLVMAppendBasicBlock(function, /*blockName:String*/"leftCondExitFalse");
+                fixedBlock.add(leftCondExitTrue);
+                fixedBlock.add(leftCondExitFalse);
+
                 if(shortCircleFalseBlock.size()-1==shortCircleBlockIdx) {
                     shortCircleTrueBlock.add(leftCondExitTrue);
                     shortCircleFalseBlock.add(leftCondExitFalse);
                 }
                 else {
-                    LLVMDeleteBasicBlock(shortCircleTrueBlock.get(shortCircleBlockIdx + 1));
-                    LLVMDeleteBasicBlock(shortCircleFalseBlock.get(shortCircleBlockIdx + 1));
+
                     shortCircleTrueBlock.set(shortCircleBlockIdx+1, leftCondExitTrue);
                     shortCircleFalseBlock.set(shortCircleBlockIdx+1, leftCondExitFalse);
                 }
