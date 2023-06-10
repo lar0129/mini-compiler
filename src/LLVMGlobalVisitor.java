@@ -352,6 +352,9 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
             LLVMBuildBr(builder, whileCond);
             LLVMPositionBuilderAtEnd(builder, whileCond);//whileCond后续生成的指令将追加在后面
+
+            shortCircleTrueBlock.push(whileBody);
+            shortCircleFalseBlock.push(entry);
             LLVMValueRef condition = visitCond(ctx.cond());
 
             // 短路求值不需要再添跳转
@@ -362,8 +365,10 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                         /*ifTrue:LLVMBasicBlockRef*/ whileBody,
                         /*ifFalse:LLVMBasicBlockRef*/ entry);
             }
-            else {
-            }
+
+            shortCircleTrueBlock.pop();
+            shortCircleFalseBlock.pop();
+
             LLVMPositionBuilderAtEnd(builder, whileBody);//whileBody后续生成的指令将追加在后面
             visitStmt(ctx.stmt(0));
             whileBlockIdx--;
