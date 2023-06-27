@@ -249,11 +249,24 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                 initVal = zero;
             }
             // 全局变量创建
-            createVar(varSymbol, initVal, varDefContext.L_BRACKT(), varDefContext.constExp());
+            LLVMValueRef currentVar = createVar(varSymbol, initVal, varDefContext.L_BRACKT(), varDefContext.constExp());
             // 单独处理数组赋值
             if(varDefContext.ASSIGN() != null && varDefContext.L_BRACKT().size()!=0) {
-                LLVMValueRef[] initArray = getInitArray(varDefContext.initVal());
-                copyArrToArrPtr( varSymbol.getNumber(), initArray);
+                if (currentScope == globalScope) {
+                    int size = Integer.parseInt(Main.HEXtoTEN(varDefContext.constExp().get(0).exp().number().getText()));
+//                    //为全局变量设置初始化器
+                    PointerPointer<Pointer> pointerPointer = new PointerPointer<>(size);
+                    for (int i = 0; i < size; ++i) {
+                        LLVMValueRef num = visitExp(varDefContext.initVal().initVal(i).exp());
+                        pointerPointer.put(i, num);
+                    }
+                    LLVMValueRef initArray = LLVMConstArray(i32Type, pointerPointer, size);
+                    LLVMSetInitializer(currentVar,initArray); // 初始化全局数组
+                }
+                else {
+                    LLVMValueRef[] initArray = getInitArray(varDefContext.initVal());
+                    copyArrToArrPtr(varSymbol.getNumber(), initArray);
+                }
             }
         }
 
@@ -280,11 +293,24 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             assert  (varDefContext.ASSIGN() != null) ;
             LLVMValueRef initVal = getConstInitVal(varDefContext.constInitVal());
             // 全局变量创建
-            createVar( varSymbol, initVal, varDefContext.L_BRACKT(), varDefContext.constExp());
+            LLVMValueRef currentVar = createVar( varSymbol, initVal, varDefContext.L_BRACKT(), varDefContext.constExp());
             // 单独处理数组赋值
             if(varDefContext.L_BRACKT().size()!=0) {
-                LLVMValueRef[] initArray = getConstInitArray(varDefContext.constInitVal());
-                copyArrToArrPtr( varSymbol.getNumber(), initArray);
+                if (currentScope == globalScope) {
+                    int size = Integer.parseInt(Main.HEXtoTEN(varDefContext.constExp().get(0).exp().number().getText()));
+//                    //为全局变量设置初始化器
+                    PointerPointer<Pointer> pointerPointer = new PointerPointer<>(size);
+                    for (int i = 0; i < size; ++i) {
+                        LLVMValueRef num = visitExp(varDefContext.constInitVal().constInitVal(i).constExp().exp());
+                        pointerPointer.put(i, num);
+                    }
+                    LLVMValueRef initArray = LLVMConstArray(i32Type, pointerPointer, size);
+                    LLVMSetInitializer(currentVar,initArray); // 初始化全局数组
+                }
+                else {
+                    LLVMValueRef[] initArray = getConstInitArray(varDefContext.constInitVal());
+                    copyArrToArrPtr( varSymbol.getNumber(), initArray);
+                }
             }
         }
 
@@ -324,7 +350,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         }
     }
 
-    private void createVar(VariableSymbol varSymbol, LLVMValueRef initVal, List<TerminalNode> arrayNode, List<SysYParser.ConstExpContext> constExpContext) {
+    private LLVMValueRef createVar(VariableSymbol varSymbol, LLVMValueRef initVal, List<TerminalNode> arrayNode, List<SysYParser.ConstExpContext> constExpContext) {
         String varName = varSymbol.getName();
         if (currentScope == globalScope) {
             //创建名为globalVar的全局变量
@@ -333,6 +359,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                 //为全局变量设置初始化器
                 LLVMSetInitializer(globalVar, /* constantVal:LLVMValueRef*/initVal);
                 varSymbol.setNumber(globalVar);
+                return globalVar;
             }
             else { // 数组变量
                 int size = Integer.parseInt(Main.HEXtoTEN(constExpContext.get(0).exp().number().getText()));
@@ -343,9 +370,10 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                     pointerPointer.put(i, zero);
                 }
                 LLVMValueRef initArray = LLVMConstArray(i32Type, pointerPointer, size);
-                LLVMSetInitializer(globalVar, /* constantVal:LLVMValueRef*/initArray); // 初始化全局数组？
+                LLVMSetInitializer(globalVar, /* constantVal:LLVMValueRef*/initArray); // 初始化全局数组
                 varSymbol.setNumber(globalVar); // 存入全局数组pInt
                 varSymbol.setIntType(pI32Type);
+                return globalVar;
             }
         }
         // 局部变量创建
@@ -355,6 +383,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                 //将数值存入该内存
                 LLVMBuildStore(builder, initVal, currentVar);
                 varSymbol.setNumber(currentVar);
+                return currentVar;
             }
             else { // 数组变量
                 int size = Integer.parseInt(Main.HEXtoTEN(constExpContext.get(0).exp().number().getText()));
@@ -369,6 +398,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                 LLVMBuildStore(builder, initArray, currentVar); // 初始化局部数组
                 varSymbol.setNumber(currentVar);
                 varSymbol.setIntType(pI32Type);
+                return currentVar;
             }
         }
     }
