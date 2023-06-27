@@ -5,5 +5,7 @@ int combine(int arr1[], int arr1_length, int arr2[], int arr2_length) {
 int main() {
     const int a[0] = {};
     const int b[3] = {};
+    int a[0] = {};
+    int b[3] = {};
     return combine(a, 2, b[2], 3);
 }
