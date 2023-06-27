@@ -19,3 +19,6 @@ nohup.out
 /target/*
 /test.ll
 /.gitignore
+/gen/SysYLexer.interp
+/gen/SysYLexer.java
+/gen/SysYLexer.tokens
