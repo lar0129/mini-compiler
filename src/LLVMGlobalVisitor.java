@@ -253,14 +253,20 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             // 单独处理数组赋值
             if(varDefContext.ASSIGN() != null && varDefContext.L_BRACKT().size()!=0) {
                 if (currentScope == globalScope) {
-                    int size = varDefContext.initVal().initVal().size();
+                    int sizeL = Integer.parseInt(Main.HEXtoTEN(varDefContext.constExp(0).exp().number().getText()));
+                    int sizeR = varDefContext.initVal().initVal().size();
 //                    //为全局变量设置初始化器
-                    PointerPointer<Pointer> pointerPointer = new PointerPointer<>(size);
-                    for (int i = 0; i < size; ++i) {
-                        LLVMValueRef num = visitExp(varDefContext.initVal().initVal(i).exp());
-                        pointerPointer.put(i, num);
+                    PointerPointer<Pointer> pointerPointer = new PointerPointer<>(sizeL);
+                    for (int i = 0; i < sizeL; ++i) {
+                        if(i<sizeR) {
+                            LLVMValueRef num = visitExp(varDefContext.initVal().initVal(i).exp());
+                            pointerPointer.put(i, num);
+                        }
+                        else {
+                            pointerPointer.put(i, zero);
+                        }
                     }
-                    LLVMValueRef initArray = LLVMConstArray(i32Type, pointerPointer, size);
+                    LLVMValueRef initArray = LLVMConstArray(i32Type, pointerPointer, sizeL);
                     LLVMSetInitializer(currentVar,initArray); // 初始化全局数组
                 }
                 else {
@@ -297,14 +303,20 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             // 单独处理数组赋值
             if(varDefContext.L_BRACKT().size()!=0) {
                 if (currentScope == globalScope) {
-                    int size = varDefContext.constInitVal().constInitVal().size();
+                    int sizeL = Integer.parseInt(Main.HEXtoTEN(varDefContext.constExp(0).exp().number().getText()));
+                    int sizeR = varDefContext.constInitVal().constInitVal().size();
 //                    //为全局变量设置初始化器
-                    PointerPointer<Pointer> pointerPointer = new PointerPointer<>(size);
-                    for (int i = 0; i < size; ++i) {
-                        LLVMValueRef num = visitExp(varDefContext.constInitVal().constInitVal(i).constExp().exp());
-                        pointerPointer.put(i, num);
+                    PointerPointer<Pointer> pointerPointer = new PointerPointer<>(sizeL);
+                    for (int i = 0; i < sizeL; ++i) {
+                        if(i<sizeR) {
+                            LLVMValueRef num = visitExp(varDefContext.constInitVal().constInitVal(i).constExp().exp());
+                            pointerPointer.put(i, num);
+                        }
+                        else {
+                            pointerPointer.put(i, zero);
+                        }
                     }
-                    LLVMValueRef initArray = LLVMConstArray(i32Type, pointerPointer, size);
+                    LLVMValueRef initArray = LLVMConstArray(i32Type, pointerPointer, sizeL);
                     LLVMSetInitializer(currentVar,initArray); // 初始化全局数组
                 }
                 else {
