@@ -34,6 +34,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     LLVMModuleRef module;
     LLVMBuilderRef builder;
 
+    LLVMTypeRef ppI32Type;
     LLVMTypeRef pI32Type;
     LLVMTypeRef i32Type;
     LLVMTypeRef i1Type;
@@ -57,6 +58,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         //考虑到我们的语言中仅存在int一个基本类型，可以通过下面的语句为LLVM的int型重命名方便以后使用
         this.i32Type = LLVMInt32Type();
         this.pI32Type = LLVMPointerType(i32Type, 0);
+        this.ppI32Type = LLVMPointerType(pI32Type, 0);
         this.i1Type = LLVMInt1Type();
         this.voidType = LLVMVoidType();
         this.zero = LLVMConstInt(i32Type, 0, /* signExtend */ 0);
@@ -198,7 +200,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             // 将数值存入该内存
             LLVMBuildStore(builder, param, funcVar);
             varSymbol.setNumber(funcVar);
-            varSymbol.setIntType(pI32Type);
+            varSymbol.setIntType(ppI32Type);
 
             paramIdx++;
         }
@@ -338,8 +340,9 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                     pointerPointer.put(i, zero);
                 }
                 LLVMValueRef initArray = LLVMConstArray(i32Type, pointerPointer, size);
-                LLVMSetInitializer(globalVar, /* constantVal:LLVMValueRef*/initArray); // todo: 初始化全局数组？
-                varSymbol.setNumber(globalVar); // todo:如何获取全局变量指针并存入scope?
+                LLVMSetInitializer(globalVar, /* constantVal:LLVMValueRef*/initArray); // 初始化全局数组？
+                varSymbol.setNumber(globalVar); // 存入全局数组pInt
+                varSymbol.setIntType(pI32Type);
             }
         }
         // 局部变量创建
@@ -362,7 +365,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                 LLVMValueRef initArray = LLVMConstArray(i32Type, pointerPointer, size);
                 LLVMBuildStore(builder, initArray, currentVar); // todo: 初始化局部数组？
                 varSymbol.setNumber(currentVar);
-
+                varSymbol.setIntType(pI32Type);
             }
         }
     }
@@ -668,11 +671,16 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
          LLVMValueRef[] args = new LLVMValueRef[ctx.param().size()];
          for (int i = 0; i < ctx.param().size(); i++) {
              LLVMValueRef exp = visitExp(ctx.param(i).exp());
-//             if(LLVMGetElementType(LLVMTypeOf(exp)).equals(LLVMPointerType(LLVMInt16Type(),0))){ // 数组函数传参
-//                 args[i] = new PointerPointer<LLVMValueRef>(exp);
+//             LLVMValueRef[] arrayIndex = new LLVMValueRef[0];
+//            // arrayIndex[0] = zero;
+//             PointerPointer<LLVMValueRef> indexPointer = new PointerPointer<>(arrayIndex);
+//             LLVMValueRef expPtr = LLVMBuildGEP(builder, exp, indexPointer, 0, "expPtr");
+//             System.out.println(LLVMTypeOf(expPtr).equals(LLVMPointerType(LLVMInt32Type(), 0)));
+//             if(LLVMGetElementType(LLVMTypeOf(exp)).equals(LLVMArrayType(LLVMInt32Type(), 5))){
+//                args[i] = getLVal(ctx.param(i).exp().lVal());
 //             }
-//             else { // 正常函数传参
-                 args[i] = exp;
+//             else {
+                args[i] = exp;
 //             }
          }
          return args;
@@ -759,7 +767,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 //        LLVMValueRef value = LLVMBuildLoad(builder, res, /*varName:String*/varInTable.getName());
         if(ctx.L_BRACKT().size()!=0){ // 取出数组
 //            res = LLVMBuildLoad(builder,res,"arr");
-            if(((VariableSymbol) varInTable).getIntType().equals(pI32Type)) {
+            if(((VariableSymbol) varInTable).getIntType().equals(ppI32Type)) {
                 res = LLVMBuildLoad(builder, res, "arr");
                 LLVMValueRef[] arrayPointer = new LLVMValueRef[1];
                 arrayPointer[0] = visitExp(ctx.exp(0));
@@ -785,8 +793,9 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         assert (varInTable instanceof VariableSymbol);
 
         LLVMValueRef res = ((VariableSymbol) varInTable).getNumber();
+        LLVMValueRef value = null;
         if(ctx.L_BRACKT().size()!=0){ // 取出数组
-            if(((VariableSymbol) varInTable).getIntType().equals(pI32Type)) {
+            if(((VariableSymbol) varInTable).getIntType().equals(ppI32Type)) {
                 res = LLVMBuildLoad(builder, res, "arr");
                 LLVMValueRef[] arrayPointer = new LLVMValueRef[1];
                 arrayPointer[0] = visitExp(ctx.exp(0));
@@ -800,8 +809,17 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             }
         }
 
-        LLVMValueRef value = LLVMBuildLoad(builder, res, /*varName:String*/varInTable.getName() + "_Rnum");
-
+        // 特判数组传指针
+        if(ctx.L_BRACKT().size()==0 && ((VariableSymbol) varInTable).getIntType().equals(pI32Type)){
+            LLVMValueRef[] arrayIndex = new LLVMValueRef[2];
+             arrayIndex[0] = zero;
+            arrayIndex[1] = zero;
+             PointerPointer<LLVMValueRef> indexPointer = new PointerPointer<>(arrayIndex);
+            value = LLVMBuildGEP(builder, res, indexPointer, 2, "arrPtr");
+        }
+        else {
+            value = LLVMBuildLoad(builder, res, /*varName:String*/varInTable.getName() + "_Rnum");
+        }
         return value;
     }
 
