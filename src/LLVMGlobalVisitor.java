@@ -167,7 +167,9 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         if (funcReturnType.equals(voidType)){
             LLVMBuildRetVoid(builder);
         }
-        LLVMBuildRet(builder, zero);
+        else {
+            LLVMBuildRet(builder, zero);
+        }
         currentScope = currentScope.getEnclosingScope();
 
         return res;

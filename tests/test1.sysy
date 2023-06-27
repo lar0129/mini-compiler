@@ -1,5 +1,5 @@
 int combine(int arr1[], int arr1_length, int arr2[], int arr2_length) {
-
+    return combine(arr1, arr1_length, arr2, arr2_length, 0);
 }
 
 int main() {
