@@ -253,7 +253,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             // 单独处理数组赋值
             if(varDefContext.ASSIGN() != null && varDefContext.L_BRACKT().size()!=0) {
                 if (currentScope == globalScope) {
-                    int size = Integer.parseInt(Main.HEXtoTEN(varDefContext.constExp().get(0).exp().number().getText()));
+                    int size = varDefContext.initVal().initVal().size();
 //                    //为全局变量设置初始化器
                     PointerPointer<Pointer> pointerPointer = new PointerPointer<>(size);
                     for (int i = 0; i < size; ++i) {
@@ -297,7 +297,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             // 单独处理数组赋值
             if(varDefContext.L_BRACKT().size()!=0) {
                 if (currentScope == globalScope) {
-                    int size = Integer.parseInt(Main.HEXtoTEN(varDefContext.constExp().get(0).exp().number().getText()));
+                    int size = varDefContext.constInitVal().constInitVal().size();
 //                    //为全局变量设置初始化器
                     PointerPointer<Pointer> pointerPointer = new PointerPointer<>(size);
                     for (int i = 0; i < size; ++i) {
