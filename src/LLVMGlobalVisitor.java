@@ -280,7 +280,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             // 全局变量创建
             createVar( varSymbol, initVal, varDefContext.L_BRACKT(), varDefContext.constExp());
             // 单独处理数组赋值
-            if(varDefContext.ASSIGN() != null && varDefContext.L_BRACKT().size()!=0) {
+            if(varDefContext.L_BRACKT().size()!=0) {
                 LLVMValueRef[] initArray = getConstInitArray(varDefContext.constInitVal());
                 copyArrToArrPtr( varSymbol.getNumber(), initArray);
             }
@@ -645,15 +645,14 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     }
 
     public LLVMValueRef getConstInitVal(SysYParser.ConstInitValContext ctx) {
-        if (ctx.constExp()!=null){
-            return visitExp(ctx.constExp().exp());
+        if (ctx.L_BRACE()!=null){
+            return null;
         }
         else {
-
+            return visitExp(ctx.constExp().exp());
         }
 
-        assert (ctx.constExp()!=null); // 抛出异常
-        return null;
+//        return null;
     }
 
     @Override
