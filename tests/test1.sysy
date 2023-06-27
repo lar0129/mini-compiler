@@ -1,4 +1,4 @@
-int main() {
+void main() {
     int a[2] = { 1,5 };
     int b[3] = { 1,4,14 };
 //    return combine(a, 2, b[2], 3);
