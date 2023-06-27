@@ -394,7 +394,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                     pointerPointer.put(i, zero);
                 }
                 LLVMValueRef initArray = LLVMConstArray(i32Type, pointerPointer, size);
-//                LLVMBuildStore(builder, initArray, currentVar); // 初始化局部数组
+                LLVMBuildStore(builder, initArray, currentVar); // 初始化局部数组
                 varSymbol.setNumber(currentVar);
                 varSymbol.setIntType(pI32Type);
                 return currentVar;
