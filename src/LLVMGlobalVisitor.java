@@ -388,14 +388,13 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             else { // 数组变量
                 int size = Integer.parseInt(Main.HEXtoTEN(constExpContext.get(0).exp().number().getText()));
                 LLVMValueRef currentVar = LLVMBuildAlloca(builder, LLVMArrayType(i32Type, size), /*pointerName:String*/varName);
-                //将数值存入该内存
-                    //为全局变量设置初始化器
+                //为局部变量设置初始化器
                 PointerPointer<Pointer> pointerPointer = new PointerPointer<>(size);
                 for (int i = 0; i < size; ++i) {
                     pointerPointer.put(i, zero);
                 }
                 LLVMValueRef initArray = LLVMConstArray(i32Type, pointerPointer, size);
-                LLVMBuildStore(builder, initArray, currentVar); // 初始化局部数组
+//                LLVMBuildStore(builder, initArray, currentVar); // 初始化局部数组
                 varSymbol.setNumber(currentVar);
                 varSymbol.setIntType(pI32Type);
                 return currentVar;

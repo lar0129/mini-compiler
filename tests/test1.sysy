@@ -1,12 +1,12 @@
-int a[2] = {};
+int a[2];
 const int b[2] = {};
-int a1[0] = {};
+int a1[0];
 const int b1[0] = {};
 int c[3] = {1,2+2,3*2};
 const int d[3] = {1,2*2,3};
 
-int combine(int a[], int a_size, int b[], int b_size) {
-    return a[2];
+int combine(int a2[], int a_size, int b2[], int b_size) {
+    return a[1];
     return b[2];
     return c[2];
     return d[2];
