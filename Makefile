@@ -35,7 +35,7 @@ test: compile
 	cp nohup.out ./tests/
 
 gen:
-	clang -S -emit-llvm ./tests/test.c -o ./tests/test.ll -O0
+	clang -S -emit-llvm ./tests/test.c -o ./tests/testc.ll -O0
 
 clean:
 	rm -f src/main/java/*.tokens
