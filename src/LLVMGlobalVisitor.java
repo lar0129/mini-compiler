@@ -165,7 +165,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         LLVMTypeRef funcReturnType = LLVMGetReturnType(LLVMGetElementType(LLVMTypeOf(getCurrentFunc())));
 
         if (funcReturnType.equals(voidType)){
-            LLVMBuildRetVoid(builder);
+//            LLVMBuildRetVoid(builder);
         }
         else {
             LLVMBuildRet(builder, zero);
