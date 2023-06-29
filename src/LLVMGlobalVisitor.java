@@ -70,8 +70,8 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
 
         for (LLVMBasicBlockRef llvmBasicBlockRef : fixedBlock) {
-//            LLVMPositionBuilderAtEnd(builder, llvmBasicBlockRef);
-//            LLVMBuildBr(builder, llvmBasicBlockRef);
+            LLVMPositionBuilderAtEnd(builder, llvmBasicBlockRef);
+            LLVMBuildBr(builder, llvmBasicBlockRef);
         }
 
         //输出到控制台
@@ -165,10 +165,10 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         LLVMTypeRef funcReturnType = LLVMGetReturnType(LLVMGetElementType(LLVMTypeOf(getCurrentFunc())));
 
         if (funcReturnType.equals(voidType)){
-            LLVMBuildRetVoid(builder);
+//            LLVMBuildRetVoid(builder);
         }
         else {
-            LLVMBuildRet(builder, zero);
+//            LLVMBuildRet(builder, zero);
         }
         currentScope = currentScope.getEnclosingScope();
 
