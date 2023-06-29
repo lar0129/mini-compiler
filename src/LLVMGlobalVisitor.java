@@ -280,7 +280,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                         LLVMValueRef[] initArray = new LLVMValueRef[sizeL];
                         for (int i = 0; i < sizeL; ++i) {
                             if (i < sizeR) {
-                                initArray[i] = this.visit(varDefContext.initVal().initVal(i).exp());
+                                initArray[i] = visitExp(varDefContext.initVal().initVal(i).exp());
                             } else {
                                 initArray[i] = LLVMConstInt(i32Type, 0, 0);
                             }
@@ -345,7 +345,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                         LLVMValueRef[] initArray = new LLVMValueRef[sizeL];
                         for (int i = 0; i < sizeL; ++i) {
                             if (i < sizeR) {
-                                initArray[i] = this.visit(varDefContext.constInitVal().constInitVal(i).constExp().exp());
+                                initArray[i] = visitExp(varDefContext.constInitVal().constInitVal(i).constExp().exp());
                             } else {
                                 initArray[i] = LLVMConstInt(i32Type, 0, 0);
                             }
