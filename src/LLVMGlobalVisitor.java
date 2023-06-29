@@ -261,9 +261,9 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                         LLVMBuildStore(builder, initValCtx, currentVar);
                 }
                 else {
+                    int sizeL = Integer.parseInt(Main.HEXtoTEN(varDefContext.constExp(0).exp().number().getText()));
+                    int sizeR = varDefContext.initVal().initVal().size();
                     if (currentScope == globalScope) {
-                        int sizeL = Integer.parseInt(Main.HEXtoTEN(varDefContext.constExp(0).exp().number().getText()));
-                        int sizeR = varDefContext.initVal().initVal().size();
 //                    //为全局变量设置初始化器
                         PointerPointer<Pointer> pointerPointer = new PointerPointer<>(sizeL);
                         for (int i = 0; i < sizeL; ++i) {
@@ -277,8 +277,15 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                         LLVMValueRef initArray = LLVMConstArray(i32Type, pointerPointer, sizeL);
                         LLVMSetInitializer(currentVar, initArray); // 初始化全局数组
                     } else {
-                        LLVMValueRef[] initArray = getInitArray(varDefContext.initVal());
-                        copyArrToArrPtr(varSymbol.getNumber(), initArray);
+                        LLVMValueRef[] initArray = new LLVMValueRef[sizeL];
+                        for (int i = 0; i < sizeL; ++i) {
+                            if (i < sizeR) {
+                                initArray[i] = this.visit(varDefContext.initVal().initVal(i).exp());
+                            } else {
+                                initArray[i] = LLVMConstInt(i32Type, 0, 0);
+                            }
+                        }
+                        copyArrToArrPtr(sizeL,varSymbol.getNumber(), initArray);
                     }
                 }
             }
@@ -319,9 +326,9 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                         LLVMBuildStore(builder, initValCtx, currentVar);
                 }
                 else {
+                    int sizeL = Integer.parseInt(Main.HEXtoTEN(varDefContext.constExp(0).exp().number().getText()));
+                    int sizeR = varDefContext.constInitVal().constInitVal().size();
                     if (currentScope == globalScope) {
-                        int sizeL = Integer.parseInt(Main.HEXtoTEN(varDefContext.constExp(0).exp().number().getText()));
-                        int sizeR = varDefContext.constInitVal().constInitVal().size();
 //                    //为全局变量设置初始化器
                         PointerPointer<Pointer> pointerPointer = new PointerPointer<>(sizeL);
                         for (int i = 0; i < sizeL; ++i) {
@@ -335,8 +342,15 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                         LLVMValueRef initArray = LLVMConstArray(i32Type, pointerPointer, sizeL);
                         LLVMSetInitializer(currentVar, initArray); // 初始化全局数组
                     } else {
-                        LLVMValueRef[] initArray = getConstInitArray(varDefContext.constInitVal());
-                        copyArrToArrPtr(varSymbol.getNumber(), initArray);
+                        LLVMValueRef[] initArray = new LLVMValueRef[sizeL];
+                        for (int i = 0; i < sizeL; ++i) {
+                            if (i < sizeR) {
+                                initArray[i] = this.visit(varDefContext.constInitVal().constInitVal(i).constExp().exp());
+                            } else {
+                                initArray[i] = LLVMConstInt(i32Type, 0, 0);
+                            }
+                        }
+                        copyArrToArrPtr(sizeL,varSymbol.getNumber(), initArray);
                     }
                 }
             }
@@ -366,8 +380,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     }
 
     // 数组赋值
-    private void copyArrToArrPtr( LLVMValueRef arrayPointer, LLVMValueRef[] initArray) {
-        int arraySize = initArray.length;
+    private void copyArrToArrPtr( int arraySize,LLVMValueRef arrayPointer, LLVMValueRef[] initArray) {
         LLVMValueRef[] arrayIndex = new LLVMValueRef[2];
         arrayIndex[0] = zero;
         for (int i = 0; i < arraySize; i++) {
