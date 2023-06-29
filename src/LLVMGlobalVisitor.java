@@ -70,8 +70,8 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
 
         for (LLVMBasicBlockRef llvmBasicBlockRef : fixedBlock) {
-            LLVMPositionBuilderAtEnd(builder, llvmBasicBlockRef);
-            LLVMBuildBr(builder, llvmBasicBlockRef);
+//            LLVMPositionBuilderAtEnd(builder, llvmBasicBlockRef);
+//            LLVMBuildBr(builder, llvmBasicBlockRef);
         }
 
         //输出到控制台
