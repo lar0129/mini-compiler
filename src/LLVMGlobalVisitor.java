@@ -758,6 +758,9 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             if (ctx.funcRParams() != null) {
                 args = getFuncRParams(ctx.funcRParams());
             }
+//            if(funcSymbol.getType().getRetTy().toString().equals("void")){
+//
+//                }
             return LLVMBuildCall(builder, func, new PointerPointer(args), args.length, "call_");
         } else if (ctx.L_PAREN() != null) { // L_PAREN exp R_PAREN
             return visitExp(ctx.exp(0));
@@ -853,31 +856,33 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
         LLVMValueRef res = ((VariableSymbol) varInTable).getNumber();
         LLVMValueRef value = null;
-        if(ctx.L_BRACKT().size()!=0){ // 取出数组
+        if(ctx.L_BRACKT().size()!=0){ // 数组有[]
             if(((VariableSymbol) varInTable).getIntType().equals(ppI32Type)) {
                 res = LLVMBuildLoad(builder, res, "arr");
                 LLVMValueRef[] arrayPointer = new LLVMValueRef[1];
                 arrayPointer[0] = visitExp(ctx.exp(0));
                 res = LLVMBuildGEP(builder, res, new PointerPointer(arrayPointer), arrayPointer.length, "arrNum");
+                value = LLVMBuildLoad(builder, res, /*varName:String*/varInTable.getName() + "_Rnum");
             }
             else {
                 LLVMValueRef[] arrayPointer = new LLVMValueRef[2];
                 arrayPointer[0] = zero;
                 arrayPointer[1] = visitExp(ctx.exp(0));
                 res = LLVMBuildGEP(builder, res, new PointerPointer(arrayPointer), arrayPointer.length, "arrNum");
+                value = LLVMBuildLoad(builder, res, /*varName:String*/varInTable.getName() + "_Rnum");
             }
         }
-
-        // 特判数组传指针
-        if(ctx.L_BRACKT().size()==0 && ((VariableSymbol) varInTable).getIntType().equals(pI32Type)){
-            LLVMValueRef[] arrayIndex = new LLVMValueRef[2];
-             arrayIndex[0] = zero;
-            arrayIndex[1] = zero;
-             PointerPointer<LLVMValueRef> indexPointer = new PointerPointer<>(arrayIndex);
-            value = LLVMBuildGEP(builder, res, indexPointer, 2, "arrPtr");
-        }
-        else {
-            value = LLVMBuildLoad(builder, res, /*varName:String*/varInTable.getName() + "_Rnum");
+        else { // 常量或数组无[]
+            // 特判数组传指针
+            if (ctx.L_BRACKT().size() == 0 && ((VariableSymbol) varInTable).getIntType().equals(pI32Type)) {
+                LLVMValueRef[] arrayIndex = new LLVMValueRef[2];
+                arrayIndex[0] = zero;
+                arrayIndex[1] = zero;
+                PointerPointer<LLVMValueRef> indexPointer = new PointerPointer<>(arrayIndex);
+                value = LLVMBuildGEP(builder, res, indexPointer, 2, "arrPtr");
+            } else {
+                value = LLVMBuildLoad(builder, res, /*varName:String*/varInTable.getName() + "_Rnum");
+            }
         }
         return value;
     }

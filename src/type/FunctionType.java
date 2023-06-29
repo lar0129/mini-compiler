@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import scope.*;
 import symbol.*;
 
-public class FunctionType implements Type {
+public class  FunctionType implements Type {
     Type retTy;
     // 返回类型
 
