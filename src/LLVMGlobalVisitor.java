@@ -165,7 +165,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         LLVMTypeRef funcReturnType = LLVMGetReturnType(LLVMGetElementType(LLVMTypeOf(getCurrentFunc())));
 
         if (funcReturnType.equals(voidType)){
-//            LLVMBuildRetVoid(builder);
+            LLVMBuildRetVoid(builder);
         }
         else {
             LLVMBuildRet(builder, zero);
@@ -773,10 +773,14 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             if (ctx.funcRParams() != null) {
                 args = getFuncRParams(ctx.funcRParams());
             }
-//            if(funcSymbol.getType().getRetTy().toString().equals("void")){
-//
-//                }
-            return LLVMBuildCall(builder, func, new PointerPointer(args), args.length, "call_");
+
+            if(funcSymbol.getType().getRetTy().toString().equals("void")){
+                funcName = "";
+            }
+            else{
+                funcName+="_call";
+            }
+            return LLVMBuildCall(builder, func, new PointerPointer(args), args.length, funcName);
         } else if (ctx.L_PAREN() != null) { // L_PAREN exp R_PAREN
             return visitExp(ctx.exp(0));
         } else if (ctx.unaryOp() != null) { // unaryOp exp
