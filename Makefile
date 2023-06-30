@@ -41,7 +41,9 @@ testout:
 	llvm-as tests/test.ll
 	llc ./tests/test.bc -o result.s
 	gcc result.s -o result
-	./result
+#	bash ./result
+#	echo $?
+
 
 clean:
 	rm -f src/main/java/*.tokens
