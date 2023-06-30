@@ -4,15 +4,14 @@ int c[6]= {};
 int d = 1;
 int e;
 
-void combine(int a1[],int b) {
+int combine(int a1[],int b) {
     a1[1] = 1;
     b = b + 2;
-//    return 0;
-    ruturn;
+    return b;
 }
 
-void main() {
+int main() {
     int a[2] = { 1,5 };
     int b[3] = { 1,4,14 };
-    return combine(a,a[2]);
+    return combine(a,a[0]);
 }

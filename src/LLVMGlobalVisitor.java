@@ -161,15 +161,15 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
         // 遍历子树
         LLVMValueRef res = super.visitFuncDef(ctx);
-        // 回到上一层 Scope
-        LLVMTypeRef funcReturnType = LLVMGetReturnType(LLVMGetElementType(LLVMTypeOf(getCurrentFunc())));
 
-        if (funcReturnType.equals(voidType)){
+        LLVMTypeRef funcReturnType = LLVMGetReturnType(LLVMGetElementType(LLVMTypeOf(getCurrentFunc())));
+        if (typeName.equals("void")){
             LLVMBuildRetVoid(builder);
         }
         else {
             LLVMBuildRet(builder, zero);
         }
+        // 回到上一层 Scope
         currentScope = currentScope.getEnclosingScope();
 
         return res;
@@ -457,7 +457,7 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             if (funcReturnType.equals(i32Type)){
                 LLVMValueRef retValue = visitExp(ctx.exp());
                 // 输出LLVM返回值
-//                LLVMPrintValueToString(retValue);
+
                 LLVMBuildRet(builder, retValue);
             }
         }

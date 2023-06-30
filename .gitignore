@@ -22,3 +22,5 @@ nohup.out
 /gen/SysYLexer.interp
 /gen/SysYLexer.java
 /gen/SysYLexer.tokens
+/result
+/result.s

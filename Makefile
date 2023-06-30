@@ -37,6 +37,12 @@ test: compile
 gen:
 	clang -S -emit-llvm ./tests/test.c -o ./tests/testc.ll -O0
 
+testout:
+	llvm-as tests/test.ll
+	llc ./tests/test.bc -o result.s
+	gcc result.s -o result
+	./result
+
 clean:
 	rm -f src/main/java/*.tokens
 	rm -f src/*.interp
