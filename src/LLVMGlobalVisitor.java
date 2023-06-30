@@ -861,7 +861,16 @@ public class LLVMGlobalVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                 res = LLVMBuildGEP(builder, res, new PointerPointer(arrayPointer), arrayPointer.length, "arr_LNum");
             }
         }
-
+        else { // 常量或数组无[]
+            // 特判数组传指针
+            if (ctx.L_BRACKT().size() == 0 && ((VariableSymbol) varInTable).getIntType().equals(pI32Type)) {
+                LLVMValueRef[] arrayIndex = new LLVMValueRef[2];
+                arrayIndex[0] = zero;
+                arrayIndex[1] = zero;
+                PointerPointer<LLVMValueRef> indexPointer = new PointerPointer<>(arrayIndex);
+                res = LLVMBuildGEP(builder, res, indexPointer, 2, "arrPtr");
+            }
+        }
         return res;
     }
 
