@@ -1,1 +1,2 @@
-java手搓编译器前端，将c语言翻译成中间代码。 2023 NJUSE 编译原理大作业
+Compiler front-end implemented in java. Translate c language into LLVM intermediate code. 2023 NJUSE compilation principle homework
+
